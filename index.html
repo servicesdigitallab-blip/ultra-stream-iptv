@@ -87,11 +87,11 @@ footer{border-top:1px solid var(--line);padding:30px 4vw;color:var(--muted);disp
 
 /* SECOND SECTION — CurveFlow carousel, TRUE warp (slats): har image 24 vertical slices, har slice ki apni stretch — side images ki top/bottom edges CURVED, centre images seedhi. Flat centre, flow 176px/s desktop, 88px/s mobile, gaps 18px, koi overlap nahi, mouse/hover par kuch nahi. */
 .platforms{padding:56px 0 48px;overflow:hidden;background:#050505;touch-action:pan-y;user-select:none;-webkit-user-select:none;pointer-events:auto}
-.platform-track{display:flex;gap:20px;align-items:center;width:max-content;will-change:transform;transform:translateZ(0);-webkit-transform:translateZ(0);opacity:0;transition:opacity .5s ease}
+.platform-track{display:flex;gap:18px;align-items:center;width:max-content;will-change:transform;transform:translateZ(0);-webkit-transform:translateZ(0);opacity:0;transition:opacity .5s ease}
 .platform-track.inview{opacity:1}
-.pimg{flex:0 0 auto;position:relative;overflow:hidden;border-radius:18px;cursor:grab;opacity:0;transition:opacity .4s ease,filter .3s ease;will-change:transform;transform:translateZ(0);-webkit-transform:translateZ(0);box-shadow:0 12px 32px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.08)}
-.pimg:hover{filter:brightness(1.08)}
+.pimg{flex:0 0 auto;position:relative;overflow:visible;cursor:grab;opacity:0;transition:opacity .4s ease;will-change:transform;transform:translateZ(0);-webkit-transform:translateZ(0)}
 .pimg img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;-webkit-user-drag:none;user-select:none}
+.pslice{position:absolute;top:50%;left:0;background-image:var(--img);background-repeat:no-repeat;will-change:transform;transform-origin:center center;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .platform-track.inview .pimg{opacity:1}
 .platform-track.inview .pimg:nth-child(5n+1){transition-delay:0s}.platform-track.inview .pimg:nth-child(5n+2){transition-delay:.09s}.platform-track.inview .pimg:nth-child(5n+3){transition-delay:.18s}.platform-track.inview .pimg:nth-child(5n+4){transition-delay:.27s}.platform-track.inview .pimg:nth-child(5n+5){transition-delay:.36s}
 .platforms.dragging .pimg{cursor:grabbing}
@@ -629,42 +629,62 @@ if('IntersectionObserver' in window&&hero){
 startHeroLoop();
 addEventListener('resize',()=>{rowState.forEach(st=>{st.pos=wrapPos(st,st.pos);renderRow(st)})});
 
-// Section 2 — Platforms Carousel (Ultra High-Performance Zero-Lag GPU Pipeline)
+// Section 2 — CurveFlow carousel, TRUE warp (slats): side images ki top/bottom edges CURVED, centre images seedhi (Zero-Lag GPU Pipeline)
 const psec=document.querySelector('.platforms');
 const ptrack=document.querySelector('.platform-track');
-const PGAP=20,SMAX=1.35;
-const PSPEED=130;
+const isMobile=window.innerWidth<=800||window.matchMedia('(max-width:800px)').matches;
+const PGAP=18,SMAX=1.48;
+const NSLICE=isMobile?10:18;
+const PSPEED=isMobile?80:150;
 let pInView=false,pHovering=false,pOffset=0,pVel=0,pPaused=false,pDragging=false,pLastX=0,pStartX=0,pStartY=0,pTouchDetermined=false,pLastT=0,pLastP=performance.now(),pCentered=false,pRaf=null;
-let baseW=340,baseH=560;
+let baseW=350,baseH=622,sliceW=baseW/NSLICE;
 
 const computeBase=()=>{
   const curM=window.innerWidth<=800;
-  baseW=curM?Math.min(260,Math.round(window.innerWidth*0.65)):Math.min(360,Math.max(260,Math.round(window.innerWidth*0.20)));
+  baseW=curM?Math.min(260,Math.round(window.innerWidth*0.65)):Math.round(window.innerWidth*0.20-8);
   baseH=Math.round(baseW*16/9);
+  sliceW=baseW/NSLICE;
   if(ptrack)ptrack.style.height=(baseH*SMAX).toFixed(1)+'px';
-  if(ptrack){
-    const kds=ptrack.children;
-    for(let i=0;i<kds.length;i++){
-      kds[i].style.width=baseW+'px';
-      kds[i].style.height=baseH+'px';
-    }
-  }
 };
-const curveS=d=>{const ad=Math.abs(d);if(ad<=0.4)return 1;let s=1+1.8*Math.pow(ad-0.4,1.4);return s>SMAX?SMAX:s};
+const curveS=d=>{const ad=Math.abs(d);if(ad<=0.48)return 1;let s=1+2.2*Math.pow(ad-0.48,1.45);return s>SMAX?SMAX:s};
 
 if(ptrack&&psec){
   computeBase();
   const orig=[...ptrack.children];
   for(let c=0;c<2;c++){orig.forEach(el=>ptrack.appendChild(el.cloneNode(true)))}
   const kids=ptrack.children;
-  computeBase();
+  const slices=[];
+  const buildSlices=()=>{
+    for(let k=0;k<kids.length;k++){
+      const el=kids[k];
+      const img=el.querySelector('img');
+      if(img){el.style.setProperty('--img','url("'+img.src+'")');img.remove()}
+      el.innerHTML='';
+      const arr=[];
+      for(let i=0;i<NSLICE;i++){
+        const s=document.createElement('div');
+        s.className='pslice';
+        s.style.width=(sliceW + 0.6)+'px';
+        s.style.height=baseH+'px';
+        s.style.left=(i*sliceW)+'px';
+        s.style.backgroundSize=baseW+'px '+baseH+'px';
+        s.style.backgroundPosition=(-i*sliceW)+'px 0px';
+        s.style.transform='translateY(-50%) scaleY(1) translateZ(0)';
+        el.appendChild(s);
+        arr.push(s);
+      }
+      slices[k]=arr;
+      el.style.width=baseW+'px';
+      el.style.height=(baseH*SMAX)+'px';
+    }
+  };
+  buildSlices();
 
   const pitch=()=>baseW+PGAP;
   const setW=()=>5*pitch();
   const wrap=o=>{const s=setW();return s>0?((o%s)+s)%s:0};
   const Xk=k=>k*pitch();
 
-  // Smooth Drag without fighting page vertical scroll
   psec.addEventListener('pointerdown',e=>{
     pStartX=e.clientX;pStartY=e.clientY;
     pLastX=e.clientX;pLastT=performance.now();
@@ -708,7 +728,7 @@ if(ptrack&&psec){
     if(e.key==='ArrowLeft'){e.preventDefault();pOffset=wrap(pOffset-320)}
     else if(e.key==='ArrowRight'){e.preventDefault();pOffset=wrap(pOffset+320)}
   });
-  addEventListener('resize',computeBase);
+  addEventListener('resize',()=>{computeBase();buildSlices()});
 
   function startPLoop(){
     if(!pRaf){
@@ -737,14 +757,19 @@ if(ptrack&&psec){
     pOffset=wrap(pOffset);
     ptrack.style.transform='translate3d('+(-pOffset).toFixed(1)+'px,0,0)';
 
-    // Pure GPU transform scaling per card (ZERO reflow, ZERO layout thrashing!)
+    // TRUE CURVED SLATS WARP on left & right sides with GPU-only transforms
     const secW=psec.clientWidth,cx=secW/2,half=secW/2;
     for(let k=0;k<kids.length;k++){
-      const el=kids[k];
-      const cardCX=Xk(k)+baseW/2-pOffset;
-      const d=Math.max(-1.4,Math.min(1.4,(cardCX-cx)/half));
-      const s=curveS(d);
-      el.style.transform='scaleY('+s.toFixed(3)+') translateZ(0)';
+      if(!slices[k])continue;
+      const cardLeft=Xk(k)-pOffset;
+      if(cardLeft+baseW < -80 || cardLeft > secW + 80) continue;
+
+      for(let i=0;i<NSLICE;i++){
+        const sliceCX=cardLeft+i*sliceW+sliceW/2;
+        const d=Math.max(-1.35,Math.min(1.35,(sliceCX-cx)/half));
+        const s=curveS(d);
+        slices[k][i].style.transform='translateY(-50%) scaleY('+s.toFixed(3)+') translateZ(0)';
+      }
     }
 
     pRaf=requestAnimationFrame(pLoop);
