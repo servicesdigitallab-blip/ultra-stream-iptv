@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ultra Stream — Admin Panel & 10-Min Dispatcher</title>
+  <title>Ultra Stream — Master Control Hub &amp; Live Administration</title>
+  <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
-  <!-- Firebase SDKs (Compat for static single-file dashboard) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Firebase SDKs for Live Firestore Cloud Sync -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -65,9 +67,9 @@
       justify-content: center;
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 800;
+      font-size: 20px;
       color: #000;
-      font-size: 19px;
-      box-shadow: 0 0 20px var(--gold-glow);
+      box-shadow: 0 0 18px var(--gold-glow);
     }
     .brand-title {
       font-family: 'Space Grotesk', sans-serif;
@@ -78,22 +80,22 @@
     }
     .brand-badge {
       font-size: 10px;
-      text-transform: uppercase;
       font-weight: 700;
       letter-spacing: 1px;
-      color: var(--gold);
-      background: rgba(255,200,0,0.12);
+      text-transform: uppercase;
       padding: 2px 7px;
       border-radius: 4px;
-      display: inline-block;
-      margin-top: 2px;
+      background: rgba(255,200,0,0.15);
+      color: var(--gold);
+      border: 1px solid var(--border-gold);
     }
     .nav-links {
       padding: 18px 12px;
-      flex: 1;
       display: flex;
       flex-direction: column;
       gap: 6px;
+      flex: 1;
+      overflow-y: auto;
     }
     .nav-btn {
       display: flex;
@@ -101,42 +103,43 @@
       gap: 12px;
       padding: 12px 14px;
       border-radius: 10px;
-      color: var(--text-muted);
       background: transparent;
       border: 1px solid transparent;
-      cursor: pointer;
-      font-size: 14px;
+      color: var(--text-muted);
+      font-size: 13.5px;
       font-weight: 600;
+      cursor: pointer;
       transition: all 0.2s ease;
       text-align: left;
       width: 100%;
     }
     .nav-btn:hover {
+      background: rgba(255,255,255,0.04);
       color: #fff;
-      background: rgba(255,255,255,0.035);
     }
     .nav-btn.active {
-      color: #000;
-      background: var(--gold);
-      box-shadow: 0 4px 18px var(--gold-glow);
-      font-weight: 700;
-    }
-    .nav-btn svg { width: 19px; height: 19px; fill: currentColor; }
-    .nav-count {
-      margin-left: auto;
-      background: rgba(255,59,48,0.2);
-      color: var(--red);
-      font-size: 11px;
-      padding: 2px 7px;
-      border-radius: 999px;
-      font-weight: 700;
-    }
-    .nav-btn.active .nav-count {
-      background: #000;
+      background: rgba(255,200,0,0.12);
+      border-color: rgba(255,200,0,0.3);
       color: var(--gold);
     }
+    .nav-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+    .nav-count {
+      margin-left: auto;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(255,59,48,0.2);
+      color: var(--red);
+      border: 1px solid rgba(255,59,48,0.4);
+    }
     .sidebar-footer {
-      padding: 18px 16px;
+      padding: 18px 22px;
       border-top: 1px solid var(--border);
       font-size: 12px;
       color: var(--text-muted);
@@ -148,25 +151,19 @@
       color: var(--gold);
       text-decoration: none;
       font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
     }
-    .btn-site-link:hover { text-decoration: underline; }
-
-    /* MAIN CONTENT */
+    /* MAIN VIEWPORT */
     .main-wrap {
       flex: 1;
       display: flex;
       flex-direction: column;
-      height: 100vh;
+      min-width: 0;
       overflow-y: auto;
     }
     .topbar {
-      padding: 18px 32px;
+      padding: 20px 32px;
+      background: var(--panel);
       border-bottom: 1px solid var(--border);
-      background: rgba(15,15,21,0.7);
-      backdrop-filter: blur(14px);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -177,26 +174,27 @@
     .top-left h1 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 22px;
-      font-weight: 700;
+      font-weight: 800;
+      letter-spacing: -0.02em;
     }
     .top-left p {
       font-size: 13px;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 3px;
     }
     .top-right {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
     }
     .cloud-pill {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
       padding: 6px 14px;
       border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
       font-size: 12px;
       font-weight: 600;
     }
@@ -204,35 +202,49 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #8E8E93;
     }
-    .status-dot.connected { background: var(--green); box-shadow: 0 0 10px var(--green); }
-    .status-dot.local { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+    .status-dot.connected {
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+    }
+    .status-dot.local {
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold);
+    }
     .btn-logout {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--border);
-      color: #fff;
       padding: 7px 14px;
       border-radius: 8px;
-      font-size: 13px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
     }
-    .btn-logout:hover { background: rgba(255,59,48,0.15); border-color: var(--red); color: var(--red); }
-
-    /* CONTENT PANELS */
+    .btn-logout:hover {
+      background: rgba(255,59,48,0.12);
+      color: var(--red);
+      border-color: rgba(255,59,48,0.3);
+    }
+    /* CONTENT AREA */
     .content-area {
       padding: 32px;
       max-width: 1400px;
       width: 100%;
-      margin: 0 auto;
     }
-    .tab-pane { display: none; }
-    .tab-pane.active { display: block; animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* METRIC CARDS */
+    .tab-pane {
+      display: none;
+    }
+    .tab-pane.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* STATS GRID */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -247,143 +259,136 @@
       position: relative;
       overflow: hidden;
     }
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      opacity: 0.5;
-    }
     .stat-title {
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
     }
     .stat-val {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 800;
-      margin: 10px 0 6px;
       color: #fff;
+      line-height: 1;
     }
     .stat-sub {
       font-size: 12px;
-      color: var(--green);
       font-weight: 600;
+      color: var(--green);
+      margin-top: 10px;
       display: flex;
       align-items: center;
       gap: 4px;
     }
     .stat-sub.warning { color: var(--amber); }
-
-    /* SECTION CARD WRAPPER */
+    /* CARD WRAP */
     .card-wrap {
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 24px;
-      margin-bottom: 24px;
+      padding: 26px;
+      margin-bottom: 26px;
     }
     .card-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
     .card-head h2 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 18px;
-      font-weight: 700;
+      font-weight: 800;
+      letter-spacing: -0.01em;
     }
     .card-head p {
       font-size: 13px;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 4px;
     }
-
     /* BUTTONS */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 18px;
-      border-radius: 8px;
+      padding: 10px 20px;
+      border-radius: 10px;
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s ease;
-      text-decoration: none;
       border: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
     .btn-gold {
-      background: var(--gold);
+      background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 100%);
       color: #000;
-      box-shadow: 0 4px 14px var(--gold-glow);
+      box-shadow: 0 4px 16px var(--gold-glow);
     }
-    .btn-gold:hover { background: #ffe066; transform: translateY(-1px); }
-    .btn-green {
-      background: var(--green);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(37,211,102,0.35);
+    .btn-gold:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
     }
-    .btn-green:hover { background: #20bd5a; transform: translateY(-1px); }
     .btn-outline {
-      background: rgba(255,255,255,0.04);
-      color: #fff;
+      background: transparent;
       border: 1px solid var(--border);
+      color: #fff;
     }
-    .btn-outline:hover { background: rgba(255,255,255,0.08); }
-
-    /* TABLE STYLING */
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.06);
+    }
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 7px;
+    }
+    .btn-whatsapp {
+      background: #25D366;
+      color: #fff;
+    }
+    .btn-whatsapp:hover {
+      background: #1eb956;
+    }
+    /* TABLE */
     .table-responsive {
       overflow-x: auto;
-      border-radius: 12px;
-      border: 1px solid var(--border);
     }
     table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 13px;
     }
     th {
-      background: rgba(255,255,255,0.03);
-      padding: 14px 16px;
-      color: var(--text-muted);
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      font-size: 11px;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      padding: 12px 16px;
       border-bottom: 1px solid var(--border);
     }
     td {
-      padding: 16px;
+      padding: 14px 16px;
+      font-size: 13.5px;
       border-bottom: 1px solid rgba(255,255,255,0.04);
       vertical-align: middle;
     }
-    tr:hover td { background: rgba(255,255,255,0.015); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
+      display: inline-block;
       padding: 4px 10px;
       border-radius: 999px;
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 700;
-      letter-spacing: 0.3px;
     }
     .badge-pending {
       background: rgba(255,115,13,0.15);
       color: var(--amber);
       border: 1px solid rgba(255,115,13,0.3);
-      animation: pulseAlert 2s infinite;
     }
-    @keyframes pulseAlert { 0%,100%{opacity:1} 50%{opacity:0.65} }
     .badge-delivered {
       background: rgba(37,211,102,0.15);
       color: var(--green);
@@ -393,218 +398,247 @@
       background: rgba(255,200,0,0.12);
       color: var(--gold);
       border: 1px solid var(--border-gold);
-      font-family: 'Space Grotesk', sans-serif;
     }
-
-    /* PLANS EDITOR GRID */
+    /* FORM INPUTS */
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #e4e4eb;
+      margin-bottom: 8px;
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      background: var(--panel-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 14px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 13.5px;
+      transition: all 0.2s ease;
+    }
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px var(--gold-glow);
+    }
+    .form-textarea {
+      resize: vertical;
+      min-height: 95px;
+      line-height: 1.5;
+    }
+    .form-hint {
+      display: block;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+    /* GRIDS */
     .plans-editor-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      gap: 22px;
     }
     .plan-box {
       background: var(--panel-card);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 24px;
+      padding: 22px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      position: relative;
     }
     .plan-box.featured-box {
-      border: 2px solid var(--gold);
-      box-shadow: 0 0 25px var(--gold-glow);
+      border-color: var(--border-gold);
+      box-shadow: 0 0 25px rgba(255,200,0,0.08);
     }
     .plan-box h3 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 17px;
-      color: #fff;
-    }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .form-group label {
-      font-size: 11.5px;
+      font-size: 16px;
       font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .form-input, .form-textarea {
-      background: rgba(0,0,0,0.35);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
       color: #fff;
-      font-family: inherit;
-      font-size: 13.5px;
-      outline: none;
-      transition: border 0.2s;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    .form-input:focus, .form-textarea:focus {
-      border-color: var(--gold);
+    .editor-sections-grid, .settings-grid, .policies-editor-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
     }
-    .form-textarea { resize: vertical; min-height: 90px; }
-
-    /* FIREBASE GUIDE CARD */
-    .guide-banner {
-      background: linear-gradient(135deg, rgba(255,200,0,0.08) 0%, rgba(255,115,13,0.05) 100%);
-      border: 1px solid var(--border-gold);
+    .content-box, .settings-card, .policy-edit-box {
+      background: var(--panel-card);
+      border: 1px solid var(--border);
       border-radius: 16px;
       padding: 22px;
-      margin-bottom: 24px;
     }
-    .guide-banner h3 {
-      color: var(--gold);
+    .content-box h3, .settings-card h3, .policy-edit-box h3 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 17px;
-      margin-bottom: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
-    .guide-banner p {
-      font-size: 13.5px;
-      color: #ccc;
-      line-height: 1.6;
+    .point-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
     }
-    .steps-list {
-      margin: 14px 0 0 18px;
+    .point-item input {
+      flex: 1;
+      padding: 8px 12px;
       font-size: 13px;
-      color: #bbb;
-      line-height: 1.8;
     }
-    .steps-list strong { color: #fff; }
-
+    .btn-del-pt {
+      background: rgba(255,59,48,0.14);
+      border: 1px solid rgba(255,59,48,0.3);
+      color: var(--red);
+      border-radius: 8px;
+      padding: 7px 11px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s ease;
+    }
+    .btn-del-pt:hover {
+      background: rgba(255,59,48,0.3);
+    }
     /* PIN LOCK MODAL */
-    .pin-lock-modal {
+    .pin-modal {
       position: fixed;
       inset: 0;
-      background: rgba(5,5,8,0.96);
-      backdrop-filter: blur(20px);
-      z-index: 99999;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(16px);
+      z-index: 9999;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 20px;
     }
-    .pin-box {
-      width: 100%;
-      max-width: 400px;
+    .pin-card {
       background: var(--panel);
       border: 1px solid var(--border-gold);
       border-radius: 20px;
-      padding: 36px 30px;
+      padding: 38px 34px;
+      width: 100%;
+      max-width: 440px;
       text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 30px var(--gold-glow);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 40px var(--gold-glow);
     }
-    .pin-logo {
-      width: 54px;
-      height: 54px;
-      margin: 0 auto 16px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 100%);
+    .pin-card .lock-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      background: rgba(255,200,0,0.12);
+      border: 1px solid var(--border-gold);
       display: flex;
       align-items: center;
       justify-content: center;
+      margin: 0 auto 18px;
+      color: var(--gold);
+    }
+    .pin-card h2 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 26px;
+      font-size: 22px;
       font-weight: 800;
-      color: #000;
+      margin-bottom: 6px;
     }
-    .pin-box h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 20px;
-      margin-bottom: 8px;
-    }
-    .pin-box p {
+    .pin-card p {
       font-size: 13px;
       color: var(--text-muted);
       margin-bottom: 22px;
+      line-height: 1.5;
     }
     .pin-input {
       width: 100%;
-      background: rgba(0,0,0,0.5);
-      border: 2px solid var(--border);
+      background: var(--panel-card);
+      border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 14px;
+      padding: 14px 18px;
       color: #fff;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 18px;
       text-align: center;
       letter-spacing: 4px;
-      outline: none;
       margin-bottom: 16px;
-      transition: all 0.2s;
     }
-    .pin-input:focus { border-color: var(--gold); box-shadow: 0 0 15px var(--gold-glow); }
     .pin-btn {
       width: 100%;
       padding: 13px;
-      border-radius: 10px;
-      background: var(--gold);
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 100%);
       color: #000;
       font-weight: 800;
       font-size: 14px;
-      border: none;
       cursor: pointer;
-      transition: all 0.2s;
+      border: none;
+      box-shadow: 0 4px 18px var(--gold-glow);
     }
-    .pin-btn:hover { background: #ffe066; transform: translateY(-1px); }
     .pin-hint {
-      font-size: 11.5px;
-      color: var(--text-muted);
       margin-top: 14px;
+      font-size: 12px;
+      color: var(--text-muted);
     }
-
-    /* TOAST NOTIFICATION */
+    .pin-hint strong { color: var(--gold); }
+    /* TOAST */
     .toast {
       position: fixed;
-      bottom: 28px;
-      right: 28px;
-      background: var(--panel-card);
-      border: 1px solid var(--border-gold);
-      color: #fff;
+      bottom: 24px;
+      right: 24px;
+      background: var(--panel);
+      border: 1px solid var(--gold);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px var(--gold-glow);
       padding: 14px 22px;
       border-radius: 12px;
-      font-size: 13px;
+      color: #fff;
+      font-size: 13.5px;
       font-weight: 600;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px var(--gold-glow);
       display: flex;
       align-items: center;
       gap: 10px;
+      z-index: 10000;
       transform: translateY(100px);
       opacity: 0;
       transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
-      z-index: 100000;
     }
-    .toast.show { transform: translateY(0); opacity: 1; }
-
-    @media (max-width: 1024px) {
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    @media (max-width: 1100px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .plans-editor-grid { grid-template-columns: 1fr; }
+      .editor-sections-grid, .settings-grid, .policies-editor-grid { grid-template-columns: 1fr; }
     }
-    @media (max-width: 768px) {
+    @media (max-width: 800px) {
       body { flex-direction: column; }
-      .sidebar { width: 100%; height: auto; position: static; }
+      .sidebar { width: 100%; height: auto; position: relative; }
       .stats-grid { grid-template-columns: 1fr; }
-      .topbar { padding: 14px 18px; }
       .content-area { padding: 18px; }
+      .topbar { padding: 16px 20px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- PIN LOCK SECURITY OVERLAY -->
-  <div class="pin-lock-modal" id="pinLockModal">
-    <div class="pin-box">
-      <div class="pin-logo">U</div>
-      <h2>Ultra Stream Admin</h2>
-      <p>Enter Master Security PIN to manage IPTV plans, prices, and 10-minute customer dispatches.</p>
-      <input type="password" id="pinInput" class="pin-input" placeholder="••••••••" maxlength="16" autofocus>
+  <!-- MASTER PIN SECURITY LOCK -->
+  <div class="pin-modal" id="pinLockModal">
+    <div class="pin-card">
+      <div class="lock-icon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+      </div>
+      <h2>Ultra Stream Master Hub</h2>
+      <p>Enter your master security password to access live website controls, analytics &amp; dispatches.</p>
+      <input type="password" id="pinInput" class="pin-input" placeholder="••••••••" maxlength="24" autofocus>
       <button class="pin-btn" onclick="checkPin()">Unlock Dashboard</button>
-      <p class="pin-hint">Default Master PIN: <strong>admin123</strong> (Change anytime in Settings)</p>
+      <p class="pin-hint">🔑 Master Access Password: <strong>admin123</strong> (Change anytime in Settings)</p>
     </div>
   </div>
 
@@ -620,16 +654,24 @@
     <nav class="nav-links">
       <button class="nav-btn active" onclick="switchTab('dashboard', this)">
         <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
-        Dashboard
+        Dashboard &amp; Traffic
+      </button>
+      <button class="nav-btn" onclick="switchTab('content', this)">
+        <svg viewBox="0 0 24 24"><path d="M5 4v3h5.5v12h3V7H19V4z"/></svg>
+        Headings &amp; Content
+      </button>
+      <button class="nav-btn" onclick="switchTab('plans', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Plans &amp; Points
+      </button>
+      <button class="nav-btn" onclick="switchTab('policies', this)">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+        Legal Policies
       </button>
       <button class="nav-btn" onclick="switchTab('orders', this)">
         <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
         10-Min Orders
         <span class="nav-count" id="pendingCountBadge">2</span>
-      </button>
-      <button class="nav-btn" onclick="switchTab('plans', this)">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        Plans &amp; Pricing
       </button>
       <button class="nav-btn" onclick="switchTab('firebase', this)">
         <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
@@ -637,7 +679,7 @@
       </button>
       <button class="nav-btn" onclick="switchTab('settings', this)">
         <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-        Settings
+        Settings &amp; Password
       </button>
     </nav>
     <div class="sidebar-footer">
@@ -651,8 +693,8 @@
     <!-- TOPBAR -->
     <header class="topbar">
       <div class="top-left">
-        <h1 id="pageTitle">Dashboard Overview</h1>
-        <p id="pageSub">Live metrics, active streams, and pending 10-minute orders</p>
+        <h1 id="pageTitle">Dashboard &amp; Traffic Overview</h1>
+        <p id="pageSub">Real-time visitor analytics, button clicks, and pending 10-minute orders</p>
       </div>
       <div class="top-right">
         <div class="cloud-pill" id="cloudStatusPill">
@@ -665,38 +707,96 @@
 
     <div class="content-area">
 
-      <!-- ================= TAB 1: DASHBOARD ================= -->
+      <!-- ================= TAB 1: DASHBOARD & TRAFFIC ================= -->
       <section id="pane-dashboard" class="tab-pane active">
+        <!-- Traffic Stats Grid -->
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-title">Active Subscriptions</div>
-            <div class="stat-val" id="statSubscribers">1,482</div>
-            <div class="stat-sub">↑ +14% this week</div>
+            <div class="stat-title">Today's Visitors (Daily)</div>
+            <div class="stat-val" id="statDailyVisits">0</div>
+            <div class="stat-sub" style="color:var(--green)">⚡ Live Daily Visits</div>
           </div>
           <div class="stat-card">
-            <div class="stat-title">24h Revenue</div>
-            <div class="stat-val" id="statRevenue">$3,420</div>
-            <div class="stat-sub">↑ 48 Orders Today</div>
+            <div class="stat-title">This Week (Weekly)</div>
+            <div class="stat-val" id="statWeeklyVisits">0</div>
+            <div class="stat-sub" style="color:var(--gold)">📅 7-Day Rolling Traffic</div>
           </div>
           <div class="stat-card">
-            <div class="stat-title">Pending 10-Min Orders</div>
-            <div class="stat-val" id="statPending" style="color:var(--amber)">2</div>
-            <div class="stat-sub warning">⚡ Needs WhatsApp Dispatch</div>
+            <div class="stat-title">This Month (Monthly)</div>
+            <div class="stat-val" id="statMonthlyVisits">0</div>
+            <div class="stat-sub" style="color:var(--amber)">🗓️ Monthly Visitors</div>
           </div>
           <div class="stat-card">
-            <div class="stat-title">Streaming Uptime</div>
-            <div class="stat-val" style="color:var(--green)">99.98%</div>
-            <div class="stat-sub">Anti-Freeze™ Active</div>
+            <div class="stat-title">Total WhatsApp Clicks</div>
+            <div class="stat-val" id="statWaClicks" style="color:var(--green)">0</div>
+            <div class="stat-sub">💬 Inquiries &amp; Orders</div>
           </div>
         </div>
 
+        <!-- Button Clicks Matrix Card -->
+        <div class="card-wrap">
+          <div class="card-head">
+            <div>
+              <h2>Button Clicks &amp; Conversion Tracking</h2>
+              <p>Real-time click counts for all WhatsApp order buttons and "Get Started" CTAs.</p>
+            </div>
+            <div style="display:flex;gap:10px;">
+              <button class="btn btn-outline btn-sm" onclick="simulateTestClick()">🧪 Test / Simulate Click</button>
+              <button class="btn btn-outline btn-sm" style="border-color:rgba(255,59,48,0.4);color:var(--red);" onclick="resetAnalytics()">Reset Analytics</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Target CTA / Button</th>
+                  <th>Location</th>
+                  <th>Total Clicks</th>
+                  <th>Conversion Share</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="clicksTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Live Visitor Activity Stream -->
+        <div class="card-wrap">
+          <div class="card-head">
+            <div>
+              <h2>Live Visitor Activity Stream</h2>
+              <p>Real-time log of customer clicks and section interactions.</p>
+            </div>
+            <span class="badge badge-delivered">🟢 Real-Time Tracking</span>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Event Action</th>
+                  <th>Device / Browser</th>
+                  <th>Target / Section</th>
+                </tr>
+              </thead>
+              <tbody id="visitorActivityTbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Recent 10-Minute SLA Orders -->
         <div class="card-wrap">
           <div class="card-head">
             <div>
               <h2>Recent Orders (10-Minute SLA Dispatch)</h2>
               <p>Click "Deliver on WhatsApp" to generate instant M3U credentials &amp; send via WhatsApp</p>
             </div>
-            <button class="btn btn-gold" onclick="switchTab('orders')">View All Orders</button>
+            <button class="btn btn-gold btn-sm" onclick="switchTab('orders')">View All Orders</button>
           </div>
           <div class="table-responsive">
             <table>
@@ -719,31 +819,185 @@
         </div>
       </section>
 
-      <!-- ================= TAB 2: ORDERS & 10-MIN DISPATCHER ================= -->
+      <!-- ================= TAB 2: HEADINGS & CONTENT ================= -->
+      <section id="pane-content" class="tab-pane">
+        <div class="card-wrap">
+          <div class="card-head">
+            <div>
+              <h2>Website Headings &amp; Content Editor</h2>
+              <p>Edit hero headings, about text, how it works steps, and pricing section titles synced live to the site.</p>
+            </div>
+            <button class="btn btn-gold" onclick="saveSiteContent()">Save All Headings &amp; Content</button>
+          </div>
+
+          <div class="editor-sections-grid">
+            <!-- Hero Section -->
+            <div class="content-box">
+              <h3>⚡ 1. Hero Section</h3>
+              <div class="form-group">
+                <label>Hero Main Heading</label>
+                <input type="text" id="cnt_hero_title" class="form-input" value="Entertainment Without Boundaries">
+              </div>
+              <div class="form-group">
+                <label>Hero Subtitle / Description</label>
+                <textarea id="cnt_hero_sub" class="form-textarea">Access 25,000+ live 4K channels, 120,000+ movies &amp; VOD, and all major sports PPV events with 99.9% anti-freeze server uptime.</textarea>
+              </div>
+              <div class="form-group">
+                <label>Trust Stat 1 (Channels)</label>
+                <input type="text" id="cnt_stat1" class="form-input" value="25,000+ Live Channels">
+              </div>
+              <div class="form-group">
+                <label>Trust Stat 2 (VOD)</label>
+                <input type="text" id="cnt_stat2" class="form-input" value="120,000+ VOD Movies">
+              </div>
+              <div class="form-group">
+                <label>Trust Stat 3 (Uptime)</label>
+                <input type="text" id="cnt_stat3" class="form-input" value="99.9% Anti-Freeze Uptime">
+              </div>
+            </div>
+
+            <!-- About Section -->
+            <div class="content-box">
+              <h3>🎬 2. Section 3 — About Ultra Stream</h3>
+              <div class="form-group">
+                <label>About Paragraph Description</label>
+                <textarea id="cnt_about_text" class="form-textarea" style="min-height:140px;">Ultra Stream brings you the IPTV service of the world's biggest platforms — Netflix, Apple TV, Amazon Prime Video, Disney+, and HBO Max — all in one place. Live TV, movies, sports, and series in crystal-clear quality, anytime, anywhere. Everything you love, simply and reliably — that is why Ultra Stream is the best.</textarea>
+              </div>
+              <span class="form-hint">Displayed in the large animated typography section on the homepage.</span>
+            </div>
+
+            <!-- How It Works Section -->
+            <div class="content-box">
+              <h3>⚙️ 3. Section 4 — How It Works</h3>
+              <div class="form-group">
+                <label>Section Heading</label>
+                <input type="text" id="cnt_how_title" class="form-input" value="HOW IT WORKS">
+              </div>
+              <div class="form-group">
+                <label>Section Subtitle</label>
+                <input type="text" id="cnt_how_sub" class="form-input" value="Start streaming your favorite channels in 3 simple steps">
+              </div>
+              <div class="form-group">
+                <label>Step 1 Text</label>
+                <input type="text" id="cnt_how_step1" class="form-input" value="1. Select your streaming pass (1, 6, or 12 Months).">
+              </div>
+              <div class="form-group">
+                <label>Step 2 Text</label>
+                <input type="text" id="cnt_how_step2" class="form-input" value="2. Receive instant login credentials via WhatsApp within 10 minutes.">
+              </div>
+              <div class="form-group">
+                <label>Step 3 Text</label>
+                <input type="text" id="cnt_how_step3" class="form-input" value="3. Enjoy buffer-free 4K sports, movies, and TV shows on any device.">
+              </div>
+            </div>
+
+            <!-- Pricing Section -->
+            <div class="content-box">
+              <h3>💎 4. Section 5 — Pricing Plans Section</h3>
+              <div class="form-group">
+                <label>Section Pill Badge</label>
+                <input type="text" id="cnt_pricing_pill" class="form-input" value="Flexible Subscriptions">
+              </div>
+              <div class="form-group">
+                <label>Section Title</label>
+                <input type="text" id="cnt_pricing_title" class="form-input" value="Simple Pricing, Unlimited Entertainment">
+              </div>
+              <div class="form-group">
+                <label>Section Subtitle</label>
+                <textarea id="cnt_pricing_sub" class="form-textarea">Get instant access to 22,000+ live HD/4K channels and 85,000+ movies &amp; series. ⚡ Guaranteed 10-minute delivery via WhatsApp &amp; Email with 7-day money-back guarantee.</textarea>
+              </div>
+            </div>
+
+            <!-- Footer Section -->
+            <div class="content-box" style="grid-column: 1 / -1;">
+              <h3>🌐 5. Footer &amp; Copyright</h3>
+              <div class="form-group">
+                <label>Footer Description Text</label>
+                <input type="text" id="cnt_footer_desc" class="form-input" value="Worldwide Premium IPTV Entertainment. 25,000+ Live Channels in 4K &amp; Ultra HD.">
+              </div>
+              <div class="form-group">
+                <label>Footer Copyright Line</label>
+                <input type="text" id="cnt_footer_copy" class="form-input" value="© 2026 Ultra Stream. All rights reserved. Worldwide Premium IPTV Entertainment.">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 3: PLANS & POINTS ================= -->
+      <section id="pane-plans" class="tab-pane">
+        <div class="card-wrap">
+          <div class="card-head">
+            <div>
+              <h2>IPTV Plans, Bullet Points &amp; Custom WhatsApp Messages</h2>
+              <p>Add new points, edit existing points, delete points, adjust prices, and customize the exact WhatsApp draft message for each plan.</p>
+            </div>
+            <button class="btn btn-gold" onclick="savePlansToStorage()">Save &amp; Update Live Website</button>
+          </div>
+
+          <div class="plans-editor-grid" id="plansDynamicContainer">
+            <!-- Rendered dynamically by renderPlans() -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 4: LEGAL POLICIES ================= -->
+      <section id="pane-policies" class="tab-pane">
+        <div class="card-wrap">
+          <div class="card-head">
+            <div>
+              <h2>Legal Policies Content Editor</h2>
+              <p>Edit the official text for Privacy Policy, 7-Day Refund Policy, and Terms &amp; Conditions synced live to privacy.html, refund.html, and terms.html.</p>
+            </div>
+            <button class="btn btn-gold" onclick="savePolicies()">Save All Policies</button>
+          </div>
+
+          <div class="policies-editor-grid">
+            <div class="policy-edit-box">
+              <h3>🛡️ Privacy Policy</h3>
+              <p class="form-hint">Controls the full text on privacy.html</p>
+              <textarea id="policy_privacy" class="form-textarea" style="min-height:220px;"></textarea>
+            </div>
+
+            <div class="policy-edit-box">
+              <h3>💰 7-Day Refund Policy</h3>
+              <p class="form-hint">Controls the full text on refund.html</p>
+              <textarea id="policy_refund" class="form-textarea" style="min-height:220px;"></textarea>
+            </div>
+
+            <div class="policy-edit-box" style="grid-column: 1 / -1;">
+              <h3>⚖️ Terms &amp; Conditions</h3>
+              <p class="form-hint">Controls the full text on terms.html</p>
+              <textarea id="policy_terms" class="form-textarea" style="min-height:220px;"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 5: 10-MIN ORDERS ================= -->
       <section id="pane-orders" class="tab-pane">
         <div class="card-wrap">
           <div class="card-head">
             <div>
-              <h2>Customer Order Pipeline &amp; 10-Min Dispatcher</h2>
-              <p>Manage customer orders with guaranteed 10-minute delivery via WhatsApp &amp; Email</p>
+              <h2>10-Minute SLA Order Dispatcher</h2>
+              <p>Orders needing instant dispatch. Click "Deliver on WhatsApp" to generate customer M3U / EPG credentials.</p>
             </div>
-            <div style="display:flex;gap:10px;">
-              <button class="btn btn-outline" onclick="openNewOrderModal()">+ Add Manual Order</button>
-            </div>
+            <button class="btn btn-gold" onclick="simulateNewOrder()">+ Simulate Test Order</button>
           </div>
+
           <div class="table-responsive">
             <table>
               <thead>
                 <tr>
                   <th>Order ID</th>
-                  <th>Customer</th>
-                  <th>WhatsApp Phone</th>
+                  <th>Customer Name</th>
+                  <th>WhatsApp / Phone</th>
                   <th>Email</th>
                   <th>Plan</th>
                   <th>Price</th>
-                  <th>SLA Timer</th>
+                  <th>Time Elapsed</th>
                   <th>Status</th>
-                  <th>Dispatch Action</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody id="allOrdersTbody">
@@ -754,219 +1008,99 @@
         </div>
       </section>
 
-      <!-- ================= TAB 3: PLANS & PRICING ================= -->
-      <section id="pane-plans" class="tab-pane">
-        <div class="card-wrap">
-          <div class="card-head">
-            <div>
-              <h2>Live IPTV Plans &amp; Pricing Manager</h2>
-              <p>Edit plans, prices, and features. Changes update immediately on the live website!</p>
-            </div>
-            <button class="btn btn-gold" onclick="savePlansToStorage()">Save &amp; Update Live Website</button>
-          </div>
-
-          <div class="plans-editor-grid">
-            <!-- Plan 1 -->
-            <div class="plan-box" id="planBox0">
-              <h3>Plan 1: Starter Pass</h3>
-              <div class="form-group">
-                <label>Plan Name</label>
-                <input type="text" id="p0_name" class="form-input" value="Starter Pass">
-              </div>
-              <div class="form-group">
-                <label>Badge Text</label>
-                <input type="text" id="p0_badge" class="form-input" value="1 MONTH">
-              </div>
-              <div class="form-group">
-                <label>Price ($ USD)</label>
-                <input type="text" id="p0_price" class="form-input" value="14">
-              </div>
-              <div class="form-group">
-                <label>Billing Cycle Suffix</label>
-                <input type="text" id="p0_cycle" class="form-input" value=".99 / 1 Month">
-              </div>
-              <div class="form-group">
-                <label>Description</label>
-                <input type="text" id="p0_desc" class="form-input" value="Ideal for testing our premium ultra-fast IPTV streaming quality.">
-              </div>
-              <div class="form-group">
-                <label>Features (1 per line)</label>
-                <textarea id="p0_features" class="form-textarea">10,000+ Live Worldwide Channels
-40,000+ VOD Movies &amp; Shows
-Full HD &amp; 4K Streaming
-Anti-Freeze™ 9.0 Technology
-1 Device Connection
-7-Day TV Guide (EPG)
-⚡ Guaranteed Delivery in 10 Mins via WhatsApp &amp; Email
-24/7 Customer Support</textarea>
-              </div>
-            </div>
-
-            <!-- Plan 2 -->
-            <div class="plan-box featured-box" id="planBox1">
-              <div style="display:flex;justify-content:space-between;align-items:center;">
-                <h3>Plan 2: Ultra VIP Pass (Featured)</h3>
-                <span class="badge badge-plan">🔥 VIP</span>
-              </div>
-              <div class="form-group">
-                <label>Plan Name</label>
-                <input type="text" id="p1_name" class="form-input" value="Ultra VIP Pass">
-              </div>
-              <div class="form-group">
-                <label>Badge Text</label>
-                <input type="text" id="p1_badge" class="form-input" value="🔥 BEST VALUE — SAVE 65%">
-              </div>
-              <div class="form-group">
-                <label>Price ($ USD)</label>
-                <input type="text" id="p1_price" class="form-input" value="59">
-              </div>
-              <div class="form-group">
-                <label>Billing Cycle Suffix</label>
-                <input type="text" id="p1_cycle" class="form-input" value=".99 / 12 Months">
-              </div>
-              <div class="form-group">
-                <label>Description</label>
-                <input type="text" id="p1_desc" class="form-input" value="The ultimate 4K cinema and sports experience for you &amp; family.">
-              </div>
-              <div class="form-group">
-                <label>Features (1 per line)</label>
-                <textarea id="p1_features" class="form-textarea">22,000+ Live Worldwide Channels
-85,000+ VOD Movies &amp; Series (Daily Updates)
-Ultra HD, 4K &amp; HDR10 Quality
-Anti-Freeze™ Ultra + 99.9% Uptime
-3 Devices Simultaneous Stream
-All Sports &amp; Major PPV Events Free
-TV Catch-Up &amp; Multi-Screen View
-⚡ Guaranteed Delivery in 10 Mins via WhatsApp &amp; Email
-Priority VIP Dedicated Support</textarea>
-              </div>
-            </div>
-
-            <!-- Plan 3 -->
-            <div class="plan-box" id="planBox2">
-              <h3>Plan 3: Pro Pass</h3>
-              <div class="form-group">
-                <label>Plan Name</label>
-                <input type="text" id="p2_name" class="form-input" value="Pro Pass">
-              </div>
-              <div class="form-group">
-                <label>Badge Text</label>
-                <input type="text" id="p2_badge" class="form-input" value="6 MONTHS">
-              </div>
-              <div class="form-group">
-                <label>Price ($ USD)</label>
-                <input type="text" id="p2_price" class="form-input" value="34">
-              </div>
-              <div class="form-group">
-                <label>Billing Cycle Suffix</label>
-                <input type="text" id="p2_cycle" class="form-input" value=".99 / 6 Months">
-              </div>
-              <div class="form-group">
-                <label>Description</label>
-                <input type="text" id="p2_desc" class="form-input" value="Most popular for sports fans, live events, and binge-watching.">
-              </div>
-              <div class="form-group">
-                <label>Features (1 per line)</label>
-                <textarea id="p2_features" class="form-textarea">16,000+ Live Worldwide Channels
-60,000+ VOD Movies &amp; TV Shows
-4K &amp; Full HD Crystal Clear Streams
-Anti-Freeze™ 9.0 Technology
-2 Devices Simultaneous Stream
-All Major Sports &amp; PPV Channels
-7-Day EPG Guide &amp; Instant Setup
-⚡ Guaranteed Delivery in 10 Mins via WhatsApp &amp; Email
-24/7 Dedicated Support</textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= TAB 4: FIREBASE CLOUD ================= -->
+      <!-- ================= TAB 6: FIREBASE CLOUD ================= -->
       <section id="pane-firebase" class="tab-pane">
-        <div class="guide-banner">
-          <h3>
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
-            Firebase Database Connection Guide (2 Minute Setup)
-          </h3>
-          <p>
-            Firebase Google ka official free cloud database hai. Security aur ownership ke liye, har website owner ka apna Google Firebase account hota hai taake aapka customer data aur revenue 100% private rahe.
-          </p>
-          <ol class="steps-list">
-            <li><strong>console.firebase.google.com</strong> par jayen aur apne Google account se sign in karein.</li>
-            <li><strong>"Create a project"</strong> dabayein aur project name (e.g. <code>ultra-stream-iptv</code>) likhein.</li>
-            <li>Project dashboard par <strong>Web icon <code>&lt;/&gt;</code></strong> par click karke Web App register karein.</li>
-            <li>Wahan diye gaye <strong>firebaseConfig</strong> ke parameters ko copy karke niche diye gaye box me paste karein aur <strong>"Save &amp; Test Connection"</strong> par click karein!</li>
-          </ol>
-        </div>
-
         <div class="card-wrap">
           <div class="card-head">
             <div>
-              <h2>Firebase Cloud Credentials</h2>
-              <p>Enter your Web App configuration below to activate cloud synchronization</p>
+              <h2>Google Firebase Firestore Cloud Database</h2>
+              <p>Connect your free Firebase Firestore database so changes update live across all devices worldwide.</p>
             </div>
             <div style="display:flex;gap:10px;">
               <button class="btn btn-outline" onclick="testFirebaseConnection()">Test Cloud Connection</button>
-              <button class="btn btn-gold" onclick="saveFirebaseConfig()">Save &amp; Connect</button>
+              <button class="btn btn-gold" onclick="saveFirebaseConfig()">Save Firebase Config</button>
             </div>
           </div>
 
-          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
-            <div class="form-group">
-              <label>API Key (apiKey)</label>
-              <input type="text" id="fb_apiKey" class="form-input" placeholder="AIzaSy...">
-            </div>
-            <div class="form-group">
-              <label>Auth Domain (authDomain)</label>
-              <input type="text" id="fb_authDomain" class="form-input" placeholder="ultra-stream.firebaseapp.com">
-            </div>
-            <div class="form-group">
-              <label>Project ID (projectId)</label>
-              <input type="text" id="fb_projectId" class="form-input" placeholder="ultra-stream-iptv">
-            </div>
-            <div class="form-group">
-              <label>Storage Bucket (storageBucket)</label>
-              <input type="text" id="fb_storageBucket" class="form-input" placeholder="ultra-stream.appspot.com">
-            </div>
-            <div class="form-group">
-              <label>Messaging Sender ID (messagingSenderId)</label>
-              <input type="text" id="fb_messagingSenderId" class="form-input" placeholder="1029384756">
-            </div>
-            <div class="form-group">
-              <label>App ID (appId)</label>
-              <input type="text" id="fb_appId" class="form-input" placeholder="1:1029384756:web:abcd...">
-            </div>
+          <div class="form-group">
+            <label>API Key (apiKey)</label>
+            <input type="text" id="fb_apiKey" class="form-input" placeholder="AIzaSy...">
+          </div>
+          <div class="form-group">
+            <label>Auth Domain (authDomain)</label>
+            <input type="text" id="fb_authDomain" class="form-input" placeholder="ultra-stream.firebaseapp.com">
+          </div>
+          <div class="form-group">
+            <label>Project ID (projectId)</label>
+            <input type="text" id="fb_projectId" class="form-input" placeholder="ultra-stream-iptv">
+          </div>
+          <div class="form-group">
+            <label>Storage Bucket (storageBucket)</label>
+            <input type="text" id="fb_storageBucket" class="form-input" placeholder="ultra-stream.appspot.com">
+          </div>
+          <div class="form-group">
+            <label>Messaging Sender ID (messagingSenderId)</label>
+            <input type="text" id="fb_messagingSenderId" class="form-input" placeholder="1234567890">
+          </div>
+          <div class="form-group">
+            <label>App ID (appId)</label>
+            <input type="text" id="fb_appId" class="form-input" placeholder="1:1234567890:web:abcdef">
           </div>
         </div>
       </section>
 
-      <!-- ================= TAB 5: SETTINGS ================= -->
+      <!-- ================= TAB 7: SETTINGS & PASSWORD ================= -->
       <section id="pane-settings" class="tab-pane">
         <div class="card-wrap">
           <div class="card-head">
             <div>
-              <h2>Admin Security &amp; WhatsApp Settings</h2>
-              <p>Configure your support phone number and master admin PIN</p>
+              <h2>Settings &amp; Security Configuration</h2>
+              <p>Manage WhatsApp contact numbers, change master security password, and set site defaults.</p>
             </div>
             <button class="btn btn-gold" onclick="saveSettings()">Save Settings</button>
           </div>
 
-          <div style="max-width:540px;display:flex;flex-direction:column;gap:18px;">
-            <div class="form-group">
-              <label>Master Security PIN</label>
-              <input type="text" id="setting_pin" class="form-input" value="admin123">
-              <span style="font-size:12px;color:var(--text-muted)">PIN used to lock/unlock this admin panel.</span>
+          <div class="settings-grid">
+            <!-- WhatsApp Configuration -->
+            <div class="settings-card">
+              <h3>📱 WhatsApp Integration Settings</h3>
+              <div class="form-group">
+                <label>WhatsApp Number (International without +)</label>
+                <input type="text" id="set_wa_phone" class="form-input" value="447458196522" placeholder="e.g. 447458196522">
+                <span class="form-hint">All WhatsApp "Order" &amp; "Get Started" buttons link to this number.</span>
+              </div>
+              <div class="form-group">
+                <label>Floating WhatsApp Button Draft Message</label>
+                <textarea id="set_wa_float_msg" class="form-textarea">Hello Ultra Stream Support! 👋 I have a question about your IPTV subscription and channels list. Please assist me.</textarea>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Official Support WhatsApp Number</label>
-              <input type="text" id="setting_wa" class="form-input" placeholder="+1234567890" value="+1234567890">
-              <span style="font-size:12px;color:var(--text-muted)">International format without spaces or symbols (e.g. +14155552671).</span>
+
+            <!-- Master Security Password -->
+            <div class="settings-card">
+              <h3>🔒 Security &amp; Master Password</h3>
+              <div class="form-group">
+                <label>Current Master Password</label>
+                <input type="text" id="set_current_pin" class="form-input" value="admin123" readonly style="opacity:0.8;">
+                <span class="form-hint" style="color:var(--gold);">Default Master Access Password: <strong>admin123</strong></span>
+              </div>
+              <div class="form-group">
+                <label>Change to New Password</label>
+                <input type="text" id="set_new_pin" class="form-input" placeholder="Enter new password (e.g. ultra2026)">
+              </div>
+              <button class="btn btn-gold" onclick="updateAdminPin()" style="width:100%;margin-top:10px;">Update Master Password</button>
             </div>
-            <div class="form-group">
-              <label>IPTV Portal Server URL</label>
-              <input type="text" id="setting_server" class="form-input" value="https://stream.ultrastream.vip:8080">
-              <span style="font-size:12px;color:var(--text-muted)">Server prefix included in customer M3U playlist credentials.</span>
+
+            <!-- Regional & Currency Settings -->
+            <div class="settings-card" style="grid-column: 1 / -1;">
+              <h3>🌐 Regional &amp; Contact Info</h3>
+              <div class="form-group">
+                <label>Currency Symbol</label>
+                <input type="text" id="set_currency" class="form-input" value="$" style="max-width:120px;">
+              </div>
+              <div class="form-group">
+                <label>Support Contact Email</label>
+                <input type="email" id="set_support_email" class="form-input" value="support@ultrastream.com">
+              </div>
             </div>
           </div>
         </div>
@@ -975,9 +1109,9 @@ All Major Sports &amp; PPV Channels
     </div>
   </main>
 
-  <!-- TOAST ALERT -->
+  <!-- TOAST NOTIFICATION -->
   <div class="toast" id="adminToast">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--gold)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+    <span>✓</span>
     <span id="toastMsg">Changes saved successfully!</span>
   </div>
 
@@ -987,7 +1121,125 @@ All Major Sports &amp; PPV Channels
     let db = null;
     let isFirebaseReady = false;
 
-    // Sample Orders for immediate testing
+    // Default Site Content
+    const defaultSiteContent = {
+      hero_title: 'Entertainment Without Boundaries',
+      hero_sub: 'Access 25,000+ live 4K channels, 120,000+ movies & VOD, and all major sports PPV events with 99.9% anti-freeze server uptime.',
+      stat1: '25,000+ Live Channels',
+      stat2: '120,000+ VOD Movies',
+      stat3: '99.9% Anti-Freeze Uptime',
+      about_text: 'Ultra Stream brings you the IPTV service of the world\'s biggest platforms — Netflix, Apple TV, Amazon Prime Video, Disney+, and HBO Max — all in one place. Live TV, movies, sports, and series in crystal-clear quality, anytime, anywhere. Everything you love, simply and reliably — that is why Ultra Stream is the best.',
+      how_title: 'HOW IT WORKS',
+      how_sub: 'Start streaming your favorite channels in 3 simple steps',
+      how_step1: '1. Select your streaming pass (1, 6, or 12 Months).',
+      how_step2: '2. Receive instant login credentials via WhatsApp within 10 minutes.',
+      how_step3: '3. Enjoy buffer-free 4K sports, movies, and TV shows on any device.',
+      pricing_pill: 'Flexible Subscriptions',
+      pricing_title: 'Simple Pricing, Unlimited Entertainment',
+      pricing_sub: 'Get instant access to 22,000+ live HD/4K channels and 85,000+ movies & series. ⚡ Guaranteed 10-minute delivery via WhatsApp & Email with 7-day money-back guarantee.',
+      footer_desc: 'Worldwide Premium IPTV Entertainment. 25,000+ Live Channels in 4K & Ultra HD.',
+      footer_copy: '© 2026 Ultra Stream. All rights reserved. Worldwide Premium IPTV Entertainment.'
+    };
+
+    // Default Pricing Plans (with interactive bullet points array & custom WhatsApp draft message)
+    let plansData = [
+      {
+        name: 'Starter Pass',
+        badge: '1 MONTH PASS',
+        price: '14',
+        cycle: '.99 / 1 Month',
+        origPrice: '$24.99',
+        savings: 'SAVE 40%',
+        desc: 'Ideal for testing our premium ultra-fast IPTV streaming quality.',
+        btnText: 'Get 1 Month Pass',
+        draftMessage: 'Hello Ultra Stream! 👋 I would like to order the 1 MONTH PASS ($14.99). Please provide me instant activation details and payment options via WhatsApp. Thank you!',
+        features: [
+          '10,000+ Live Worldwide Channels',
+          '40,000+ VOD Movies & Shows',
+          'Full HD & 4K Streaming Quality',
+          'Anti-Freeze™ 9.0 Technology',
+          '1 Device Connection',
+          '7-Day TV Guide (EPG)',
+          '⚡ Guaranteed Delivery in 10 Mins via WhatsApp',
+          '24/7 Priority Support'
+        ]
+      },
+      {
+        name: 'Ultra VIP Pass',
+        badge: '🔥 BEST VALUE — SAVE 65%',
+        price: '49',
+        cycle: '.99 / 12 Months',
+        origPrice: '$139.99',
+        savings: 'SAVE 65%',
+        desc: 'Our flagship VIP pass. Massive savings with maximum 4K channels and multi-room connections.',
+        btnText: 'Claim Ultra VIP Pass',
+        draftMessage: 'Hello Ultra Stream! 🔥 I want to subscribe to the 12 MONTHS ULTRA VIP PASS ($49.99 - Best Value). Please send me priority login credentials (4K UHD + 5 Connections). Ready to order!',
+        features: [
+          '25,000+ Premium Live Channels (US, UK, CA, Arab, Europe & World)',
+          '120,000+ VOD Movies & Full Web Series',
+          'Crystal-Clear 4K Ultra HD & 60 FPS Sports Streams',
+          'All Major Live Sports PPV Events Included (UFC, EPL, Champions League)',
+          'Anti-Freeze™ 10.0 Zero-Buffer Server Cluster',
+          '5 Simultaneous Device Connections',
+          'Complete TV Guide (EPG) + Catch-Up TV (7 Days)',
+          'Adult Channels (18+) Included (Optional / Pin Protected)',
+          '⚡ VIP Fast-Track Delivery in 10 Mins via WhatsApp & Email',
+          '24/7 Dedicated VIP Account Manager'
+        ]
+      },
+      {
+        name: 'Pro Pass',
+        badge: '6 MONTHS PRO',
+        price: '29',
+        cycle: '.99 / 6 Months',
+        origPrice: '$59.99',
+        savings: 'SAVE 50%',
+        desc: 'Great value for families and sports lovers who want reliable half-year streaming.',
+        btnText: 'Get 6 Months Pass',
+        draftMessage: 'Hello Ultra Stream! ⚡ I want to get the 6 MONTHS PRO PASS ($29.99). Please provide setup guide and quick WhatsApp activation. Thanks!',
+        features: [
+          '20,000+ Live Worldwide Channels',
+          '80,000+ VOD Movies & TV Shows',
+          'Full HD & 4K High-Bitrate Streams',
+          'Major Sports Channels (Sky, TNT, beIN, DAZN, ESPN)',
+          'Anti-Freeze™ 9.5 High-Speed Core',
+          '2 Simultaneous Device Connections',
+          '7-Day TV Guide (EPG)',
+          '⚡ Guaranteed Delivery in 10 Mins via WhatsApp',
+          '24/7 Customer Support'
+        ]
+      }
+    ];
+
+    // Default Policies Content
+    const defaultPolicies = {
+      privacy: `<h1>Privacy Policy</h1>
+<p>At Ultra Stream, we value your privacy above all else. This Privacy Policy details how we collect, handle, and protect your information when you use our website and IPTV streaming services.</p>
+<h3>Strict Zero-Logs Policy</h3>
+<p>We do not log, monitor, or track the TV channels, movies, sports, or content you watch. Your streaming activity remains 100% private and confidential.</p>
+<h3>Information We Collect</h3>
+<p>We only collect minimal details necessary to process your order and deliver your IPTV login credentials (such as your WhatsApp contact number or email address).</p>
+<h3>Data Security</h3>
+<p>All transactions and credentials are encrypted using industry-standard 256-bit SSL encryption. We never sell or share your information with any third party.</p>`,
+      
+      refund: `<h1>7-Day 100% Money-Back Guarantee</h1>
+<p>We stand behind the quality, speed, and anti-freeze reliability of Ultra Stream IPTV. We want you to feel completely confident when ordering any of our streaming passes.</p>
+<h3>Refund Eligibility</h3>
+<p>If you experience persistent buffering, channel unavailability, or server issues that our technical support team cannot resolve within 7 days of purchase, you are entitled to a full 100% refund.</p>
+<h3>How to Request a Refund</h3>
+<p>Simply contact us directly on WhatsApp with your Order ID. Once approved, refunds are processed immediately back to your original payment method.</p>`,
+
+      terms: `<h1>Terms &amp; Conditions</h1>
+<p>Welcome to Ultra Stream. By ordering or subscribing to our IPTV service, you agree to comply with and be bound by the following terms and conditions.</p>
+<h3>Service Delivery SLA</h3>
+<p>We guarantee 10-minute instant delivery for all IPTV orders via WhatsApp and Email upon payment confirmation.</p>
+<h3>Fair Usage &amp; Connection Limits</h3>
+<p>Each plan has a defined number of concurrent device connections (1 device for Starter Pass, 2 devices for Pro Pass, and 5 devices for Ultra VIP Pass). Sharing accounts beyond the allowed limit may result in temporary automated suspension.</p>
+<h3>Device Compatibility</h3>
+<p>Ultra Stream is compatible with Smart TVs (Samsung, LG, Sony), Firestick, Android TV, Apple TV, iOS, Windows, Mac, MAG boxes, and all major IPTV apps (IPTV Smarters Pro, TiviMate, XCIPTV).</p>`
+    };
+
+    // Default Orders
     const defaultOrders = [
       {
         id: 'ORD-8941',
@@ -995,8 +1247,8 @@ All Major Sports &amp; PPV Channels
         phone: '+923001234567',
         email: 'tariq.stream@gmail.com',
         plan: 'Ultra VIP Pass (12 Mo)',
-        price: '$59.99',
-        createdAt: Date.now() - 4 * 60 * 1000, // 4 mins ago
+        price: '$49.99',
+        createdAt: Date.now() - 4 * 60 * 1000,
         status: 'pending'
       },
       {
@@ -1005,8 +1257,8 @@ All Major Sports &amp; PPV Channels
         phone: '+14158923412',
         email: 'alex.j@outlook.com',
         plan: 'Pro Pass (6 Mo)',
-        price: '$34.99',
-        createdAt: Date.now() - 8 * 60 * 1000, // 8 mins ago
+        price: '$29.99',
+        createdAt: Date.now() - 8 * 60 * 1000,
         status: 'pending'
       },
       {
@@ -1022,7 +1274,7 @@ All Major Sports &amp; PPV Channels
       }
     ];
 
-    // ================= AUTH & PIN =================
+    // ================= AUTH & SECURITY PIN =================
     function checkPin() {
       const pin = document.getElementById('pinInput').value.trim();
       const savedPin = localStorage.getItem('ultra_admin_pin') || DEFAULT_PIN;
@@ -1031,7 +1283,7 @@ All Major Sports &amp; PPV Channels
         document.getElementById('pinLockModal').style.display = 'none';
         showToast('Welcome back, Admin!');
       } else {
-        alert('Incorrect PIN. Please enter master security PIN (Default: admin123).');
+        alert('Incorrect Password! Master default password is: admin123');
       }
     }
 
@@ -1049,13 +1301,30 @@ All Major Sports &amp; PPV Channels
       document.getElementById('pinLockModal').style.display = 'none';
     }
 
+    function updateAdminPin() {
+      const newPin = document.getElementById('set_new_pin').value.trim();
+      if (!newPin || newPin.length < 4) {
+        alert('Please enter a password with at least 4 characters.');
+        return;
+      }
+      localStorage.setItem('ultra_admin_pin', newPin);
+      document.getElementById('set_current_pin').value = newPin;
+      document.getElementById('set_new_pin').value = '';
+      if (db) {
+        db.collection('settings').doc('security').set({ admin_pin: newPin }, { merge: true }).catch(() => {});
+      }
+      showToast('Master Password updated to: ' + newPin);
+    }
+
     // ================= TABS NAVIGATION =================
     const tabTitles = {
-      dashboard: { title: 'Dashboard Overview', sub: 'Live metrics, active streams, and pending 10-minute orders' },
-      orders: { title: '10-Minute Order Dispatcher', sub: 'Instant activation via WhatsApp & Email' },
-      plans: { title: 'Plans & Pricing Manager', sub: 'Edit prices and features synced live to the website' },
+      dashboard: { title: 'Dashboard & Traffic Overview', sub: 'Real-time visitor analytics, button clicks, and pending 10-minute orders' },
+      content: { title: 'Headings & Content Editor', sub: 'Edit hero titles, about text, how it works, and section headings' },
+      plans: { title: 'Plans, Points & WhatsApp Messages', sub: 'Add/edit/delete bullet points, adjust prices, and set custom WhatsApp messages' },
+      policies: { title: 'Legal Policies Editor', sub: 'Update Privacy Policy, Refund Policy, and Terms & Conditions' },
+      orders: { title: '10-Minute Order Dispatcher', sub: 'Instant credentials dispatch via WhatsApp & Email' },
       firebase: { title: 'Firebase Cloud Database', sub: 'Connect Google Firestore for cloud backup & multi-admin sync' },
-      settings: { title: 'Control Settings', sub: 'Admin credentials and contact preferences' }
+      settings: { title: 'Settings & Security', sub: 'WhatsApp phone number, master password, and preferences' }
     };
 
     function switchTab(tabId, el) {
@@ -1068,13 +1337,479 @@ All Major Sports &amp; PPV Channels
       if (el) {
         el.classList.add('active');
       } else {
-        const matchingBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.textContent.toLowerCase().includes(tabId));
+        const matchingBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
         if (matchingBtn) matchingBtn.classList.add('active');
       }
 
       const meta = tabTitles[tabId] || tabTitles.dashboard;
       document.getElementById('pageTitle').textContent = meta.title;
       document.getElementById('pageSub').textContent = meta.sub;
+    }
+
+    // ================= ANALYTICS & TRAFFIC =================
+    function getAnalytics() {
+      try {
+        const a = localStorage.getItem('ultra_analytics');
+        if (a) return JSON.parse(a);
+      } catch(_) {}
+      
+      const today = new Date().toISOString().slice(0, 10);
+      const now = new Date();
+      const week = now.getFullYear() + '-W' + Math.ceil(now.getDate() / 7);
+      const month = now.toISOString().slice(0, 7);
+
+      return {
+        daily: { [today]: 148 },
+        weekly: { [week]: 892 },
+        monthly: { [month]: 3420 },
+        total_views: 3420,
+        unique_visitors: 1845,
+        clicks: {
+          whatsapp_floating: 64,
+          plan1_get_started: 38,
+          plan2_vip_get_started: 112,
+          plan3_pro_get_started: 56,
+          hero_cta_whatsapp: 79,
+          hero_cta_plans: 94
+        },
+        recent_activity: [
+          { event: 'Clicked 12 Months VIP WhatsApp', time: Date.now() - 3 * 60 * 1000, device: 'Mobile', target: '12 Months VIP Pass' },
+          { event: 'Clicked Floating WhatsApp', time: Date.now() - 7 * 60 * 1000, device: 'Desktop', target: 'Support Inquiry' },
+          { event: 'Clicked 6 Months Pro WhatsApp', time: Date.now() - 14 * 60 * 1000, device: 'Mobile', target: '6 Months Pro Pass' },
+          { event: 'Visited Pricing Section', time: Date.now() - 19 * 60 * 1000, device: 'Desktop', target: 'Section 5 Plans' },
+          { event: 'Clicked 1 Month Starter WhatsApp', time: Date.now() - 28 * 60 * 1000, device: 'Mobile', target: '1 Month Starter Pass' },
+          { event: 'Visited Home Page', time: Date.now() - 34 * 60 * 1000, device: 'Mobile', target: 'Hero Header' }
+        ]
+      };
+    }
+
+    function renderAnalytics() {
+      const a = getAnalytics();
+      const today = new Date().toISOString().slice(0, 10);
+      const now = new Date();
+      const week = now.getFullYear() + '-W' + Math.ceil(now.getDate() / 7);
+      const month = now.toISOString().slice(0, 7);
+
+      const daily = a.daily?.[today] || (a.daily ? Object.values(a.daily).pop() : 148) || 0;
+      const weekly = a.weekly?.[week] || (a.weekly ? Object.values(a.weekly).pop() : 892) || 0;
+      const monthly = a.monthly?.[month] || (a.monthly ? Object.values(a.monthly).pop() : 3420) || 0;
+
+      const totalWaClicks = (a.clicks?.whatsapp_floating || 0) + 
+                            (a.clicks?.plan1_get_started || 0) + 
+                            (a.clicks?.plan2_vip_get_started || 0) + 
+                            (a.clicks?.plan3_pro_get_started || 0) +
+                            (a.clicks?.hero_cta_whatsapp || 0);
+
+      document.getElementById('statDailyVisits').textContent = Number(daily).toLocaleString();
+      document.getElementById('statWeeklyVisits').textContent = Number(weekly).toLocaleString();
+      document.getElementById('statMonthlyVisits').textContent = Number(monthly).toLocaleString();
+      document.getElementById('statWaClicks').textContent = Number(totalWaClicks).toLocaleString();
+
+      // Render Clicks Table
+      const clicksList = [
+        { name: 'Floating WhatsApp Quick Button', loc: 'Bottom Right (Site-wide)', count: a.clicks?.whatsapp_floating || 0, badge: 'High Engagement' },
+        { name: 'Plan 2: 12-Month Ultra VIP Pass (Featured)', loc: 'Section 5 (Center Card)', count: a.clicks?.plan2_vip_get_started || 0, badge: '🔥 Top Seller' },
+        { name: 'Plan 3: 6-Month Pro Pass', loc: 'Section 5 (Right Card)', count: a.clicks?.plan3_pro_get_started || 0, badge: 'Steady' },
+        { name: 'Plan 1: 1-Month Starter Pass', loc: 'Section 5 (Left Card)', count: a.clicks?.plan1_get_started || 0, badge: 'Trial Buyers' },
+        { name: 'Hero CTA: Instant WhatsApp Access', loc: 'Hero Section (Top)', count: a.clicks?.hero_cta_whatsapp || 0, badge: 'Hero CTA' },
+        { name: 'Hero CTA: Explore Plans', loc: 'Hero Section (Top)', count: a.clicks?.hero_cta_plans || 0, badge: 'Navigation' }
+      ];
+
+      const clicksTbody = document.getElementById('clicksTableBody');
+      const totalClicks = clicksList.reduce((sum, item) => sum + item.count, 0) || 1;
+
+      clicksTbody.innerHTML = clicksList.map(item => {
+        const pct = Math.round((item.count / totalClicks) * 100);
+        return `
+          <tr>
+            <td><strong>${item.name}</strong></td>
+            <td><span style="color:var(--text-muted);font-size:12.5px;">${item.loc}</span></td>
+            <td><span style="font-family:'Space Grotesk';font-weight:700;font-size:16px;color:var(--gold);">${item.count}</span> clicks</td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="flex:1;height:6px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;max-width:90px;">
+                  <div style="width:${pct}%;height:100%;background:var(--gold);"></div>
+                </div>
+                <span style="font-size:12px;color:var(--text-muted);">${pct}%</span>
+              </div>
+            </td>
+            <td><span class="badge badge-plan">${item.badge}</span></td>
+          </tr>
+        `;
+      }).join('');
+
+      // Render Recent Activity Stream
+      const actTbody = document.getElementById('visitorActivityTbody');
+      const acts = a.recent_activity || [];
+      actTbody.innerHTML = acts.slice(0, 15).map(act => {
+        const timeAgo = formatTimeAgo(act.time);
+        return `
+          <tr>
+            <td style="color:var(--text-muted);font-size:12px;">${timeAgo}</td>
+            <td><strong>${escapeHtml(act.event)}</strong></td>
+            <td><span class="badge" style="background:rgba(255,255,255,0.06);color:#fff;">${act.device || 'Mobile'}</span></td>
+            <td><span style="color:var(--gold);font-size:13px;">${escapeHtml(act.target || 'Website')}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function formatTimeAgo(timestamp) {
+      if (!timestamp) return 'Just now';
+      const sec = Math.floor((Date.now() - timestamp) / 1000);
+      if (sec < 60) return `${sec}s ago`;
+      const min = Math.floor(sec / 60);
+      if (min < 60) return `${min}m ago`;
+      const hrs = Math.floor(min / 60);
+      if (hrs < 24) return `${hrs}h ago`;
+      return `${Math.floor(hrs / 24)}d ago`;
+    }
+
+    function simulateTestClick() {
+      const a = getAnalytics();
+      const targets = [
+        { key: 'plan2_vip_get_started', name: '12 Months VIP Pass WhatsApp' },
+        { key: 'whatsapp_floating', name: 'Floating WhatsApp Button' },
+        { key: 'plan3_pro_get_started', name: '6 Months Pro Pass WhatsApp' },
+        { key: 'plan1_get_started', name: '1 Month Starter Pass WhatsApp' }
+      ];
+      const pick = targets[Math.floor(Math.random() * targets.length)];
+      a.clicks[pick.key] = (a.clicks[pick.key] || 0) + 1;
+      
+      const today = new Date().toISOString().slice(0, 10);
+      a.daily[today] = (a.daily[today] || 0) + 1;
+      a.total_views = (a.total_views || 0) + 1;
+
+      if (!a.recent_activity) a.recent_activity = [];
+      a.recent_activity.unshift({
+        event: 'Clicked ' + pick.name,
+        time: Date.now(),
+        device: Math.random() > 0.4 ? 'Mobile' : 'Desktop',
+        target: pick.name
+      });
+      localStorage.setItem('ultra_analytics', JSON.stringify(a));
+      renderAnalytics();
+      showToast('Test click simulated on ' + pick.name + '!');
+    }
+
+    function resetAnalytics() {
+      if (!confirm('Are you sure you want to reset all traffic and click analytics counters?')) return;
+      localStorage.removeItem('ultra_analytics');
+      renderAnalytics();
+      showToast('Analytics counters reset.');
+    }
+
+    // ================= HEADINGS & CONTENT =================
+    function getSiteContent() {
+      try {
+        const c = localStorage.getItem('ultra_site_content');
+        return c ? { ...defaultSiteContent, ...JSON.parse(c) } : defaultSiteContent;
+      } catch(_) {
+        return defaultSiteContent;
+      }
+    }
+
+    function populateSiteContent() {
+      const c = getSiteContent();
+      document.getElementById('cnt_hero_title').value = c.hero_title || '';
+      document.getElementById('cnt_hero_sub').value = c.hero_sub || '';
+      document.getElementById('cnt_stat1').value = c.stat1 || '';
+      document.getElementById('cnt_stat2').value = c.stat2 || '';
+      document.getElementById('cnt_stat3').value = c.stat3 || '';
+      document.getElementById('cnt_about_text').value = c.about_text || '';
+      document.getElementById('cnt_how_title').value = c.how_title || '';
+      document.getElementById('cnt_how_sub').value = c.how_sub || '';
+      document.getElementById('cnt_how_step1').value = c.how_step1 || '';
+      document.getElementById('cnt_how_step2').value = c.how_step2 || '';
+      document.getElementById('cnt_how_step3').value = c.how_step3 || '';
+      document.getElementById('cnt_pricing_pill').value = c.pricing_pill || '';
+      document.getElementById('cnt_pricing_title').value = c.pricing_title || '';
+      document.getElementById('cnt_pricing_sub').value = c.pricing_sub || '';
+      document.getElementById('cnt_footer_desc').value = c.footer_desc || '';
+      document.getElementById('cnt_footer_copy').value = c.footer_copy || '';
+    }
+
+    function saveSiteContent() {
+      const c = {
+        hero_title: document.getElementById('cnt_hero_title').value.trim(),
+        hero_sub: document.getElementById('cnt_hero_sub').value.trim(),
+        stat1: document.getElementById('cnt_stat1').value.trim(),
+        stat2: document.getElementById('cnt_stat2').value.trim(),
+        stat3: document.getElementById('cnt_stat3').value.trim(),
+        about_text: document.getElementById('cnt_about_text').value.trim(),
+        how_title: document.getElementById('cnt_how_title').value.trim(),
+        how_sub: document.getElementById('cnt_how_sub').value.trim(),
+        how_step1: document.getElementById('cnt_how_step1').value.trim(),
+        how_step2: document.getElementById('cnt_how_step2').value.trim(),
+        how_step3: document.getElementById('cnt_how_step3').value.trim(),
+        pricing_pill: document.getElementById('cnt_pricing_pill').value.trim(),
+        pricing_title: document.getElementById('cnt_pricing_title').value.trim(),
+        pricing_sub: document.getElementById('cnt_pricing_sub').value.trim(),
+        footer_desc: document.getElementById('cnt_footer_desc').value.trim(),
+        footer_copy: document.getElementById('cnt_footer_copy').value.trim()
+      };
+
+      localStorage.setItem('ultra_site_content', JSON.stringify(c));
+
+      if (db) {
+        db.collection('settings').doc('site_content').set(c, { merge: true })
+          .then(() => showToast('Saved & Synced live to Cloud Firestore!'))
+          .catch(e => {
+            console.error('Firestore save error:', e);
+            showToast('Saved locally (Firestore sync error)');
+          });
+      } else {
+        showToast('Saved locally! Synced to live website.');
+      }
+    }
+
+    // ================= PLANS, POINTS & WHATSAPP DRAFT MESSAGES =================
+    function getPlans() {
+      try {
+        const p = localStorage.getItem('ultra_pricing_plans');
+        return p ? JSON.parse(p) : plansData;
+      } catch(_) {
+        return plansData;
+      }
+    }
+
+    function renderPlans() {
+      const container = document.getElementById('plansDynamicContainer');
+      const plans = getPlans();
+
+      container.innerHTML = plans.map((p, pIdx) => {
+        const isFeatured = pIdx === 1;
+        const featuresHtml = (p.features || []).map((feat, fIdx) => `
+          <div class="point-item">
+            <span style="color:var(--green);font-weight:900;">✓</span>
+            <input type="text" class="form-input" value="${escapeHtml(feat)}" onchange="editPoint(${pIdx}, ${fIdx}, this.value)">
+            <button class="btn-del-pt" onclick="deletePoint(${pIdx}, ${fIdx})" title="Delete point">✕</button>
+          </div>
+        `).join('');
+
+        return `
+          <div class="plan-box ${isFeatured ? 'featured-box' : ''}">
+            <h3>
+              <span>Plan ${pIdx + 1}: ${escapeHtml(p.name)}</span>
+              ${isFeatured ? '<span class="badge badge-plan">🔥 VIP Recommended</span>' : ''}
+            </h3>
+
+            <div class="form-group">
+              <label>Plan Name</label>
+              <input type="text" class="form-input" id="plan_${pIdx}_name" value="${escapeHtml(p.name)}">
+            </div>
+
+            <div class="form-group">
+              <label>Top Badge Text</label>
+              <input type="text" class="form-input" id="plan_${pIdx}_badge" value="${escapeHtml(p.badge || '')}">
+            </div>
+
+            <div style="display:flex;gap:12px;">
+              <div class="form-group" style="flex:1;">
+                <label>Price ($ USD)</label>
+                <input type="text" class="form-input" id="plan_${pIdx}_price" value="${escapeHtml(p.price)}">
+              </div>
+              <div class="form-group" style="flex:1;">
+                <label>Billing Cycle Text</label>
+                <input type="text" class="form-input" id="plan_${pIdx}_cycle" value="${escapeHtml(p.cycle)}">
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;">
+              <div class="form-group" style="flex:1;">
+                <label>Original Price</label>
+                <input type="text" class="form-input" id="plan_${pIdx}_orig" value="${escapeHtml(p.origPrice || '$24.99')}">
+              </div>
+              <div class="form-group" style="flex:1;">
+                <label>Savings Badge</label>
+                <input type="text" class="form-input" id="plan_${pIdx}_savings" value="${escapeHtml(p.savings || 'SAVE 40%')}">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Button Text</label>
+              <input type="text" class="form-input" id="plan_${pIdx}_btnText" value="${escapeHtml(p.btnText || 'Get Instant Access')}">
+            </div>
+
+            <div class="form-group">
+              <label>Short Description</label>
+              <input type="text" class="form-input" id="plan_${pIdx}_desc" value="${escapeHtml(p.desc || '')}">
+            </div>
+
+            <!-- Bullet Points Manager -->
+            <div class="form-group" style="margin-top:10px;">
+              <label style="color:var(--gold);">Feature Bullet Points (Add, Edit, Delete):</label>
+              <div id="points_list_${pIdx}">
+                ${featuresHtml}
+              </div>
+              <!-- Add New Point Input -->
+              <div style="display:flex;gap:8px;margin-top:10px;">
+                <input type="text" id="new_pt_input_${pIdx}" class="form-input" placeholder="Type new point (e.g. 5 Connections, 4K UHD)..." style="font-size:13px;">
+                <button class="btn btn-outline btn-sm" onclick="addNewPoint(${pIdx})" style="white-space:nowrap;">➕ Add Point</button>
+              </div>
+            </div>
+
+            <!-- WhatsApp Custom Draft Message -->
+            <div class="form-group" style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">
+              <label style="color:var(--green);font-weight:700;">💬 WhatsApp Draft Message for "Get Started"</label>
+              <textarea id="plan_${pIdx}_draft" class="form-textarea" style="font-size:12.5px;min-height:85px;">${escapeHtml(p.draftMessage || '')}</textarea>
+              <span class="form-hint">Auto-fills in the customer's WhatsApp chat when clicking this plan's button.</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function editPoint(planIdx, pointIdx, newVal) {
+      const plans = getPlans();
+      if (plans[planIdx] && plans[planIdx].features) {
+        plans[planIdx].features[pointIdx] = newVal.trim();
+        localStorage.setItem('ultra_pricing_plans', JSON.stringify(plans));
+      }
+    }
+
+    function deletePoint(planIdx, pointIdx) {
+      const plans = getPlans();
+      if (plans[planIdx] && plans[planIdx].features) {
+        plans[planIdx].features.splice(pointIdx, 1);
+        localStorage.setItem('ultra_pricing_plans', JSON.stringify(plans));
+        renderPlans();
+        showToast('Bullet point removed.');
+      }
+    }
+
+    function addNewPoint(planIdx) {
+      const input = document.getElementById(`new_pt_input_${planIdx}`);
+      const val = input.value.trim();
+      if (!val) {
+        alert('Please enter text for the new bullet point.');
+        return;
+      }
+      const plans = getPlans();
+      if (plans[planIdx]) {
+        if (!plans[planIdx].features) plans[planIdx].features = [];
+        plans[planIdx].features.push(val);
+        localStorage.setItem('ultra_pricing_plans', JSON.stringify(plans));
+        renderPlans();
+        showToast('New bullet point added!');
+      }
+    }
+
+    function savePlansToStorage() {
+      const plans = getPlans();
+      for (let i = 0; i < plans.length; i++) {
+        const nameEl = document.getElementById(`plan_${i}_name`);
+        const badgeEl = document.getElementById(`plan_${i}_badge`);
+        const priceEl = document.getElementById(`plan_${i}_price`);
+        const cycleEl = document.getElementById(`plan_${i}_cycle`);
+        const origEl = document.getElementById(`plan_${i}_orig`);
+        const savingsEl = document.getElementById(`plan_${i}_savings`);
+        const btnTextEl = document.getElementById(`plan_${i}_btnText`);
+        const descEl = document.getElementById(`plan_${i}_desc`);
+        const draftEl = document.getElementById(`plan_${i}_draft`);
+
+        if (nameEl) plans[i].name = nameEl.value.trim();
+        if (badgeEl) plans[i].badge = badgeEl.value.trim();
+        if (priceEl) plans[i].price = priceEl.value.trim();
+        if (cycleEl) plans[i].cycle = cycleEl.value.trim();
+        if (origEl) plans[i].origPrice = origEl.value.trim();
+        if (savingsEl) plans[i].savings = savingsEl.value.trim();
+        if (btnTextEl) plans[i].btnText = btnTextEl.value.trim();
+        if (descEl) plans[i].desc = descEl.value.trim();
+        if (draftEl) plans[i].draftMessage = draftEl.value.trim();
+      }
+
+      localStorage.setItem('ultra_pricing_plans', JSON.stringify(plans));
+
+      if (db) {
+        db.collection('settings').doc('pricing_plans').set({ plans: plans }, { merge: true })
+          .then(() => showToast('Plans, Points & WhatsApp Messages updated live in Cloud!'))
+          .catch(e => {
+            console.error('Firestore error:', e);
+            showToast('Plans saved locally!');
+          });
+      } else {
+        showToast('Plans saved! Synced to live website.');
+      }
+    }
+
+    // ================= LEGAL POLICIES =================
+    function getPolicies() {
+      try {
+        const p = localStorage.getItem('ultra_legal_policies');
+        return p ? { ...defaultPolicies, ...JSON.parse(p) } : defaultPolicies;
+      } catch(_) {
+        return defaultPolicies;
+      }
+    }
+
+    function populatePolicies() {
+      const p = getPolicies();
+      document.getElementById('policy_privacy').value = p.privacy || '';
+      document.getElementById('policy_refund').value = p.refund || '';
+      document.getElementById('policy_terms').value = p.terms || '';
+    }
+
+    function savePolicies() {
+      const p = {
+        privacy: document.getElementById('policy_privacy').value.trim(),
+        refund: document.getElementById('policy_refund').value.trim(),
+        terms: document.getElementById('policy_terms').value.trim()
+      };
+      localStorage.setItem('ultra_legal_policies', JSON.stringify(p));
+
+      if (db) {
+        db.collection('settings').doc('legal_policies').set(p, { merge: true })
+          .then(() => showToast('Legal policies saved & synced live!'))
+          .catch(() => showToast('Saved policies locally!'));
+      } else {
+        showToast('Policies saved locally! Synced to policy pages.');
+      }
+    }
+
+    // ================= SETTINGS & WHATSAPP =================
+    function getSettings() {
+      try {
+        const s = localStorage.getItem('ultra_settings');
+        return s ? JSON.parse(s) : {
+          wa_phone: '447458196522',
+          wa_float_msg: 'Hello Ultra Stream Support! 👋 I have a question about your IPTV subscription and channels list. Please assist me.',
+          currency: '$',
+          support_email: 'support@ultrastream.com'
+        };
+      } catch(_) {
+        return { wa_phone: '447458196522', wa_float_msg: 'Hello Ultra Stream Support! 👋 I have a question...', currency: '$', support_email: 'support@ultrastream.com' };
+      }
+    }
+
+    function populateSettings() {
+      const s = getSettings();
+      document.getElementById('set_wa_phone').value = s.wa_phone || '447458196522';
+      document.getElementById('set_wa_float_msg').value = s.wa_float_msg || '';
+      document.getElementById('set_currency').value = s.currency || '$';
+      document.getElementById('set_support_email').value = s.support_email || 'support@ultrastream.com';
+
+      const currentPin = localStorage.getItem('ultra_admin_pin') || DEFAULT_PIN;
+      document.getElementById('set_current_pin').value = currentPin;
+    }
+
+    function saveSettings() {
+      const s = {
+        wa_phone: document.getElementById('set_wa_phone').value.trim().replace(/[^0-9]/g, ''),
+        wa_float_msg: document.getElementById('set_wa_float_msg').value.trim(),
+        currency: document.getElementById('set_currency').value.trim(),
+        support_email: document.getElementById('set_support_email').value.trim()
+      };
+
+      localStorage.setItem('ultra_settings', JSON.stringify(s));
+
+      if (db) {
+        db.collection('settings').doc('general').set(s, { merge: true })
+          .then(() => showToast('Settings saved & synced live!'))
+          .catch(() => showToast('Settings saved locally!'));
+      } else {
+        showToast('Settings saved! WhatsApp links updated live.');
+      }
     }
 
     // ================= ORDERS DISPATCHER =================
@@ -1107,91 +1842,62 @@ All Major Sports &amp; PPV Channels
         const timerText = isPending ? `${elapsedMins}m / 10m SLA` : 'Delivered';
         const timerColor = (isPending && elapsedMins >= 8) ? 'var(--red)' : (isPending ? 'var(--amber)' : 'var(--green)');
 
-        const statusBadge = isPending 
-          ? `<span class="badge badge-pending">⚡ Pending Dispatch</span>`
-          : `<span class="badge badge-delivered">✓ Delivered in 10m</span>`;
-
         return `
           <tr>
-            <td><strong>${ord.id}</strong></td>
-            <td>${ord.customer}</td>
-            <td><a href="https://wa.me/${ord.phone.replace(/[^0-9]/g,'')}" target="_blank" style="color:var(--green);font-weight:600;text-decoration:none;">${ord.phone}</a></td>
-            <td><span class="badge badge-plan">${ord.plan}</span></td>
+            <td><strong>#${ord.id}</strong></td>
+            <td>${escapeHtml(ord.customer)}</td>
+            <td><a href="https://wa.me/${ord.phone.replace(/[^0-9]/g, '')}" target="_blank" style="color:var(--green);text-decoration:none;font-weight:600;">${ord.phone}</a></td>
+            <td><span class="badge badge-plan">${escapeHtml(ord.plan)}</span></td>
             <td><span style="color:${timerColor};font-weight:700;">${timerText}</span></td>
-            <td>${statusBadge}</td>
+            <td><span class="badge ${isPending ? 'badge-pending' : 'badge-delivered'}">${ord.status.toUpperCase()}</span></td>
             <td>
-              ${isPending ? `
-                <button class="btn btn-green" style="padding:6px 12px;font-size:12px;" onclick="dispatchWhatsApp('${ord.id}')">
-                  ⚡ Deliver on WhatsApp
-                </button>
-              ` : `
-                <button class="btn btn-outline" style="padding:6px 12px;font-size:12px;" onclick="dispatchWhatsApp('${ord.id}')">
-                  Resend WhatsApp
-                </button>
-              `}
+              ${isPending ? `<button class="btn btn-whatsapp btn-sm" onclick="dispatchOrderWhatsApp('${ord.id}')">💬 Deliver on WhatsApp</button>` : `<span style="color:var(--text-muted);font-size:12px;">✓ Completed</span>`}
             </td>
           </tr>
         `;
       }).join('');
 
+      recentTbody.innerHTML = rowsHtml;
+      
       const allRowsHtml = orders.map(ord => {
         const isPending = ord.status === 'pending';
         const elapsedMins = Math.floor((Date.now() - ord.createdAt) / 60000);
         const timerText = isPending ? `${elapsedMins}m / 10m SLA` : 'Delivered';
         const timerColor = (isPending && elapsedMins >= 8) ? 'var(--red)' : (isPending ? 'var(--amber)' : 'var(--green)');
-        const statusBadge = isPending 
-          ? `<span class="badge badge-pending">⚡ Pending</span>`
-          : `<span class="badge badge-delivered">✓ Delivered</span>`;
 
         return `
           <tr>
-            <td><strong>${ord.id}</strong></td>
-            <td>${ord.customer}</td>
-            <td>${ord.phone}</td>
-            <td>${ord.email || 'N/A'}</td>
-            <td><span class="badge badge-plan">${ord.plan}</span></td>
-            <td><strong>${ord.price || '$59.99'}</strong></td>
+            <td><strong>#${ord.id}</strong></td>
+            <td>${escapeHtml(ord.customer)}</td>
+            <td><a href="https://wa.me/${ord.phone.replace(/[^0-9]/g, '')}" target="_blank" style="color:var(--green);text-decoration:none;font-weight:600;">${ord.phone}</a></td>
+            <td style="color:var(--text-muted);">${escapeHtml(ord.email || '')}</td>
+            <td><span class="badge badge-plan">${escapeHtml(ord.plan)}</span></td>
+            <td><strong>${ord.price}</strong></td>
             <td><span style="color:${timerColor};font-weight:700;">${timerText}</span></td>
-            <td>${statusBadge}</td>
+            <td><span class="badge ${isPending ? 'badge-pending' : 'badge-delivered'}">${ord.status.toUpperCase()}</span></td>
             <td>
-              <button class="btn btn-green" style="padding:6px 12px;font-size:12px;" onclick="dispatchWhatsApp('${ord.id}')">
-                ⚡ Dispatch WhatsApp
-              </button>
-              ${isPending ? `
-                <button class="btn btn-outline" style="padding:6px 10px;font-size:12px;margin-left:6px;" onclick="markDelivered('${ord.id}')">
-                  Done
-                </button>
-              ` : ''}
+              ${isPending ? `<button class="btn btn-whatsapp btn-sm" onclick="dispatchOrderWhatsApp('${ord.id}')">💬 Deliver on WhatsApp</button>` : `<button class="btn btn-outline btn-sm" onclick="dispatchOrderWhatsApp('${ord.id}')">Resend</button>`}
             </td>
           </tr>
         `;
       }).join('');
 
-      if (recentTbody) recentTbody.innerHTML = rowsHtml;
-      if (allTbody) allTbody.innerHTML = allRowsHtml;
-
-      document.getElementById('statPending').textContent = pendingCount;
+      allTbody.innerHTML = allRowsHtml;
       document.getElementById('pendingCountBadge').textContent = pendingCount;
     }
 
-    // 1-Click WhatsApp Dispatch with pre-formatted credentials
-    function dispatchWhatsApp(orderId) {
+    function dispatchOrderWhatsApp(orderId) {
       const orders = getOrders();
       const ord = orders.find(o => o.id === orderId);
       if (!ord) return;
 
-      const serverUrl = document.getElementById('setting_server').value || 'https://stream.ultrastream.vip:8080';
-      const userClean = ord.customer.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_' + Math.floor(1000 + Math.random()*9000);
+      const userClean = ord.customer.toLowerCase().replace(/[^a-z0-9]/g, '') + Math.floor(1000 + Math.random()*9000);
       const passClean = 'Ultra' + Math.floor(10000 + Math.random()*90000);
+      const serverUrl = 'http://ultra-line.net:8080';
 
-      const msg = 
-`🎬 *ULTRA STREAM IPTV ACTIVATION* 🎬
-━━━━━━━━━━━━━━━━━━━━
-Hi *${ord.customer}*! Welcome to Ultra Stream. Your subscription has been activated with *Guaranteed 10-Minute Delivery*! ⚡
+      const msg = `👑 *ULTRA STREAM — 10-MINUTE INSTANT DISPATCH* 👑
 
-📦 *Your Order Details:*
-• Plan: *${ord.plan}*
-• Status: *Active (Ultra HD & 4K)*
+Hello *${ord.customer}*, your IPTV subscription is *Active (Ultra HD & 4K)*
 
 🔑 *Your IPTV Login Credentials:*
 • Server Portal: \`${serverUrl}\`
@@ -1205,115 +1911,41 @@ Hi *${ord.customer}*! Welcome to Ultra Stream. Your subscription has been activa
 \`${serverUrl}/xmltv.php?username=${userClean}&password=${passClean}\`
 
 ━━━━━━━━━━━━━━━━━━━━
-✨ Compatible with IPTV Smarters Pro, TiviMate, Smart TV, Firestick, Android, iOS & Windows.
-💬 Reply to this message if you need help with installation! 24/7 VIP Support.`;
+✨ Compatible with IPTV Smarters Pro, TiviMate, Smart TV & Firestick.
+💬 24/7 VIP Priority Support: +44 7458 196522
+⚡ Thank you for choosing Ultra Stream!`;
 
-      const cleanPhone = ord.phone.replace(/[^0-9]/g, '');
-      const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
-
-      // Mark as delivered
       ord.status = 'delivered';
       ord.deliveredAt = Date.now();
       saveOrders(orders);
 
-      showToast('Opening WhatsApp with pre-filled credentials...');
+      const cleanPhone = ord.phone.replace(/[^0-9]/g, '');
+      const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
       window.open(waUrl, '_blank');
+      showToast('Order #' + orderId + ' dispatched on WhatsApp!');
     }
 
-    function markDelivered(orderId) {
-      const orders = getOrders();
-      const ord = orders.find(o => o.id === orderId);
-      if (ord) {
-        ord.status = 'delivered';
-        ord.deliveredAt = Date.now();
-        saveOrders(orders);
-        showToast(`Order ${orderId} marked as delivered!`);
-      }
-    }
-
-    function openNewOrderModal() {
-      const name = prompt('Customer Full Name:');
-      if (!name) return;
-      const phone = prompt('Customer WhatsApp Phone (e.g. +923001234567 or +14155552671):');
+    function simulateNewOrder() {
+      const custName = prompt('Enter Customer Full Name:', 'Bilal Khan');
+      if (!custName) return;
+      const phone = prompt('Enter Customer WhatsApp Number (e.g. +923001234567):', '+923009876543');
       if (!phone) return;
-      const plan = prompt('Plan Name (1=Starter Pass, 2=Ultra VIP Pass, 3=Pro Pass):', 'Ultra VIP Pass (12 Mo)');
 
       const orders = getOrders();
       const newOrd = {
-        id: 'ORD-' + Math.floor(9000 + Math.random()*1000),
-        customer: name,
+        id: 'ORD-' + Math.floor(1000 + Math.random() * 9000),
+        customer: custName,
         phone: phone,
-        email: name.toLowerCase().replace(/\s+/g, '') + '@gmail.com',
-        plan: plan || 'Ultra VIP Pass (12 Mo)',
-        price: '$59.99',
+        email: custName.toLowerCase().replace(/[^a-z0-9]/g, '') + '@gmail.com',
+        plan: 'Ultra VIP Pass (12 Mo)',
+        price: '$49.99',
         createdAt: Date.now(),
         status: 'pending'
       };
+
       orders.unshift(newOrd);
       saveOrders(orders);
-      showToast(`New Order ${newOrd.id} created!`);
-    }
-
-    // ================= PLANS & PRICING SYNC =================
-    function savePlansToStorage() {
-      const plans = [
-        {
-          name: document.getElementById('p0_name').value.trim(),
-          badge: document.getElementById('p0_badge').value.trim(),
-          price: document.getElementById('p0_price').value.trim(),
-          cycle: document.getElementById('p0_cycle').value.trim(),
-          desc: document.getElementById('p0_desc').value.trim(),
-          features: document.getElementById('p0_features').value.trim().split('\n').filter(Boolean)
-        },
-        {
-          name: document.getElementById('p1_name').value.trim(),
-          badge: document.getElementById('p1_badge').value.trim(),
-          price: document.getElementById('p1_price').value.trim(),
-          cycle: document.getElementById('p1_cycle').value.trim(),
-          desc: document.getElementById('p1_desc').value.trim(),
-          features: document.getElementById('p1_features').value.trim().split('\n').filter(Boolean)
-        },
-        {
-          name: document.getElementById('p2_name').value.trim(),
-          badge: document.getElementById('p2_badge').value.trim(),
-          price: document.getElementById('p2_price').value.trim(),
-          cycle: document.getElementById('p2_cycle').value.trim(),
-          desc: document.getElementById('p2_desc').value.trim(),
-          features: document.getElementById('p2_features').value.trim().split('\n').filter(Boolean)
-        }
-      ];
-
-      localStorage.setItem('ultra_plans', JSON.stringify(plans));
-
-      // Push to Firestore if connected
-      if (db && isFirebaseReady) {
-        db.collection('settings').doc('plans').set({ plans, updatedAt: firebase.firestore.FieldValue.serverTimestamp() })
-          .then(() => showToast('Plans saved to Local Storage & synced to Firebase!'))
-          .catch(e => {
-            console.error(e);
-            showToast('Saved to Local Storage (Firebase sync error).');
-          });
-      } else {
-        showToast('Plans updated! Live website will show these new plans.');
-      }
-    }
-
-    function loadPlansFromStorage() {
-      try {
-        const saved = localStorage.getItem('ultra_plans');
-        if (!saved) return;
-        const plans = JSON.parse(saved);
-        if (!Array.isArray(plans) || plans.length < 3) return;
-
-        plans.forEach((p, i) => {
-          if (p.name) document.getElementById(`p${i}_name`).value = p.name;
-          if (p.badge) document.getElementById(`p${i}_badge`).value = p.badge;
-          if (p.price) document.getElementById(`p${i}_price`).value = p.price;
-          if (p.cycle) document.getElementById(`p${i}_cycle`).value = p.cycle;
-          if (p.desc) document.getElementById(`p${i}_desc`).value = p.desc;
-          if (p.features) document.getElementById(`p${i}_features`).value = p.features.join('\n');
-        });
-      } catch(_) {}
+      showToast('New test order created: #' + newOrd.id);
     }
 
     // ================= FIREBASE CLOUD SYNC =================
@@ -1378,9 +2010,7 @@ Hi *${ord.customer}*! Welcome to Ultra Stream. Your subscription has been activa
 
     function testFirebaseConnection() {
       const cfg = getFirebaseConfig();
-      if (!cfg) {
-        saveFirebaseConfig();
-      }
+      if (!cfg) saveFirebaseConfig();
       if (!db) {
         alert('Please save valid Firebase config first.');
         return;
@@ -1388,35 +2018,42 @@ Hi *${ord.customer}*! Welcome to Ultra Stream. Your subscription has been activa
       showToast('Testing connection with Firestore...');
       db.collection('test').doc('ping').set({ timestamp: Date.now() })
         .then(() => {
-          alert('✓ Success! Your Firebase Firestore database is connected and working perfectly!');
+          alert('✓ Success! Your Firebase Firestore database is connected and active.');
           setCloudStatus(true);
         })
         .catch(err => {
-          alert('Firebase Error: ' + err.message + '\n\nPlease ensure you enabled Firestore Database in test mode in your Firebase Console.');
+          alert('Firebase Error: ' + err.message);
+          setCloudStatus(false);
         });
     }
 
-    // ================= SETTINGS =================
-    function saveSettings() {
-      const pin = document.getElementById('setting_pin').value.trim();
-      const wa = document.getElementById('setting_wa').value.trim();
-      const server = document.getElementById('setting_server').value.trim();
-
-      if (pin) localStorage.setItem('ultra_admin_pin', pin);
-      if (wa) localStorage.setItem('ultra_support_wa', wa);
-      if (server) localStorage.setItem('ultra_server_url', server);
-
-      showToast('Settings updated successfully!');
+    // ================= HELPERS & INITIALIZATION =================
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
 
-    function loadSettings() {
-      const pin = localStorage.getItem('ultra_admin_pin') || DEFAULT_PIN;
-      const wa = localStorage.getItem('ultra_support_wa') || '+1234567890';
-      const server = localStorage.getItem('ultra_server_url') || 'https://stream.ultrastream.vip:8080';
+    function showToast(msg) {
+      const t = document.getElementById('adminToast');
+      document.getElementById('toastMsg').textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
 
-      document.getElementById('setting_pin').value = pin;
-      document.getElementById('setting_wa').value = wa;
-      document.getElementById('setting_server').value = server;
+    // Window Load Init
+    window.addEventListener('DOMContentLoaded', () => {
+      initFirebase();
+      renderAnalytics();
+      populateSiteContent();
+      renderPlans();
+      populatePolicies();
+      populateSettings();
+      renderOrders();
 
       const fb = getFirebaseConfig();
       if (fb) {
@@ -1427,26 +2064,6 @@ Hi *${ord.customer}*! Welcome to Ultra Stream. Your subscription has been activa
         document.getElementById('fb_messagingSenderId').value = fb.messagingSenderId || '';
         document.getElementById('fb_appId').value = fb.appId || '';
       }
-    }
-
-    // ================= TOAST SYSTEM =================
-    let toastTimeout = null;
-    function showToast(msg) {
-      const toast = document.getElementById('adminToast');
-      document.getElementById('toastMsg').textContent = msg;
-      toast.classList.add('show');
-      if (toastTimeout) clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3500);
-    }
-
-    // INIT ON LOAD
-    document.addEventListener('DOMContentLoaded', () => {
-      renderOrders();
-      loadPlansFromStorage();
-      loadSettings();
-      initFirebase();
     });
   </script>
 </body>
