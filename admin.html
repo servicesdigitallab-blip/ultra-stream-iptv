@@ -13,6 +13,8 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <!-- Three.js Library for Live Visual Background Shader Preview -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     :root {
       --bg: #070709;
@@ -635,6 +637,64 @@
       .content-area { padding: 18px; }
       .topbar { padding: 16px 20px; }
     }
+  
+    /* LIVE PREVIEW STAGE & CARD THEMES IN ADMIN */
+    @keyframes pulseLive { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.15); } }
+    .live-dot { display: inline-block; width: 10px; height: 10px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 10px #22c55e; animation: pulseLive 2s infinite; }
+    
+    #adminStageCard {
+      position: relative;
+      z-index: 2;
+      width: 340px;
+      max-width: 92%;
+      padding: 26px 24px;
+      border-radius: 24px;
+      transition: all 0.35s ease;
+      background: linear-gradient(180deg, rgba(16,16,22,0.95) 0%, rgba(10,10,14,0.98) 100%);
+      border: 1px solid rgba(255, 200, 0, 0.35);
+      box-shadow: 0 24px 55px rgba(0,0,0,.7), 0 0 30px rgba(255,200,0,0.15);
+    }
+    #adminStageCard.theme-obsidian_glass {
+      border: 1px solid rgba(255, 200, 0, 0.35);
+      background: linear-gradient(180deg, rgba(16, 16, 22, 0.95) 0%, rgba(10, 10, 14, 0.98) 100%);
+      box-shadow: 0 24px 55px rgba(0,0,0,.7), 0 0 30px rgba(255,200,0,0.15);
+    }
+    #adminStageCard.theme-neon_cyber {
+      border: 1px solid rgba(0, 242, 254, 0.5);
+      background: linear-gradient(180deg, rgba(8, 20, 32, 0.95) 0%, rgba(4, 10, 18, 0.98) 100%);
+      box-shadow: 0 24px 55px rgba(0,0,0,.85), 0 0 35px rgba(0, 242, 254, 0.25);
+    }
+    #adminStageCard.theme-neon_cyber .plan-badge-top {
+      background: linear-gradient(135deg, #00f2fe, #4facfe);
+      color: #020c15;
+    }
+    #adminStageCard.theme-neon_cyber .chk { color: #00F2FE; }
+    #adminStageCard.theme-midnight_violet {
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      background: linear-gradient(180deg, rgba(20, 10, 32, 0.95) 0%, rgba(10, 6, 18, 0.98) 100%);
+      box-shadow: 0 24px 55px rgba(0,0,0,.85), 0 0 35px rgba(168, 85, 247, 0.25);
+    }
+    #adminStageCard.theme-midnight_violet .plan-badge-top {
+      background: linear-gradient(135deg, #a855f7, #d946ef);
+      color: #ffffff;
+    }
+    #adminStageCard.theme-midnight_violet .chk { color: #c084fc; }
+    #adminStageCard.theme-emerald_tech {
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      background: linear-gradient(180deg, rgba(6, 24, 16, 0.95) 0%, rgba(3, 14, 10, 0.98) 100%);
+      box-shadow: 0 24px 55px rgba(0,0,0,.85), 0 0 35px rgba(16, 185, 129, 0.25);
+    }
+    #adminStageCard.theme-emerald_tech .plan-badge-top {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #021a0e;
+    }
+    #adminStageCard.theme-emerald_tech .chk { color: #34d399; }
+    #adminStageCard.theme-minimal_matte {
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(18, 18, 22, 0.98);
+      box-shadow: 0 16px 40px rgba(0,0,0,.6);
+    }
+
   </style>
 </head>
 <body>
@@ -816,7 +876,7 @@
           </div>
 
           <div class="editor-sections-grid">
-            <!-- Hero Section -->
+            <!-- Hero Section (Clean - Exactly matching Main Website) -->
             <div class="content-box">
               <h3>⚡ Hero Section (Top)</h3>
               <div class="form-group">
@@ -824,20 +884,9 @@
                 <input type="text" id="cnt_hero_title" class="form-input" value="Entertainment Without Boundaries">
               </div>
               <div class="form-group">
-                <label>Hero Subtitle / Description</label>
-                <textarea id="cnt_hero_sub" class="form-textarea">Access 25,000+ live 4K channels, 120,000+ movies &amp; VOD, and all major sports PPV events with 99.9% anti-freeze server uptime.</textarea>
-              </div>
-              <div class="form-group">
-                <label>Hero Trust Stat 1</label>
-                <input type="text" id="cnt_stat1" class="form-input" value="25,000+ Live Channels">
-              </div>
-              <div class="form-group">
-                <label>Hero Trust Stat 2</label>
-                <input type="text" id="cnt_stat2" class="form-input" value="120,000+ VOD Movies">
-              </div>
-              <div class="form-group">
-                <label>Hero Trust Stat 3</label>
-                <input type="text" id="cnt_stat3" class="form-input" value="99.9% Anti-Freeze Uptime">
+                <label>Hero Subtitle / Tagline (Optional)</label>
+                <textarea id="cnt_hero_sub" class="form-textarea" placeholder="Optional sub-heading or tagline..."></textarea>
+                <span class="form-hint">Controls the main headline on the top of the homepage.</span>
               </div>
             </div>
 
@@ -850,28 +899,72 @@
               </div>
             </div>
 
-            <!-- How It Works Section -->
-            <div class="content-box">
-              <h3>⚙️ Section 4 — How It Works</h3>
-              <div class="form-group">
-                <label>Section Title</label>
-                <input type="text" id="cnt_how_title" class="form-input" value="HOW IT WORKS">
+            <!-- How It Works Section (4 Real Website Cards) -->
+            <div class="content-box" style="grid-column: 1 / -1;">
+              <h3>⚙️ Section 4 — How It Works (4 Simple Steps)</h3>
+              <div style="display:flex;gap:14px;margin-bottom:12px;">
+                <div class="form-group" style="flex:1;">
+                  <label>Section Title</label>
+                  <input type="text" id="cnt_how_title" class="form-input" value="Get Started in 4 Simple Steps">
+                </div>
+                <div class="form-group" style="flex:1;">
+                  <label>Section Subtitle</label>
+                  <input type="text" id="cnt_how_sub" class="form-input" value="Get instant access to your favorite entertainment in just a few easy steps.">
+                </div>
               </div>
-              <div class="form-group">
-                <label>Section Subtitle</label>
-                <input type="text" id="cnt_how_sub" class="form-input" value="Start streaming your favorite channels in 3 simple steps">
-              </div>
-              <div class="form-group">
-                <label>Step 1 Description</label>
-                <input type="text" id="cnt_how_step1" class="form-input" value="1. Select your streaming pass (1, 6, or 12 Months).">
-              </div>
-              <div class="form-group">
-                <label>Step 2 Description</label>
-                <input type="text" id="cnt_how_step2" class="form-input" value="2. Receive instant login credentials via WhatsApp within 10 minutes.">
-              </div>
-              <div class="form-group">
-                <label>Step 3 Description</label>
-                <input type="text" id="cnt_how_step3" class="form-input" value="3. Enjoy buffer-free 4K sports, movies, and TV shows on any device.">
+              
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:14px;">
+                <!-- Step 1 -->
+                <div style="background:rgba(255,255,255,0.03);padding:14px;border-radius:10px;border:1px solid var(--border);">
+                  <div style="color:var(--gold);font-weight:700;font-size:12px;margin-bottom:6px;">STEP 1</div>
+                  <div class="form-group" style="margin-bottom:8px;">
+                    <label style="font-size:11.5px;">Title</label>
+                    <input type="text" id="cnt_how_card1_title" class="form-input" value="Create Your Account">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label style="font-size:11.5px;">Description</label>
+                    <textarea id="cnt_how_card1_desc" class="form-textarea" style="min-height:60px;font-size:12px;">Sign up in seconds using your email and create your personal account.</textarea>
+                  </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div style="background:rgba(255,255,255,0.03);padding:14px;border-radius:10px;border:1px solid var(--border);">
+                  <div style="color:var(--gold);font-weight:700;font-size:12px;margin-bottom:6px;">STEP 2</div>
+                  <div class="form-group" style="margin-bottom:8px;">
+                    <label style="font-size:11.5px;">Title</label>
+                    <input type="text" id="cnt_how_card2_title" class="form-input" value="Choose Your Plan">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label style="font-size:11.5px;">Description</label>
+                    <textarea id="cnt_how_card2_desc" class="form-textarea" style="min-height:60px;font-size:12px;">Select the perfect subscription plan that suits your entertainment needs.</textarea>
+                  </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div style="background:rgba(255,255,255,0.03);padding:14px;border-radius:10px;border:1px solid var(--border);">
+                  <div style="color:var(--gold);font-weight:700;font-size:12px;margin-bottom:6px;">STEP 3</div>
+                  <div class="form-group" style="margin-bottom:8px;">
+                    <label style="font-size:11.5px;">Title</label>
+                    <input type="text" id="cnt_how_card3_title" class="form-input" value="10-Min WhatsApp Delivery">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label style="font-size:11.5px;">Description</label>
+                    <textarea id="cnt_how_card3_desc" class="form-textarea" style="min-height:60px;font-size:12px;">Receive your M3U playlist &amp; 4K credentials within 10 minutes directly on WhatsApp &amp; Email.</textarea>
+                  </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div style="background:rgba(255,255,255,0.03);padding:14px;border-radius:10px;border:1px solid var(--border);">
+                  <div style="color:var(--gold);font-weight:700;font-size:12px;margin-bottom:6px;">STEP 4</div>
+                  <div class="form-group" style="margin-bottom:8px;">
+                    <label style="font-size:11.5px;">Title</label>
+                    <input type="text" id="cnt_how_card4_title" class="form-input" value="Start Streaming">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label style="font-size:11.5px;">Description</label>
+                    <textarea id="cnt_how_card4_desc" class="form-textarea" style="min-height:60px;font-size:12px;">Enjoy your favorite movies, TV shows, and live entertainment across your devices.</textarea>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -957,6 +1050,48 @@
               <p>Choose from curated luxury backgrounds, animated shaders, or clean minimal styles for each section.</p>
             </div>
             <button class="btn btn-gold" onclick="saveBackgrounds()">Apply &amp; Save Backgrounds</button>
+          </div>
+
+                    <!-- Real-Time Interactive Live Visual Preview Box -->
+          <div class="live-preview-box" style="margin-bottom:28px;background:radial-gradient(ellipse at center, rgba(30,25,12,0.4) 0%, #060609 85%);border:1px solid rgba(255,200,0,0.35);border-radius:20px;padding:24px;position:relative;overflow:hidden;box-shadow:0 15px 45px rgba(0,0,0,0.8);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+              <div>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span class="live-dot"></span>
+                  <h3 style="font-size:17px;font-weight:800;color:var(--gold);margin:0;">👁️ Live Visual Preview (سیکشن بیک گراؤنڈ اور کارڈ تھیم کا لائیو پیش منظر)</h3>
+                </div>
+                <p style="font-size:13px;color:var(--text-muted);margin:4px 0 0;">
+                  آپ نیچے جو بھی بیک گراؤنڈ یا کارڈ کا ڈیزائن سلیکٹ کریں گے، وہ فوراً یہاں لائیو نظر آئے گا کہ آپ کی ویب سائٹ پر کیسا دکھے گا۔
+                </p>
+              </div>
+              <div style="display:flex;gap:10px;">
+                <span id="previewBgTag" class="badge badge-gold">Fluid Gold Silk</span>
+                <span id="previewThemeTag" class="badge badge-plan">Obsidian Glass</span>
+              </div>
+            </div>
+
+            <!-- The Interactive Stage Canvas and Plan Card -->
+            <div id="adminLiveStage" style="position:relative;width:100%;height:380px;border-radius:16px;overflow:hidden;background:#050508;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.08);">
+              <!-- Shader Canvas -->
+              <div id="adminStageShader" style="position:absolute;inset:0;pointer-events:none;z-index:1;"></div>
+
+              <!-- The Interactive Sample Card -->
+              <div id="adminStageCard" class="pricing-card theme-obsidian_glass" style="position:relative;z-index:2;width:340px;max-width:90%;padding:26px 24px;border-radius:24px;transition:all 0.35s ease;">
+                <span class="plan-badge-top hot" id="adminStageBadge">🔥 BEST VALUE — 12 MONTHS VIP</span>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;">
+                  <h4 id="adminStageName" style="font-size:20px;font-weight:800;color:#fff;margin:0;">Ultra VIP Pass</h4>
+                  <div style="font-size:24px;font-weight:900;color:var(--gold);">$49<span style="font-size:13px;color:var(--text-muted);font-weight:400;">.99 / 12 Months</span></div>
+                </div>
+                <p id="adminStageDesc" style="font-size:12px;color:var(--text-muted);margin:8px 0 16px;">The ultimate 4K cinema and sports experience for you &amp; family.</p>
+                <div style="display:flex;flex-direction:column;gap:7px;font-size:12px;color:#d1d5db;margin-bottom:18px;">
+                  <div><span class="chk" style="color:var(--gold);">✓</span> 22,000+ Worldwide Channels</div>
+                  <div><span class="chk" style="color:var(--gold);">✓</span> 85,000+ Movies &amp; VOD Series</div>
+                  <div><span class="chk" style="color:var(--gold);">✓</span> Anti-Freeze™ 9.0 Technology</div>
+                  <div><span class="chk" style="color:var(--gold);">✓</span> ⚡ Guaranteed 10-Min Delivery via WhatsApp</div>
+                </div>
+                <a href="javascript:void(0)" class="plan-btn solid" style="display:block;text-align:center;padding:12px;font-weight:700;">Get Started via WhatsApp</a>
+              </div>
+            </div>
           </div>
 
           <div class="bg-options-grid">
@@ -1235,22 +1370,23 @@
     // Default Site Content
     const defaultSiteContent = {
       hero_title: 'Entertainment Without Boundaries',
-      hero_sub: 'Access 25,000+ live 4K channels, 120,000+ movies & VOD, and all major sports PPV events with 99.9% anti-freeze server uptime.',
-      stat1: '25,000+ Live Channels',
-      stat2: '120,000+ VOD Movies',
-      stat3: '99.9% Anti-Freeze Uptime',
+      hero_sub: '',
       about_text: 'Ultra Stream brings you the IPTV service of the world\'s biggest platforms — Netflix, Apple TV, Amazon Prime Video, Disney+, and HBO Max — all in one place. Live TV, movies, sports, and series in crystal-clear quality, anytime, anywhere. Everything you love, simply and reliably — that is why Ultra Stream is the best.',
-      how_title: 'HOW IT WORKS',
-      how_sub: 'Start streaming your favorite channels in 3 simple steps',
-      how_step1: '1. Select your streaming pass (1, 6, or 12 Months).',
-      how_step2: '2. Receive instant login credentials via WhatsApp within 10 minutes.',
-      how_step3: '3. Enjoy buffer-free 4K sports, movies, and TV shows on any device.',
+      how_title: 'Get Started in 4 Simple Steps',
+      how_sub: 'Get instant access to your favorite entertainment in just a few easy steps.',
+      how_card1_title: 'Create Your Account',
+      how_card1_desc: 'Sign up in seconds using your email and create your personal account.',
+      how_card2_title: 'Choose Your Plan',
+      how_card2_desc: 'Select the perfect subscription plan that suits your entertainment needs.',
+      how_card3_title: '10-Min WhatsApp Delivery',
+      how_card3_desc: 'Receive your M3U playlist & 4K credentials within 10 minutes directly on WhatsApp & Email.',
+      how_card4_title: 'Start Streaming',
+      how_card4_desc: 'Enjoy your favorite movies, TV shows, and live entertainment across your devices.',
       pricing_pill: 'Flexible Subscriptions',
       pricing_title: 'Simple Pricing, Unlimited Entertainment',
       pricing_sub: 'Get instant access to 22,000+ live HD/4K channels and 85,000+ movies & series. ⚡ Guaranteed 10-minute delivery via WhatsApp & Email with 7-day money-back guarantee.'
     };
 
-    // Default Footer & Guarantees
     const defaultFooterNav = {
       g_point1: '⚡ Guaranteed Delivery in 10 Mins',
       g_point2: '🛡️ 7-Day 100% Money-Back Guarantee',
@@ -1438,6 +1574,13 @@
       const targetPane = document.getElementById('pane-' + tabId);
       if (targetPane) targetPane.classList.add('active');
 
+      if (tabId === 'backgrounds') {
+        setTimeout(function() {
+          if (typeof initAdminPreviewShader === 'function') initAdminPreviewShader();
+          if (typeof updateAdminPreview === 'function') updateAdminPreview();
+        }, 120);
+      }
+
       if (el) {
         el.classList.add('active');
       } else {
@@ -1583,35 +1726,43 @@
 
     function populateSiteContent() {
       const c = getSiteContent();
-      document.getElementById('cnt_hero_title').value = c.hero_title || '';
-      document.getElementById('cnt_hero_sub').value = c.hero_sub || '';
-      document.getElementById('cnt_stat1').value = c.stat1 || '';
-      document.getElementById('cnt_stat2').value = c.stat2 || '';
-      document.getElementById('cnt_stat3').value = c.stat3 || '';
-      document.getElementById('cnt_about_text').value = c.about_text || '';
-      document.getElementById('cnt_how_title').value = c.how_title || '';
-      document.getElementById('cnt_how_sub').value = c.how_sub || '';
-      document.getElementById('cnt_how_step1').value = c.how_step1 || '';
-      document.getElementById('cnt_how_step2').value = c.how_step2 || '';
-      document.getElementById('cnt_how_step3').value = c.how_step3 || '';
-      document.getElementById('cnt_pricing_pill').value = c.pricing_pill || '';
-      document.getElementById('cnt_pricing_title').value = c.pricing_title || '';
-      document.getElementById('cnt_pricing_sub').value = c.pricing_sub || '';
+      if (document.getElementById('cnt_hero_title')) document.getElementById('cnt_hero_title').value = c.hero_title || '';
+      if (document.getElementById('cnt_hero_sub')) document.getElementById('cnt_hero_sub').value = c.hero_sub || '';
+      if (document.getElementById('cnt_about_text')) document.getElementById('cnt_about_text').value = c.about_text || '';
+      if (document.getElementById('cnt_how_title')) document.getElementById('cnt_how_title').value = c.how_title || 'Get Started in 4 Simple Steps';
+      if (document.getElementById('cnt_how_sub')) document.getElementById('cnt_how_sub').value = c.how_sub || 'Get instant access to your favorite entertainment in just a few easy steps.';
+      
+      if (document.getElementById('cnt_how_card1_title')) {
+        document.getElementById('cnt_how_card1_title').value = c.how_card1_title || 'Create Your Account';
+        document.getElementById('cnt_how_card1_desc').value = c.how_card1_desc || 'Sign up in seconds using your email and create your personal account.';
+        document.getElementById('cnt_how_card2_title').value = c.how_card2_title || 'Choose Your Plan';
+        document.getElementById('cnt_how_card2_desc').value = c.how_card2_desc || 'Select the perfect subscription plan that suits your entertainment needs.';
+        document.getElementById('cnt_how_card3_title').value = c.how_card3_title || '10-Min WhatsApp Delivery';
+        document.getElementById('cnt_how_card3_desc').value = c.how_card3_desc || 'Receive your M3U playlist & 4K credentials within 10 minutes directly on WhatsApp & Email.';
+        document.getElementById('cnt_how_card4_title').value = c.how_card4_title || 'Start Streaming';
+        document.getElementById('cnt_how_card4_desc').value = c.how_card4_desc || 'Enjoy your favorite movies, TV shows, and live entertainment across your devices.';
+      }
+
+      if (document.getElementById('cnt_pricing_pill')) document.getElementById('cnt_pricing_pill').value = c.pricing_pill || '';
+      if (document.getElementById('cnt_pricing_title')) document.getElementById('cnt_pricing_title').value = c.pricing_title || '';
+      if (document.getElementById('cnt_pricing_sub')) document.getElementById('cnt_pricing_sub').value = c.pricing_sub || '';
     }
 
     function saveSiteContent() {
       const c = {
         hero_title: document.getElementById('cnt_hero_title').value.trim(),
         hero_sub: document.getElementById('cnt_hero_sub').value.trim(),
-        stat1: document.getElementById('cnt_stat1').value.trim(),
-        stat2: document.getElementById('cnt_stat2').value.trim(),
-        stat3: document.getElementById('cnt_stat3').value.trim(),
         about_text: document.getElementById('cnt_about_text').value.trim(),
         how_title: document.getElementById('cnt_how_title').value.trim(),
         how_sub: document.getElementById('cnt_how_sub').value.trim(),
-        how_step1: document.getElementById('cnt_how_step1').value.trim(),
-        how_step2: document.getElementById('cnt_how_step2').value.trim(),
-        how_step3: document.getElementById('cnt_how_step3').value.trim(),
+        how_card1_title: document.getElementById('cnt_how_card1_title') ? document.getElementById('cnt_how_card1_title').value.trim() : 'Create Your Account',
+        how_card1_desc: document.getElementById('cnt_how_card1_desc') ? document.getElementById('cnt_how_card1_desc').value.trim() : 'Sign up in seconds using your email and create your personal account.',
+        how_card2_title: document.getElementById('cnt_how_card2_title') ? document.getElementById('cnt_how_card2_title').value.trim() : 'Choose Your Plan',
+        how_card2_desc: document.getElementById('cnt_how_card2_desc') ? document.getElementById('cnt_how_card2_desc').value.trim() : 'Select the perfect subscription plan that suits your entertainment needs.',
+        how_card3_title: document.getElementById('cnt_how_card3_title') ? document.getElementById('cnt_how_card3_title').value.trim() : '10-Min WhatsApp Delivery',
+        how_card3_desc: document.getElementById('cnt_how_card3_desc') ? document.getElementById('cnt_how_card3_desc').value.trim() : 'Receive your M3U playlist & 4K credentials within 10 minutes directly on WhatsApp & Email.',
+        how_card4_title: document.getElementById('cnt_how_card4_title') ? document.getElementById('cnt_how_card4_title').value.trim() : 'Start Streaming',
+        how_card4_desc: document.getElementById('cnt_how_card4_desc') ? document.getElementById('cnt_how_card4_desc').value.trim() : 'Enjoy your favorite movies, TV shows, and live entertainment across your devices.',
         pricing_pill: document.getElementById('cnt_pricing_pill').value.trim(),
         pricing_title: document.getElementById('cnt_pricing_title').value.trim(),
         pricing_sub: document.getElementById('cnt_pricing_sub').value.trim()
@@ -1621,348 +1772,13 @@
 
       if (db) {
         db.collection('settings').doc('site_content').set(c, { merge: true })
-          .then(() => showToast('Headings saved & synced live!'))
-          .catch(() => showToast('Saved locally!'));
+          .then(() => showToast('Section headings saved & synced live!'))
+          .catch(() => showToast('Headings saved locally!'));
       } else {
-        showToast('Saved locally! Synced to live website.');
+        showToast('Saved headings to local device!');
       }
     }
 
-    // ================= PLANS, POINTS & CARD DESIGN =================
-    function getPlans() {
-      try {
-        const p = localStorage.getItem('ultra_pricing_plans');
-        return p ? JSON.parse(p) : plansData;
-      } catch(_) {
-        return plansData;
-      }
-    }
-
-    function renderPlans() {
-      const container = document.getElementById('plansDynamicContainer');
-      const plans = getPlans();
-
-      container.innerHTML = plans.map((p, pIdx) => {
-        const isFeatured = p.isFeatured || pIdx === 1;
-        const featuresHtml = (p.features || []).map((feat, fIdx) => `
-          <div class="point-item">
-            <span style="color:var(--green);font-weight:900;">✓</span>
-            <input type="text" class="form-input" value="${escapeHtml(feat)}" onchange="editPoint(${pIdx}, ${fIdx}, this.value)">
-            <button class="btn-del-pt" onclick="deletePoint(${pIdx}, ${fIdx})" title="Delete point">✕</button>
-          </div>
-        `).join('');
-
-        return `
-          <div class="plan-box ${isFeatured ? 'featured-box' : ''}">
-            <div class="plan-box-head">
-              <h3>Plan ${pIdx + 1}: ${escapeHtml(p.name)}</h3>
-              <div style="display:flex;gap:6px;align-items:center;">
-                ${isFeatured ? '<span class="badge badge-plan">⭐ Featured</span>' : ''}
-                <button class="btn btn-sm btn-danger" onclick="deletePlan(${pIdx})" title="Delete this plan">🗑️ Delete</button>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Plan Name</label>
-              <input type="text" class="form-input" id="plan_${pIdx}_name" value="${escapeHtml(p.name)}">
-            </div>
-
-            <div class="form-group">
-              <label>Top Badge Text</label>
-              <input type="text" class="form-input" id="plan_${pIdx}_badge" value="${escapeHtml(p.badge || '')}">
-            </div>
-
-            <div style="display:flex;gap:12px;">
-              <div class="form-group" style="flex:1;">
-                <label>Price ($ USD)</label>
-                <input type="text" class="form-input" id="plan_${pIdx}_price" value="${escapeHtml(p.price)}">
-              </div>
-              <div class="form-group" style="flex:1;">
-                <label>Billing Cycle Text</label>
-                <input type="text" class="form-input" id="plan_${pIdx}_cycle" value="${escapeHtml(p.cycle)}">
-              </div>
-            </div>
-
-            <div style="display:flex;gap:12px;">
-              <div class="form-group" style="flex:1;">
-                <label>Original Strike Price</label>
-                <input type="text" class="form-input" id="plan_${pIdx}_orig" value="${escapeHtml(p.origPrice || '$24.99')}">
-              </div>
-              <div class="form-group" style="flex:1;">
-                <label>Savings Badge</label>
-                <input type="text" class="form-input" id="plan_${pIdx}_savings" value="${escapeHtml(p.savings || 'SAVE 40%')}">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Button Text</label>
-              <input type="text" class="form-input" id="plan_${pIdx}_btnText" value="${escapeHtml(p.btnText || 'Get Instant Access')}">
-            </div>
-
-            <div class="form-group">
-              <label>Short Description</label>
-              <input type="text" class="form-input" id="plan_${pIdx}_desc" value="${escapeHtml(p.desc || '')}">
-            </div>
-
-            <!-- Bullet Points Manager -->
-            <div class="form-group" style="margin-top:10px;">
-              <label style="color:var(--gold);">Feature Bullet Points (Add, Edit, Delete):</label>
-              <div id="points_list_${pIdx}">
-                ${featuresHtml}
-              </div>
-              <!-- Add New Point Input -->
-              <div style="display:flex;gap:8px;margin-top:10px;">
-                <input type="text" id="new_pt_input_${pIdx}" class="form-input" placeholder="Type new point (e.g. 5 Connections, 4K UHD)..." style="font-size:13px;">
-                <button class="btn btn-outline btn-sm" onclick="addNewPoint(${pIdx})" style="white-space:nowrap;">➕ Add Point</button>
-              </div>
-            </div>
-
-            <!-- WhatsApp Custom Draft Message -->
-            <div class="form-group" style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">
-              <label style="color:var(--green);font-weight:700;">💬 WhatsApp Draft Message for "Get Started"</label>
-              <textarea id="plan_${pIdx}_draft" class="form-textarea" style="font-size:12.5px;min-height:85px;">${escapeHtml(p.draftMessage || '')}</textarea>
-              <span class="form-hint">Auto-fills in the customer's WhatsApp chat when clicking this plan's button.</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function editPoint(planIdx, pointIdx, newVal) {
-      const plans = getPlans();
-      if (plans[planIdx] && plans[planIdx].features) {
-        plans[planIdx].features[pointIdx] = newVal.trim();
-        localStorage.setItem('ultra_pricing_plans', JSON.stringify(plans));
-      }
-    }
-
-    function deletePoint(planIdx, pointIdx) {
-      const plans = getPlans();
-      if (plans[planIdx] && plans[planIdx].features) {
-        plans[planIdx].features.splice(pointIdx, 1);
-        localStorage.setItem('ultra_pricing_plans', JSON.stringify(plans));
-        renderPlans();
-        showToast('Bullet point removed.');
-      }
-    }
-
-    function addNewPoint(planIdx) {
-      const input = document.getElementById(`new_pt_input_${planIdx}`);
-      const val = input.value.trim();
-      if (!val) {
-        alert('Please enter text for the new bullet point.');
-        return;
-      }
-      const plans = getPlans();
-      if (plans[planIdx]) {
-        if (!plans[planIdx].features) plans[planIdx].features = [];
-        plans[planIdx].features.push(val);
-        localStorage.setItem('ultra_pricing_plans', JSON.stringify(plans));
-        renderPlans();
-        showToast('New bullet point added!');
-      }
-    }
-
-    function addNewPlanModal() {
-      const pName = prompt('Enter New Plan Name (e.g. 3 Months Pass or Lifetime VIP):', '3 Months Pass');
-      if (!pName) return;
-      const pPrice = prompt('Enter Plan Price (e.g. 24):', '24');
-      if (!pPrice) return;
-
-      const plans = getPlans();
-      plans.push({
-        id: 'plan_' + (plans.length + 1),
-        name: pName,
-        badge: pName.toUpperCase(),
-        price: pPrice,
-        cycle: '.99 / 3 Months',
-        origPrice: '$45.00',
-        savings: 'SAVE 45%',
-        desc: 'New customized streaming pass added from Admin Panel.',
-        btnText: 'Get ' + pName,
-        draftMessage: 'Hello Ultra Stream! 👋 I would like to order the ' + pName + ' ($' + pPrice + '.99). Please provide me instant activation details via WhatsApp. Thank you!',
-        features: [
-          '15,000+ Live Worldwide Channels',
-          '50,000+ VOD Movies & Series',
-          'Full HD & 4K Streaming Quality',
-          'Anti-Freeze™ 9.0 Technology',
-          '2 Device Connections',
-          '⚡ 10-Minute Delivery via WhatsApp'
-        ]
-      });
-
-      localStorage.setItem('ultra_pricing_plans', JSON.stringify(plans));
-      renderPlans();
-      showToast('New plan "' + pName + '" added successfully!');
-    }
-
-    function deletePlan(planIdx) {
-      const plans = getPlans();
-      if (plans.length <= 1) {
-        alert('You must have at least one active plan.');
-        return;
-      }
-      if (!confirm('Are you sure you want to delete this plan?')) return;
-      plans.splice(planIdx, 1);
-      localStorage.setItem('ultra_pricing_plans', JSON.stringify(plans));
-      renderPlans();
-      showToast('Plan deleted.');
-    }
-
-    function selectCardTheme(themeKey, el) {
-      document.querySelectorAll('.theme-choice').forEach(tc => tc.classList.remove('active'));
-      if (el) el.classList.add('active');
-      const bgs = getBackgrounds();
-      bgs.card_theme = themeKey;
-      localStorage.setItem('ultra_backgrounds', JSON.stringify(bgs));
-
-      if (db) {
-        db.collection('settings').doc('backgrounds').set(bgs, { merge: true }).catch(() => {});
-      }
-      showToast('Plan Card Theme updated to: ' + themeKey);
-    }
-
-    function savePlansToStorage() {
-      const plans = getPlans();
-      for (let i = 0; i < plans.length; i++) {
-        const nameEl = document.getElementById(`plan_${i}_name`);
-        const badgeEl = document.getElementById(`plan_${i}_badge`);
-        const priceEl = document.getElementById(`plan_${i}_price`);
-        const cycleEl = document.getElementById(`plan_${i}_cycle`);
-        const origEl = document.getElementById(`plan_${i}_orig`);
-        const savingsEl = document.getElementById(`plan_${i}_savings`);
-        const btnTextEl = document.getElementById(`plan_${i}_btnText`);
-        const descEl = document.getElementById(`plan_${i}_desc`);
-        const draftEl = document.getElementById(`plan_${i}_draft`);
-
-        if (nameEl) plans[i].name = nameEl.value.trim();
-        if (badgeEl) plans[i].badge = badgeEl.value.trim();
-        if (priceEl) plans[i].price = priceEl.value.trim();
-        if (cycleEl) plans[i].cycle = cycleEl.value.trim();
-        if (origEl) plans[i].origPrice = origEl.value.trim();
-        if (savingsEl) plans[i].savings = savingsEl.value.trim();
-        if (btnTextEl) plans[i].btnText = btnTextEl.value.trim();
-        if (descEl) plans[i].desc = descEl.value.trim();
-        if (draftEl) plans[i].draftMessage = draftEl.value.trim();
-      }
-
-      localStorage.setItem('ultra_pricing_plans', JSON.stringify(plans));
-
-      if (db) {
-        db.collection('settings').doc('pricing_plans').set({ plans: plans }, { merge: true })
-          .then(() => showToast('Plans, Points & WhatsApp Messages updated live in Cloud!'))
-          .catch(() => showToast('Plans saved locally!'));
-      } else {
-        showToast('Plans saved! Synced to live website.');
-      }
-    }
-
-    // ================= SECTION BACKGROUNDS =================
-    function getBackgrounds() {
-      try {
-        const b = localStorage.getItem('ultra_backgrounds');
-        return b ? { ...defaultBackgrounds, ...JSON.parse(b) } : defaultBackgrounds;
-      } catch(_) {
-        return defaultBackgrounds;
-      }
-    }
-
-    function populateBackgrounds() {
-      const b = getBackgrounds();
-      document.getElementById('bg_pricing_select').value = b.pricing_bg || 'fluid_gold';
-      document.getElementById('bg_shader_speed').value = b.shader_speed || '0.55';
-      document.getElementById('bg_shader_opacity').value = b.shader_opacity || '0.58';
-      document.getElementById('bg_hero_select').value = b.hero_bg || 'poster_wall';
-      document.getElementById('bg_about_select').value = b.about_bg || 'dot_matrix';
-
-      // Set active theme choice
-      const activeTheme = b.card_theme || 'obsidian_glass';
-      document.querySelectorAll('.theme-choice').forEach(tc => {
-        if (tc.getAttribute('onclick')?.includes(activeTheme)) {
-          tc.classList.add('active');
-        } else {
-          tc.classList.remove('active');
-        }
-      });
-    }
-
-    function saveBackgrounds() {
-      const b = {
-        pricing_bg: document.getElementById('bg_pricing_select').value,
-        shader_speed: document.getElementById('bg_shader_speed').value,
-        shader_opacity: document.getElementById('bg_shader_opacity').value,
-        hero_bg: document.getElementById('bg_hero_select').value,
-        about_bg: document.getElementById('bg_about_select').value,
-        card_theme: getBackgrounds().card_theme || 'obsidian_glass'
-      };
-
-      localStorage.setItem('ultra_backgrounds', JSON.stringify(b));
-
-      if (db) {
-        db.collection('settings').doc('backgrounds').set(b, { merge: true })
-          .then(() => showToast('Background themes saved & synced live!'))
-          .catch(() => showToast('Backgrounds saved locally!'));
-      } else {
-        showToast('Background themes saved! Synced to website.');
-      }
-    }
-
-    function previewBgSelection() {
-      showToast('Selected style: ' + document.getElementById('bg_pricing_select').value);
-    }
-
-    // ================= GUARANTEES & FOOTER NAVIGATION =================
-    function getFooterNav() {
-      try {
-        const f = localStorage.getItem('ultra_footer_nav');
-        return f ? { ...defaultFooterNav, ...JSON.parse(f) } : defaultFooterNav;
-      } catch(_) {
-        return defaultFooterNav;
-      }
-    }
-
-    function populateFooterNav() {
-      const f = getFooterNav();
-      document.getElementById('g_point1').value = f.g_point1 || '';
-      document.getElementById('g_point2').value = f.g_point2 || '';
-      document.getElementById('g_point3').value = f.g_point3 || '';
-      document.getElementById('g_point4').value = f.g_point4 || '';
-      document.getElementById('f_desc_text').value = f.f_desc || '';
-      document.getElementById('f_badge_text').value = f.f_badge || '';
-      document.getElementById('f_copyright_text').value = f.f_copy || '';
-      document.getElementById('nav_item1').value = f.nav_item1 || '';
-      document.getElementById('nav_item2').value = f.nav_item2 || '';
-      document.getElementById('nav_item3').value = f.nav_item3 || '';
-      document.getElementById('nav_item4').value = f.nav_item4 || '';
-    }
-
-    function saveFooterNav() {
-      const f = {
-        g_point1: document.getElementById('g_point1').value.trim(),
-        g_point2: document.getElementById('g_point2').value.trim(),
-        g_point3: document.getElementById('g_point3').value.trim(),
-        g_point4: document.getElementById('g_point4').value.trim(),
-        f_desc: document.getElementById('f_desc_text').value.trim(),
-        f_badge: document.getElementById('f_badge_text').value.trim(),
-        f_copy: document.getElementById('f_copyright_text').value.trim(),
-        nav_item1: document.getElementById('nav_item1').value.trim(),
-        nav_item2: document.getElementById('nav_item2').value.trim(),
-        nav_item3: document.getElementById('nav_item3').value.trim(),
-        nav_item4: document.getElementById('nav_item4').value.trim()
-      };
-
-      localStorage.setItem('ultra_footer_nav', JSON.stringify(f));
-
-      if (db) {
-        db.collection('settings').doc('footer_nav').set(f, { merge: true })
-          .then(() => showToast('Guarantees & Footer saved & synced live!'))
-          .catch(() => showToast('Saved locally!'));
-      } else {
-        showToast('Saved locally! Synced to live website.');
-      }
-    }
-
-    // ================= LEGAL POLICIES =================
     function getPolicies() {
       try {
         const p = localStorage.getItem('ultra_legal_policies');
@@ -2153,6 +1969,239 @@
         document.getElementById('fb_appId').value = fb.appId || '';
       }
     });
-  </script>
+  
+    // ========================================================
+    // INTERACTIVE REAL-TIME LIVE PREVIEW SHADER (IN ADMIN PANEL)
+    // ========================================================
+    let adminPreviewScene, adminPreviewCam, adminPreviewRenderer, adminPreviewMaterial;
+    let adminPreviewRaf = null;
+
+    function initAdminPreviewShader() {
+      const container = document.getElementById('adminStageShader');
+      if (!container || typeof THREE === 'undefined') return;
+      if (container.querySelector('canvas')) return; // already initialized
+
+      const MAX_COLORS = 8;
+      const frag = `
+#define MAX_COLORS 8
+uniform vec2 uCanvas;
+uniform float uTime;
+uniform float uSpeed;
+uniform vec2 uRot;
+uniform int uColorCount;
+uniform vec3 uColors[MAX_COLORS];
+uniform int uTransparent;
+uniform float uScale;
+uniform float uFrequency;
+uniform float uWarpStrength;
+uniform float uNoise;
+uniform int uIterations;
+uniform float uIntensity;
+uniform float uBandWidth;
+varying vec2 vUv;
+
+void main() {
+  float t = uTime * uSpeed;
+  vec2 p = vUv * 2.0 - 1.0;
+  vec2 rp = vec2(p.x * uRot.x - p.y * uRot.y, p.x * uRot.y + p.y * uRot.x);
+  vec2 q = vec2(rp.x * (uCanvas.x / uCanvas.y), rp.y);
+  q /= max(uScale, 0.0001);
+  q /= 0.5 + 0.2 * dot(q, q);
+  q += 0.2 * cos(t) - 7.56;
+
+  for (int j = 0; j < 5; j++) {
+    if (j >= uIterations - 1) break;
+    vec2 rr = sin(1.5 * (q.yx * uFrequency) + 2.0 * cos(q * uFrequency));
+    q += (rr - q) * 0.15;
+  }
+
+  vec3 col = vec3(0.0);
+  float a = 1.0;
+
+  if (uColorCount > 0) {
+    vec2 s = q;
+    vec3 sumCol = vec3(0.0);
+    float cover = 0.0;
+    for (int i = 0; i < MAX_COLORS; ++i) {
+      if (i >= uColorCount) break;
+      s -= 0.01;
+      vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));
+      float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(i)) / 4.0);
+      float kBelow = clamp(uWarpStrength, 0.0, 1.0);
+      float kMix = pow(kBelow, 0.3);
+      float gain = 1.0 + max(uWarpStrength - 1.0, 0.0);
+      vec2 disp = (r - s) * kBelow;
+      vec2 warped = s + disp * gain;
+      float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(i)) / 4.0);
+      float m = mix(m0, m1, kMix);
+      float w = 1.0 - exp(-uBandWidth / exp(uBandWidth * m));
+      sumCol += uColors[i] * w;
+      cover = max(cover, w);
+    }
+    col = clamp(sumCol, 0.0, 1.0);
+    a = uTransparent > 0 ? cover : 1.0;
+  }
+
+  col *= uIntensity;
+
+  if (uNoise > 0.0001) {
+    float n = fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453123);
+    col += (n - 0.5) * uNoise;
+    col = clamp(col, 0.0, 1.0);
+  }
+
+  vec3 rgb = (uTransparent > 0) ? col * a : col;
+  gl_FragColor = vec4(rgb, a);
+}
+`;
+
+      const vert = `
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = vec4(position, 1.0);
+}
+`;
+
+      adminPreviewScene = new THREE.Scene();
+      adminPreviewCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+      const geom = new THREE.PlaneGeometry(2, 2);
+
+      const colors = ['#FFE885', '#FFC800', '#FFA726', '#FFD54F'];
+      const toVec3 = hex => {
+        const h = hex.replace('#','').trim();
+        const v = [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+        return new THREE.Vector3(v[0]/255, v[1]/255, v[2]/255);
+      };
+      const uColorsArr = Array.from({ length: MAX_COLORS }, () => new THREE.Vector3(0,0,0));
+      const cvs = colors.map(toVec3);
+      for (let i = 0; i < MAX_COLORS; i++) {
+        if (i < cvs.length) uColorsArr[i].copy(cvs[i]);
+      }
+
+      adminPreviewMaterial = new THREE.ShaderMaterial({
+        vertexShader: vert,
+        fragmentShader: frag,
+        uniforms: {
+          uCanvas: { value: new THREE.Vector2(1, 1) },
+          uTime: { value: 0 },
+          uSpeed: { value: 0.55 },
+          uRot: { value: new THREE.Vector2(0, 1) },
+          uColorCount: { value: cvs.length },
+          uColors: { value: uColorsArr },
+          uTransparent: { value: 1 },
+          uScale: { value: 1.0 },
+          uFrequency: { value: 1.0 },
+          uWarpStrength: { value: 1.0 },
+          uNoise: { value: 0.15 },
+          uIterations: { value: 1 },
+          uIntensity: { value: 1.25 },
+          uBandWidth: { value: 6.0 }
+        },
+        premultipliedAlpha: true,
+        transparent: true
+      });
+
+      const mesh = new THREE.Mesh(geom, adminPreviewMaterial);
+      adminPreviewScene.add(mesh);
+
+      adminPreviewRenderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' });
+      adminPreviewRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+      adminPreviewRenderer.setClearColor(0x000000, 0);
+      adminPreviewRenderer.domElement.style.width = '100%';
+      adminPreviewRenderer.domElement.style.height = '100%';
+      adminPreviewRenderer.domElement.style.display = 'block';
+      container.appendChild(adminPreviewRenderer.domElement);
+
+      const resize = () => {
+        const w = container.clientWidth || 300;
+        const h = container.clientHeight || 300;
+        adminPreviewRenderer.setSize(w, h, false);
+        adminPreviewMaterial.uniforms.uCanvas.value.set(w, h);
+      };
+      resize();
+      window.addEventListener('resize', resize);
+
+      const clock = new THREE.Clock();
+      function previewLoop() {
+        const elapsed = clock.getElapsedTime();
+        adminPreviewMaterial.uniforms.uTime.value = elapsed;
+        const rad = ((90 + elapsed * 7.5) * Math.PI) / 180;
+        adminPreviewMaterial.uniforms.uRot.value.set(Math.cos(rad), Math.sin(rad));
+        adminPreviewRenderer.render(adminPreviewScene, adminPreviewCam);
+        adminPreviewRaf = requestAnimationFrame(previewLoop);
+      }
+      previewLoop();
+      updateAdminPreview();
+    }
+
+    function updateAdminPreview() {
+      const select = document.getElementById('bg_pricing_select');
+      const speedEl = document.getElementById('bg_shader_speed');
+      const opacEl = document.getElementById('bg_shader_opacity');
+      const bgTag = document.getElementById('previewBgTag');
+      const container = document.getElementById('adminStageShader');
+
+      if (!select) return;
+      const val = select.value;
+      const speed = speedEl ? parseFloat(speedEl.value) : 0.55;
+      const opacity = opacEl ? parseFloat(opacEl.value) : 0.58;
+
+      if (container) {
+        container.style.opacity = opacity;
+        container.style.display = (val === 'pitch_black') ? 'none' : 'block';
+      }
+
+      if (bgTag) {
+        const bgNames = {
+          fluid_gold: 'Fluid Gold Silk',
+          molten_amber: 'Molten Amber & Crimson',
+          midnight_aurora: 'Midnight Aurora Violet/Cyan',
+          obsidian_mesh: 'Dark Obsidian Radial',
+          cyber_grid: 'Cyber Laser Grid',
+          pitch_black: 'Pitch Black Luxury'
+        };
+        bgTag.textContent = bgNames[val] || val;
+      }
+
+      if (adminPreviewMaterial) {
+        adminPreviewMaterial.uniforms.uSpeed.value = speed;
+        const palettes = {
+          fluid_gold: ['#FFE885', '#FFC800', '#FFA726', '#FFD54F'],
+          molten_amber: ['#FF4D4D', '#FF8C00', '#FFAA00', '#D32F2F'],
+          midnight_aurora: ['#00F2FE', '#4FACFE', '#7F00FF', '#E100FF'],
+          obsidian_mesh: ['#FFC800', '#3A2E12', '#221805', '#0D0D12'],
+          cyber_grid: ['#00FFA3', '#00B8D9', '#053828', '#0F172A'],
+          pitch_black: ['#000000', '#030305', '#060608', '#000000']
+        };
+        const pColors = palettes[val] || palettes.fluid_gold;
+        const toVec3 = hex => {
+          const h = hex.replace('#','').trim();
+          const v = [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+          return new THREE.Vector3(v[0]/255, v[1]/255, v[2]/255);
+        };
+        const newVecs = pColors.map(toVec3);
+        const MAX_COLORS = 8;
+        for (let i = 0; i < MAX_COLORS; i++) {
+          if (i < newVecs.length) adminPreviewMaterial.uniforms.uColors.value[i].copy(newVecs[i]);
+          else adminPreviewMaterial.uniforms.uColors.value[i].set(0, 0, 0);
+        }
+        adminPreviewMaterial.uniforms.uColorCount.value = newVecs.length;
+      }
+    }
+
+    // Attach listeners to update live preview immediately
+    document.addEventListener('DOMContentLoaded', function() {
+      const select = document.getElementById('bg_pricing_select');
+      const speed = document.getElementById('bg_shader_speed');
+      const opac = document.getElementById('bg_shader_opacity');
+      if (select) select.addEventListener('change', updateAdminPreview);
+      if (speed) speed.addEventListener('change', updateAdminPreview);
+      if (opac) opac.addEventListener('change', updateAdminPreview);
+
+      setTimeout(initAdminPreviewShader, 200);
+    });
+
+</script>
 </body>
 </html>

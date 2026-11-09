@@ -2227,9 +2227,21 @@ if (document.readyState === 'loading') {
 
       // How It Works
       const howTitle = document.querySelector('#how h2');
-      if (howTitle && content.how_title) howTitle.textContent = content.how_title;
+      if (howTitle && content.how_title) howTitle.innerHTML = '<span class="how-w">' + escapeHtml(content.how_title) + '</span><span class="how-caret" aria-hidden="true"></span>';
       const howSub = document.querySelector('#how .how-sub');
       if (howSub && content.how_sub) howSub.textContent = content.how_sub;
+
+      const howCards = document.querySelectorAll('.how-card');
+      if (howCards.length >= 4) {
+        if (content.how_card1_title) { const el = howCards[0].querySelector('h3'); if (el) el.textContent = content.how_card1_title; }
+        if (content.how_card1_desc) { const el = howCards[0].querySelector('p'); if (el) el.textContent = content.how_card1_desc; }
+        if (content.how_card2_title) { const el = howCards[1].querySelector('h3'); if (el) el.textContent = content.how_card2_title; }
+        if (content.how_card2_desc) { const el = howCards[1].querySelector('p'); if (el) el.textContent = content.how_card2_desc; }
+        if (content.how_card3_title) { const el = howCards[2].querySelector('h3'); if (el) el.textContent = content.how_card3_title; }
+        if (content.how_card3_desc) { const el = howCards[2].querySelector('p'); if (el) el.textContent = content.how_card3_desc; }
+        if (content.how_card4_title) { const el = howCards[3].querySelector('h3'); if (el) el.textContent = content.how_card4_title; }
+        if (content.how_card4_desc) { const el = howCards[3].querySelector('p'); if (el) el.textContent = content.how_card4_desc; }
+      }
 
       // Pricing Section
       const pricingPill = document.querySelector('.pricing-pill');
@@ -2313,7 +2325,7 @@ if (document.readyState === 'loading') {
           const isFeatured = p.isFeatured || (idx === 1);
           const isHot = p.badge && (p.badge.includes('🔥') || p.badge.includes('BEST') || isFeatured);
           const draft = p.draftMessage || ('Hello Ultra Stream! I want to order ' + p.name + ' (' + p.cycle + ').');
-          const waUrl = 'https://wa.me/' + waPhone + '?text=' + encodeURIComponent(draft);
+          const waUrl = (p.customLink && p.customLink.trim()) ? p.customLink.trim() : ('https://wa.me/' + waPhone + '?text=' + encodeURIComponent(draft));
           const btnKey = 'plan' + (idx + 1) + '_get_started';
 
           let featuresHtml = '';
