@@ -231,93 +231,21 @@ footer{background:#040406;border-top:1px solid rgba(255,255,255,.08);padding:68p
 }
 @media(prefers-reduced-motion:reduce){.how-illus,.how-glow,.id-plus,.plan-front>svg,.tv>svg,.stream-img{animation:none}.how-illus{animation:none}.how-card{transition:none;opacity:1;transform:none}.how-card:nth-child(1),.how-card:nth-child(2),.how-card:nth-child(3),.how-card:nth-child(4){transform:none}.how-sub{opacity:1;transition:none}.how-caret{display:none}}
 
-/* SECTION 5 — Framer Fluid Shader & Particles Canvas */
+/* SECTION 5 — Framer Luxury Fluid Shader Canvas */
 .pricing-shader-bg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 0;
-  opacity: 0.88;
-}
-.pricing-particles-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
   z-index: 1;
+  overflow: hidden;
+  opacity: 0.95;
 }
-
-/* FRAMER INTERACTIVE BILLING TOGGLE SWITCH */
-.pricing-toggle-wrap {
-  display: flex;
-  justify-content: center;
-  margin: 0 auto 52px;
-  position: relative;
-  z-index: 2;
-}
-.pricing-toggle {
-  display: inline-flex;
-  position: relative;
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 5px;
-  border-radius: 999px;
-  backdrop-filter: blur(18px);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-}
-.toggle-btn {
-  position: relative;
-  z-index: 2;
-  padding: 10px 24px;
-  font-family: 'Space Grotesk', Inter, sans-serif;
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #a8a8b4;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  border-radius: 999px;
-  transition: color 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.toggle-btn.active {
-  color: #000;
-}
-.toggle-badge {
-  font-size: 10.5px;
-  font-weight: 800;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #FF3B30 0%, #FF730D 100%);
-  color: #fff;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 10px rgba(255,59,48,0.5);
-}
-.toggle-slider {
-  position: absolute;
-  top: 5px;
-  bottom: 5px;
-  left: 5px;
-  width: calc(50% - 5px);
-  background: linear-gradient(135deg, #FFE066 0%, #FFC800 50%, #FFA000 100%);
-  border-radius: 999px;
-  box-shadow: 0 4px 20px rgba(255, 200, 0, 0.5);
-  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 1;
-}
-.pricing-toggle.monthly-active .toggle-slider {
-  transform: translateX(100%);
-}
-.pricing-toggle.monthly-active #btnMonthly {
-  color: #000;
-}
-.pricing-toggle.monthly-active #btnYearly {
-  color: #a8a8b4;
+.pricing-shader-bg canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
 }
 
 /* FRAMER LASER BORDER BEAM (Continuous Radiant Light Circling VIP Card) */
@@ -417,60 +345,78 @@ footer{background:#040406;border-top:1px solid rgba(255,255,255,.08);padding:68p
   100% { transform: translateY(-4px); box-shadow: 0 0 28px rgba(255,200,0,0.75); }
 }
 
-/* FLOATING WHATSAPP QUICK ORDER BUTTON */
+/* FLOATING WHATSAPP BUTTON WITH BEST ANIMATIONS (RADAR PULSE + BOB + WIGGLE) */
 .wa-float {
   position: fixed;
   bottom: 28px;
   right: 28px;
-  width: 62px;
-  height: 62px;
+  width: 64px;
+  height: 64px;
   background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
   color: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 26px rgba(37, 211, 102, 0.45);
+  box-shadow: 0 10px 32px rgba(37, 211, 102, 0.55), 0 0 35px rgba(37, 211, 102, 0.35);
   z-index: 9999;
   text-decoration: none;
+  animation: waBob 3s ease-in-out infinite;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
-  animation: waPulse 2.8s infinite;
 }
 .wa-float:hover {
-  transform: scale(1.1) translateY(-4px);
-  box-shadow: 0 14px 38px rgba(37, 211, 102, 0.65), 0 0 25px rgba(37, 211, 102, 0.5);
+  transform: scale(1.15) translateY(-4px);
+  box-shadow: 0 16px 45px rgba(37, 211, 102, 0.75), 0 0 55px rgba(37, 211, 102, 0.6);
 }
-@keyframes waPulse {
-  0% { box-shadow: 0 8px 26px rgba(37, 211, 102, 0.45), 0 0 0 0 rgba(37, 211, 102, 0.5); }
-  70% { box-shadow: 0 8px 26px rgba(37, 211, 102, 0.45), 0 0 0 16px rgba(37, 211, 102, 0); }
-  100% { box-shadow: 0 8px 26px rgba(37, 211, 102, 0.45), 0 0 0 0 rgba(37, 211, 102, 0); }
-}
-.wa-float-badge {
+
+/* Radar Pulse Wave 1 */
+.wa-float::before {
+  content: "";
   position: absolute;
-  right: 70px;
-  white-space: nowrap;
-  background: rgba(10, 10, 14, 0.94);
-  color: #FFC800;
-  border: 1px solid rgba(255, 200, 0, 0.4);
-  font-family: 'Space Grotesk', Inter, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 6px 13px;
-  border-radius: 999px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(37, 211, 102, 0.75);
+  animation: waPulseRadar 2.4s cubic-bezier(0.24, 0, 0.38, 1) infinite;
   pointer-events: none;
-  opacity: 0.95;
-  transition: opacity 0.25s ease, transform 0.25s ease;
 }
-.wa-float:hover .wa-float-badge {
-  opacity: 1;
-  transform: translateX(-4px);
+/* Radar Pulse Wave 2 */
+.wa-float::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(37, 211, 102, 0.5);
+  animation: waPulseRadar 2.4s cubic-bezier(0.24, 0, 0.38, 1) infinite 1.2s;
+  pointer-events: none;
+}
+@keyframes waPulseRadar {
+  0% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+@keyframes waBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+/* Wiggle the SVG WhatsApp icon */
+.wa-float svg {
+  animation: waIconWiggle 4s ease-in-out infinite;
+  transform-origin: center center;
+}
+@keyframes waIconWiggle {
+  0%, 75%, 100% { transform: rotate(0deg) scale(1); }
+  78% { transform: rotate(-14deg) scale(1.1); }
+  82% { transform: rotate(14deg) scale(1.1); }
+  86% { transform: rotate(-10deg) scale(1.08); }
+  90% { transform: rotate(10deg) scale(1.08); }
+  94% { transform: rotate(0deg) scale(1); }
 }
 
 /* SECTION 5 — Premium IPTV Pricing Plans (Best Animations & 3D Interactive FX) */
 .pricing{background:#050505;padding:115px 4vw 125px;position:relative;overflow:hidden;border-top:1px solid rgba(255,255,255,.07)}
-.pricing::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:750px;height:380px;background:radial-gradient(circle,rgba(255,200,0,.10),transparent 70%);pointer-events:none;z-index:0}
-.pricing-inner{max-width:1280px;margin:0 auto;position:relative;z-index:1;text-align:center}
+/* pricing::before removed to keep shader 100% clear & bright */
+.pricing-inner{max-width:1280px;margin:0 auto;position:relative;z-index:2;text-align:center}
 
 .pricing-pill{display:inline-flex;align-items:center;gap:8px;font-family:'Space Grotesk',Inter,sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#FFC800;background:rgba(255,200,0,.12);border:1px solid rgba(255,200,0,.35);padding:6px 18px;border-radius:999px;margin-bottom:18px;box-shadow:0 0 20px rgba(255,200,0,.15);animation:pillPulse 3s ease-in-out infinite}
 @keyframes pillPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03);box-shadow:0 0 28px rgba(255,200,0,.3)}}
@@ -716,30 +662,16 @@ footer{background:#040406;border-top:1px solid rgba(255,255,255,.08);padding:68p
 <!-- SECTION 5 — Premium IPTV Pricing Plans (Animated 3 Card Boxes) -->
 <section class="pricing" id="pricing">
   <div class="pricing-shader-bg" id="pricingShaderCanvas"></div>
-  <canvas class="pricing-particles-bg" id="pricingParticles"></canvas>
+  
   <div class="pricing-inner">
     <div class="pricing-pill"><span class="pill-dot"></span> Flexible Subscriptions</div>
     <h2 class="pricing-title">Simple Pricing, <span class="pricing-y">Unlimited Entertainment</span></h2>
     <p class="pricing-sub">Get instant access to 22,000+ live HD/4K channels and 85,000+ movies &amp; series. ⚡ <strong>Guaranteed 10-minute delivery via WhatsApp &amp; Email</strong> with 7-day money-back guarantee.</p>
 
-    <!-- Framer Interactive Billing Toggle Switch -->
-    <div class="pricing-toggle-wrap">
-      <div class="pricing-toggle" id="pricingToggleSwitch" role="group" aria-label="Billing cycle selector">
-        <button type="button" class="toggle-btn active" id="btnYearly" onclick="setBillingToggle('yearly')">
-          Annual VIP Pass
-          <span class="toggle-badge">Save 65% 🔥</span>
-        </button>
-        <button type="button" class="toggle-btn" id="btnMonthly" onclick="setBillingToggle('monthly')">
-          Monthly Passes
-        </button>
-        <div class="toggle-slider" id="toggleSlider"></div>
-      </div>
-    </div>
-    
     <div class="pricing-cards">
       <!-- Plan 1: 1 Month -->
       <article class="pricing-card" data-plan="1">
-        <span class="plan-badge-top">1 MONTH</span>
+        <span class="plan-badge-top">1 MONTH PASS</span>
         <div class="plan-head">
           <h3 class="plan-name">Starter Pass</h3>
           <p class="plan-desc">Ideal for testing our premium ultra-fast IPTV streaming quality.</p>
@@ -765,7 +697,7 @@ footer{background:#040406;border-top:1px solid rgba(255,255,255,.08);padding:68p
       <!-- Plan 2: 12 Months VIP (Featured) -->
       <article class="pricing-card featured" data-plan="2">
         <div class="border-beam-wrap" aria-hidden="true"></div>
-        <span class="plan-badge-top hot">🔥 BEST VALUE — SAVE 65%</span>
+        <span class="plan-badge-top hot">🔥 BEST VALUE — 12 MONTHS VIP</span>
         <div class="plan-head">
           <h3 class="plan-name">Ultra VIP Pass</h3>
           <p class="plan-desc">The ultimate 4K cinema and sports experience for you &amp; family.</p>
@@ -792,7 +724,7 @@ footer{background:#040406;border-top:1px solid rgba(255,255,255,.08);padding:68p
 
       <!-- Plan 3: 6 Months Pro -->
       <article class="pricing-card" data-plan="3">
-        <span class="plan-badge-top">6 MONTHS</span>
+        <span class="plan-badge-top">6 MONTHS PRO</span>
         <div class="plan-head">
           <h3 class="plan-name">Pro Pass</h3>
           <p class="plan-desc">Most popular for sports fans, live events, and binge-watching.</p>
@@ -1487,29 +1419,7 @@ if (pricingSec) {
   }
 
       // Interactive Billing Cycle Toggle Functionality
-  window.setBillingToggle = function(type) {
-    const toggle = document.getElementById('pricingToggleSwitch');
-    const btnY = document.getElementById('btnYearly');
-    const btnM = document.getElementById('btnMonthly');
-    const vipCard = document.querySelector('.pricing-card.featured');
-    if (!toggle || !btnY || !btnM) return;
-
-    if (type === 'monthly') {
-      toggle.classList.add('monthly-active');
-      btnM.classList.add('active');
-      btnY.classList.remove('active');
-      if (vipCard) {
-        vipCard.style.boxShadow = '0 24px 55px rgba(0,0,0,0.7), 0 0 35px rgba(255,200,0,0.25)';
-      }
-    } else {
-      toggle.classList.remove('monthly-active');
-      btnY.classList.add('active');
-      btnM.classList.remove('active');
-      if (vipCard) {
-        vipCard.style.boxShadow = '0 30px 75px rgba(0,0,0,0.85), 0 0 65px rgba(255,200,0,0.55)';
-      }
-    }
-  };
+  
 
 // Live Plan Sync from Admin Panel (LocalStorage / Firebase)
   try {
@@ -1824,109 +1734,7 @@ if(document.readyState==='loading'){
 }
 
 // Framer Golden Star Dust & Embers Particle Animation for Section 5
-function initPricingParticles() {
-  const canvas = document.getElementById('pricingParticles');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
-
-  let w = canvas.width = canvas.clientWidth || window.innerWidth;
-  let h = canvas.height = canvas.clientHeight || 900;
-  let inView = false;
-  let rafId = null;
-
-  const count = 36;
-  const particles = [];
-  const colors = ['rgba(255,200,0,', 'rgba(255,115,13,', 'rgba(255,230,120,', 'rgba(229,9,20,'];
-
-  for (let i = 0; i < count; i++) {
-    particles.push({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      r: Math.random() * 2.2 + 0.9,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      alpha: Math.random() * 0.6 + 0.2,
-      baseAlpha: Math.random() * 0.6 + 0.2,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: -(Math.random() * 0.55 + 0.22),
-      pulseSpeed: Math.random() * 0.025 + 0.01,
-      angle: Math.random() * Math.PI * 2
-    });
-  }
-
-  let mouseX = -9999, mouseY = -9999;
-  const parent = canvas.closest('.pricing') || canvas;
-  parent.addEventListener('mousemove', e => {
-    const rect = canvas.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
-  });
-  parent.addEventListener('mouseleave', () => {
-    mouseX = -9999; mouseY = -9999;
-  });
-
-  const handleResize = () => {
-    w = canvas.width = canvas.clientWidth || window.innerWidth;
-    h = canvas.height = canvas.clientHeight || 900;
-  };
-  window.addEventListener('resize', handleResize);
-
-  function loop() {
-    if (!inView) { rafId = null; return; }
-    ctx.clearRect(0, 0, w, h);
-
-    for (let i = 0; i < count; i++) {
-      const p = particles[i];
-      p.angle += p.pulseSpeed;
-      p.alpha = p.baseAlpha + Math.sin(p.angle) * 0.22;
-      p.x += p.vx + Math.sin(p.angle * 0.5) * 0.35;
-      p.y += p.vy;
-
-      // Cursor magnetic repulsion
-      const dx = p.x - mouseX;
-      const dy = p.y - mouseY;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 120) {
-        const force = (120 - dist) / 120;
-        p.x += (dx / dist) * force * 3.5;
-        p.y += (dy / dist) * force * 3.5;
-      }
-
-      if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; }
-      if (p.x < -10) p.x = w + 10;
-      if (p.x > w + 10) p.x = -10;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color + Math.max(0.05, Math.min(0.92, p.alpha)) + ')';
-      ctx.shadowColor = 'rgba(255,200,0,0.85)';
-      ctx.shadowBlur = p.r * 3;
-      ctx.fill();
-    }
-
-    rafId = requestAnimationFrame(loop);
-  }
-
-  function start() {
-    if (!rafId && inView) rafId = requestAnimationFrame(loop);
-  }
-
-  if ('IntersectionObserver' in window) {
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        inView = e.isIntersecting;
-        if (inView) start();
-        else { cancelAnimationFrame(rafId); rafId = null; }
-      });
-    }, { threshold: 0.05 });
-    obs.observe(parent);
-  } else {
-    inView = true;
-    start();
-  }
-}
-
-// Framer ColorBends Luxury Fluid Shader Engine for Section 5
+// Framer Luxury ColorBends Fluid Shader for Section 5 (High Intensity & Dynamic Rotation)
 function initPricingShader() {
   const container = document.getElementById('pricingShaderCanvas');
   if (!container || typeof THREE === 'undefined') return;
@@ -2007,7 +1815,7 @@ void main() {
   }
 
   vec3 rgb = (uTransparent > 0) ? col * a : col;
-  gl_FragColor = vec4(rgb, a * 0.90);
+  gl_FragColor = vec4(rgb, a);
 }
 `;
 
@@ -2023,8 +1831,8 @@ void main() {
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
   const geometry = new THREE.PlaneGeometry(2, 2);
 
-  // Luxury Ultra Stream IPTV Theme Colors: 24K Gold, Molten Amber, Crimson Red, Deep Violet
-  const colors = ['#FFC800', '#FF730D', '#E50914', '#FFAA00', '#7928CA'];
+  // Luxury Ultra Stream IPTV Theme Colors: 24K Gold, Molten Amber, Crimson Red, Golden Saffron, Electric Purple
+  const colors = ['#FFC800', '#FF730D', '#E50914', '#FFAA00', '#9D4EDD'];
   const toVec3 = hex => {
     const h = hex.replace('#','').trim();
     const v = [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
@@ -2042,21 +1850,21 @@ void main() {
     uniforms: {
       uCanvas: { value: new THREE.Vector2(1, 1) },
       uTime: { value: 0 },
-      uSpeed: { value: 0.22 },
+      uSpeed: { value: 0.24 },
       uRot: { value: new THREE.Vector2(0, 1) },
       uColorCount: { value: colorVecs.length },
       uColors: { value: uColorsArray },
       uTransparent: { value: 1 },
       uScale: { value: 1.05 },
-      uFrequency: { value: 1.0 },
-      uWarpStrength: { value: 1.25 },
+      uFrequency: { value: 1.05 },
+      uWarpStrength: { value: 1.35 },
       uPointer: { value: new THREE.Vector2(0, 0) },
-      uMouseInfluence: { value: 1.2 },
+      uMouseInfluence: { value: 1.3 },
       uParallax: { value: 0.55 },
       uNoise: { value: 0.08 },
       uIterations: { value: 1 },
-      uIntensity: { value: 2.3 },
-      uBandWidth: { value: 5.5 }
+      uIntensity: { value: 2.6 },
+      uBandWidth: { value: 5.2 }
     },
     premultipliedAlpha: true,
     transparent: true
@@ -2110,7 +1918,10 @@ void main() {
     const elapsed = clock.elapsedTime;
     material.uniforms.uTime.value = elapsed;
 
-    pointerCurrent.lerp(pointerTarget, Math.min(1, dt * 6.5));
+    const rad = ((90 + elapsed * 4.5) * Math.PI) / 180;
+    material.uniforms.uRot.value.set(Math.cos(rad), Math.sin(rad));
+
+    pointerCurrent.lerp(pointerTarget, Math.min(1, dt * 7));
     material.uniforms.uPointer.value.copy(pointerCurrent);
 
     renderer.render(scene, camera);
@@ -2143,7 +1954,6 @@ function checkAndInitAllShaders() {
   if (typeof THREE !== 'undefined') {
     initColorBends();
     initPricingShader();
-    initPricingParticles();
   } else {
     setTimeout(checkAndInitAllShaders, 80);
   }
@@ -2155,11 +1965,9 @@ if (document.readyState === 'loading') {
   checkAndInitAllShaders();
 }
 </script>
-  <!-- Floating WhatsApp 10-Min Order Button -->
-  <a href="https://wa.me/?text=Hello%20Ultra%20Stream!%20I%20would%20like%20to%20order%20an%20IPTV%20subscription%20with%2010-minute%20instant%20delivery." class="wa-float" target="_blank" rel="noopener" aria-label="Order on WhatsApp">
-    <div class="wa-float-badge">⚡ 10-Min Delivery via WhatsApp</div>
-    <svg viewBox="0 0 32 32" width="30" height="30" fill="#fff" aria-hidden="true"><path d="M16 .5C7.44.5.5 7.44.5 16c0 2.73.71 5.38 2.06 7.72L.6 31.4l7.88-2.02c2.26 1.23 4.8 1.88 7.52 1.88 8.56 0 15.5-6.94 15.5-15.5S24.56.5 16 .5zm0 28.36c-2.43 0-4.79-.65-6.85-1.88l-.49-.29-5.08 1.3 1.35-4.96-.32-.51C3.26 20.37 2.58 18.23 2.58 16c0-7.4 6.02-13.42 13.42-13.42 7.4 0 13.42 6.02 13.42 13.42 0 7.4-6.02 13.42-13.42 13.42zm7.36-10.05c-.4-.2-2.38-1.18-2.75-1.31-.37-.14-.64-.2-.91.2s-1.05 1.31-1.28 1.58-.47.3-.87.1c-.4-.2-1.7-0.63-3.24-2-.1.2-1.99-2.03-2.14-2.29-.15-.26-.02-.4.1-.52.11-.11.24-.29.36-.43.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42s-.91-2.2-1.25-3.01c-.33-.79-.67-.68-.91-.69l-.78-.01c-.27 0-.71.1-1.08.5-.37.4-1.42 1.39-1.42 3.39s1.45 3.93 1.65 4.2c.2.27 2.85 4.35 6.91 6.1 1.25.54 2.22.86 2.98 1.1.92.29 1.76.25 2.42.15.74-.11 2.38-.97 2.72-1.91.34-.94.34-1.75.24-1.91-.1-.16-.37-.26-.77-.46z"/></svg>
+  <!-- Floating WhatsApp Quick Order Button (Animated Pulse & Radar) -->
+  <a href="https://wa.me/?text=Hello%20Ultra%20Stream!%20I%20would%20like%20to%20order%20an%20IPTV%20subscription." class="wa-float" target="_blank" rel="noopener" aria-label="Contact on WhatsApp">
+    <svg viewBox="0 0 32 32" width="32" height="32" fill="#fff" aria-hidden="true"><path d="M16 .5C7.44.5.5 7.44.5 16c0 2.73.71 5.38 2.06 7.72L.6 31.4l7.88-2.02c2.26 1.23 4.8 1.88 7.52 1.88 8.56 0 15.5-6.94 15.5-15.5S24.56.5 16 .5zm0 28.36c-2.43 0-4.79-.65-6.85-1.88l-.49-.29-5.08 1.3 1.35-4.96-.32-.51C3.26 20.37 2.58 18.23 2.58 16c0-7.4 6.02-13.42 13.42-13.42 7.4 0 13.42 6.02 13.42 13.42 0 7.4-6.02 13.42-13.42 13.42zm7.36-10.05c-.4-.2-2.38-1.18-2.75-1.31-.37-.14-.64-.2-.91.2s-1.05 1.31-1.28 1.58-.47.3-.87.1c-.4-.2-1.7-0.63-3.24-2-.1.2-1.99-2.03-2.14-2.29-.15-.26-.02-.4.1-.52.11-.11.24-.29.36-.43.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42s-.91-2.2-1.25-3.01c-.33-.79-.67-.68-.91-.69l-.78-.01c-.27 0-.71.1-1.08.5-.37.4-1.42 1.39-1.42 3.39s1.45 3.93 1.65 4.2c.2.27 2.85 4.35 6.91 6.1 1.25.54 2.22.86 2.98 1.1.92.29 1.76.25 2.42.15.74-.11 2.38-.97 2.72-1.91.34-.94.34-1.75.24-1.91-.1-.16-.37-.26-.77-.46z"/></svg>
   </a>
-
 </body>
 </html>
