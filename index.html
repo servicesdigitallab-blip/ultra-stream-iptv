@@ -231,7 +231,7 @@ footer{background:#040406;border-top:1px solid rgba(255,255,255,.08);padding:68p
 }
 @media(prefers-reduced-motion:reduce){.how-illus,.how-glow,.id-plus,.plan-front>svg,.tv>svg,.stream-img{animation:none}.how-illus{animation:none}.how-card{transition:none;opacity:1;transform:none}.how-card:nth-child(1),.how-card:nth-child(2),.how-card:nth-child(3),.how-card:nth-child(4){transform:none}.how-sub{opacity:1;transition:none}.how-caret{display:none}}
 
-/* SECTION 5 — Framer Fluid Shader Canvas */
+/* SECTION 5 — Framer Fluid Shader & Particles Canvas */
 .pricing-shader-bg {
   position: absolute;
   inset: 0;
@@ -239,7 +239,182 @@ footer{background:#040406;border-top:1px solid rgba(255,255,255,.08);padding:68p
   height: 100%;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.82;
+  opacity: 0.88;
+}
+.pricing-particles-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* FRAMER INTERACTIVE BILLING TOGGLE SWITCH */
+.pricing-toggle-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 52px;
+  position: relative;
+  z-index: 2;
+}
+.pricing-toggle {
+  display: inline-flex;
+  position: relative;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 5px;
+  border-radius: 999px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+.toggle-btn {
+  position: relative;
+  z-index: 2;
+  padding: 10px 24px;
+  font-family: 'Space Grotesk', Inter, sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #a8a8b4;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 999px;
+  transition: color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.toggle-btn.active {
+  color: #000;
+}
+.toggle-badge {
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #FF3B30 0%, #FF730D 100%);
+  color: #fff;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 10px rgba(255,59,48,0.5);
+}
+.toggle-slider {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  width: calc(50% - 5px);
+  background: linear-gradient(135deg, #FFE066 0%, #FFC800 50%, #FFA000 100%);
+  border-radius: 999px;
+  box-shadow: 0 4px 20px rgba(255, 200, 0, 0.5);
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+.pricing-toggle.monthly-active .toggle-slider {
+  transform: translateX(100%);
+}
+.pricing-toggle.monthly-active #btnMonthly {
+  color: #000;
+}
+.pricing-toggle.monthly-active #btnYearly {
+  color: #a8a8b4;
+}
+
+/* FRAMER LASER BORDER BEAM (Continuous Radiant Light Circling VIP Card) */
+.border-beam-wrap {
+  position: absolute;
+  inset: -1px;
+  border-radius: 28px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 2.2px;
+}
+.border-beam-wrap::after {
+  content: "";
+  position: absolute;
+  aspect-ratio: 1;
+  width: 260%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: conic-gradient(from 0deg, transparent 0deg 280deg, rgba(255,115,13,0.3) 300deg, #FF730D 325deg, #FFC800 350deg, #FFFFFF 360deg);
+  animation: laserBeamSpin 3.2s linear infinite;
+  filter: drop-shadow(0 0 12px #FFC800);
+}
+@keyframes laserBeamSpin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* FLOWING GOLD HEADING TEXT SHIMMER */
+.pricing-title .pricing-y {
+  background: linear-gradient(90deg, #FFC800 0%, #FFF5A0 25%, #FF730D 50%, #FFC800 75%, #FFF5A0 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  animation: goldTextFlow 4s linear infinite;
+}
+@keyframes goldTextFlow {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* METALLIC SHIMMER SWEEPING CTA BUTTONS */
+.plan-btn {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, background 0.25s ease;
+}
+.plan-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+  transform: skewX(-22deg);
+  animation: btnShimmerSweep 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes btnShimmerSweep {
+  0%, 35% { left: -120%; }
+  75%, 100% { left: 220%; }
+}
+.plan-btn:hover {
+  transform: translateY(-2px) scale(1.03) !important;
+  box-shadow: 0 10px 30px rgba(255,200,0,0.5) !important;
+}
+
+/* BOUNCING GLOWING FEATURE CHECKMARKS */
+.pricing-card:hover .plan-features li {
+  transform: translateX(4px);
+  transition: transform 0.25s ease;
+}
+.pricing-card:hover .chk {
+  background: rgba(37,211,102,0.35);
+  box-shadow: 0 0 12px rgba(37,211,102,0.5);
+  transform: scale(1.15);
+  transition: all 0.25s ease;
+}
+
+/* FLOATING BEST VALUE BADGE */
+.plan-badge-top.hot {
+  color: #111;
+  background: linear-gradient(135deg, #FFE066 0%, #FFC800 100%);
+  border: none;
+  box-shadow: 0 0 20px rgba(255,200,0,0.6);
+  animation: badgeFloat 2.6s ease-in-out infinite alternate;
+}
+@keyframes badgeFloat {
+  0% { transform: translateY(0); box-shadow: 0 0 16px rgba(255,200,0,0.45); }
+  100% { transform: translateY(-4px); box-shadow: 0 0 28px rgba(255,200,0,0.75); }
 }
 
 /* FLOATING WHATSAPP QUICK ORDER BUTTON */
@@ -541,10 +716,25 @@ footer{background:#040406;border-top:1px solid rgba(255,255,255,.08);padding:68p
 <!-- SECTION 5 — Premium IPTV Pricing Plans (Animated 3 Card Boxes) -->
 <section class="pricing" id="pricing">
   <div class="pricing-shader-bg" id="pricingShaderCanvas"></div>
+  <canvas class="pricing-particles-bg" id="pricingParticles"></canvas>
   <div class="pricing-inner">
     <div class="pricing-pill"><span class="pill-dot"></span> Flexible Subscriptions</div>
     <h2 class="pricing-title">Simple Pricing, <span class="pricing-y">Unlimited Entertainment</span></h2>
     <p class="pricing-sub">Get instant access to 22,000+ live HD/4K channels and 85,000+ movies &amp; series. ⚡ <strong>Guaranteed 10-minute delivery via WhatsApp &amp; Email</strong> with 7-day money-back guarantee.</p>
+
+    <!-- Framer Interactive Billing Toggle Switch -->
+    <div class="pricing-toggle-wrap">
+      <div class="pricing-toggle" id="pricingToggleSwitch" role="group" aria-label="Billing cycle selector">
+        <button type="button" class="toggle-btn active" id="btnYearly" onclick="setBillingToggle('yearly')">
+          Annual VIP Pass
+          <span class="toggle-badge">Save 65% 🔥</span>
+        </button>
+        <button type="button" class="toggle-btn" id="btnMonthly" onclick="setBillingToggle('monthly')">
+          Monthly Passes
+        </button>
+        <div class="toggle-slider" id="toggleSlider"></div>
+      </div>
+    </div>
     
     <div class="pricing-cards">
       <!-- Plan 1: 1 Month -->
@@ -574,6 +764,7 @@ footer{background:#040406;border-top:1px solid rgba(255,255,255,.08);padding:68p
 
       <!-- Plan 2: 12 Months VIP (Featured) -->
       <article class="pricing-card featured" data-plan="2">
+        <div class="border-beam-wrap" aria-hidden="true"></div>
         <span class="plan-badge-top hot">🔥 BEST VALUE — SAVE 65%</span>
         <div class="plan-head">
           <h3 class="plan-name">Ultra VIP Pass</h3>
@@ -1295,7 +1486,32 @@ if (pricingSec) {
     pObs.observe(pricingSec);
   }
 
-    // Live Plan Sync from Admin Panel (LocalStorage / Firebase)
+      // Interactive Billing Cycle Toggle Functionality
+  window.setBillingToggle = function(type) {
+    const toggle = document.getElementById('pricingToggleSwitch');
+    const btnY = document.getElementById('btnYearly');
+    const btnM = document.getElementById('btnMonthly');
+    const vipCard = document.querySelector('.pricing-card.featured');
+    if (!toggle || !btnY || !btnM) return;
+
+    if (type === 'monthly') {
+      toggle.classList.add('monthly-active');
+      btnM.classList.add('active');
+      btnY.classList.remove('active');
+      if (vipCard) {
+        vipCard.style.boxShadow = '0 24px 55px rgba(0,0,0,0.7), 0 0 35px rgba(255,200,0,0.25)';
+      }
+    } else {
+      toggle.classList.remove('monthly-active');
+      btnY.classList.add('active');
+      btnM.classList.remove('active');
+      if (vipCard) {
+        vipCard.style.boxShadow = '0 30px 75px rgba(0,0,0,0.85), 0 0 65px rgba(255,200,0,0.55)';
+      }
+    }
+  };
+
+// Live Plan Sync from Admin Panel (LocalStorage / Firebase)
   try {
     const savedPlans = localStorage.getItem('ultra_plans');
     if (savedPlans) {
@@ -1607,105 +1823,243 @@ if(document.readyState==='loading'){
   initColorBends();
 }
 
+// Framer Golden Star Dust & Embers Particle Animation for Section 5
+function initPricingParticles() {
+  const canvas = document.getElementById('pricingParticles');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  let w = canvas.width = canvas.clientWidth || window.innerWidth;
+  let h = canvas.height = canvas.clientHeight || 900;
+  let inView = false;
+  let rafId = null;
+
+  const count = 36;
+  const particles = [];
+  const colors = ['rgba(255,200,0,', 'rgba(255,115,13,', 'rgba(255,230,120,', 'rgba(229,9,20,'];
+
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 2.2 + 0.9,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: Math.random() * 0.6 + 0.2,
+      baseAlpha: Math.random() * 0.6 + 0.2,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: -(Math.random() * 0.55 + 0.22),
+      pulseSpeed: Math.random() * 0.025 + 0.01,
+      angle: Math.random() * Math.PI * 2
+    });
+  }
+
+  let mouseX = -9999, mouseY = -9999;
+  const parent = canvas.closest('.pricing') || canvas;
+  parent.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    mouseX = e.clientX - rect.left;
+    mouseY = e.clientY - rect.top;
+  });
+  parent.addEventListener('mouseleave', () => {
+    mouseX = -9999; mouseY = -9999;
+  });
+
+  const handleResize = () => {
+    w = canvas.width = canvas.clientWidth || window.innerWidth;
+    h = canvas.height = canvas.clientHeight || 900;
+  };
+  window.addEventListener('resize', handleResize);
+
+  function loop() {
+    if (!inView) { rafId = null; return; }
+    ctx.clearRect(0, 0, w, h);
+
+    for (let i = 0; i < count; i++) {
+      const p = particles[i];
+      p.angle += p.pulseSpeed;
+      p.alpha = p.baseAlpha + Math.sin(p.angle) * 0.22;
+      p.x += p.vx + Math.sin(p.angle * 0.5) * 0.35;
+      p.y += p.vy;
+
+      // Cursor magnetic repulsion
+      const dx = p.x - mouseX;
+      const dy = p.y - mouseY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        const force = (120 - dist) / 120;
+        p.x += (dx / dist) * force * 3.5;
+        p.y += (dy / dist) * force * 3.5;
+      }
+
+      if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; }
+      if (p.x < -10) p.x = w + 10;
+      if (p.x > w + 10) p.x = -10;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + Math.max(0.05, Math.min(0.92, p.alpha)) + ')';
+      ctx.shadowColor = 'rgba(255,200,0,0.85)';
+      ctx.shadowBlur = p.r * 3;
+      ctx.fill();
+    }
+
+    rafId = requestAnimationFrame(loop);
+  }
+
+  function start() {
+    if (!rafId && inView) rafId = requestAnimationFrame(loop);
+  }
+
+  if ('IntersectionObserver' in window) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        inView = e.isIntersecting;
+        if (inView) start();
+        else { cancelAnimationFrame(rafId); rafId = null; }
+      });
+    }, { threshold: 0.05 });
+    obs.observe(parent);
+  } else {
+    inView = true;
+    start();
+  }
+}
+
+// Framer ColorBends Luxury Fluid Shader Engine for Section 5
 function initPricingShader() {
   const container = document.getElementById('pricingShaderCanvas');
   if (!container || typeof THREE === 'undefined') return;
 
+  const MAX_COLORS = 8;
   const frag = `
-    uniform vec2 uResolution;
-    uniform float uTime;
-    uniform vec2 uPointer;
-    varying vec2 vUv;
+#define MAX_COLORS 8
+uniform vec2 uCanvas;
+uniform float uTime;
+uniform float uSpeed;
+uniform vec2 uRot;
+uniform int uColorCount;
+uniform vec3 uColors[MAX_COLORS];
+uniform int uTransparent;
+uniform float uScale;
+uniform float uFrequency;
+uniform float uWarpStrength;
+uniform vec2 uPointer;
+uniform float uMouseInfluence;
+uniform float uParallax;
+uniform float uNoise;
+uniform int uIterations;
+uniform float uIntensity;
+uniform float uBandWidth;
+varying vec2 vUv;
 
-    // Simplex Noise 2D
-    vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-    vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-    vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+void main() {
+  float t = uTime * uSpeed;
+  vec2 p = vUv * 2.0 - 1.0;
+  p += uPointer * uParallax * 0.12;
+  vec2 rp = vec2(p.x * uRot.x - p.y * uRot.y, p.x * uRot.y + p.y * uRot.x);
+  vec2 q = vec2(rp.x * (uCanvas.x / uCanvas.y), rp.y);
+  q /= max(uScale, 0.0001);
+  q /= 0.5 + 0.2 * dot(q, q);
+  q += 0.2 * cos(t) - 7.56;
+  vec2 toward = (uPointer - rp);
+  q += toward * uMouseInfluence * 0.2;
 
-    float snoise(vec2 v) {
-      const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
-      vec2 i  = floor(v + dot(v, C.yy) );
-      vec2 x0 = v -   i + dot(i, C.xx);
-      vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-      vec4 x12 = x0.xyxy + C.xxzz;
-      x12.xy -= i1;
-      i = mod289(i);
-      vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 ));
-      vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
-      m = m*m; m = m*m;
-      vec3 x = 2.0 * fract(p * C.www) - 1.0;
-      vec3 h = abs(x) - 0.5;
-      vec3 ox = floor(x + 0.5);
-      vec3 a0 = x - ox;
-      m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
-      vec3 g;
-      g.x  = a0.x  * x0.x  + h.x  * x0.y;
-      g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-      return 130.0 * dot(m, g);
+  for (int j = 0; j < 5; j++) {
+    if (j >= uIterations - 1) break;
+    vec2 rr = sin(1.5 * (q.yx * uFrequency) + 2.0 * cos(q * uFrequency));
+    q += (rr - q) * 0.15;
+  }
+
+  vec3 col = vec3(0.0);
+  float a = 1.0;
+
+  if (uColorCount > 0) {
+    vec2 s = q;
+    vec3 sumCol = vec3(0.0);
+    float cover = 0.0;
+    for (int i = 0; i < MAX_COLORS; ++i) {
+      if (i >= uColorCount) break;
+      s -= 0.01;
+      vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));
+      float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(i)) / 4.0);
+      float kBelow = clamp(uWarpStrength, 0.0, 1.0);
+      float kMix = pow(kBelow, 0.3);
+      float gain = 1.0 + max(uWarpStrength - 1.0, 0.0);
+      vec2 disp = (r - s) * kBelow;
+      vec2 warped = s + disp * gain;
+      float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(i)) / 4.0);
+      float m = mix(m0, m1, kMix);
+      float w = 1.0 - exp(-uBandWidth / exp(uBandWidth * m));
+      sumCol += uColors[i] * w;
+      cover = max(cover, w);
     }
+    col = clamp(sumCol, 0.0, 1.0);
+    a = uTransparent > 0 ? cover : 1.0;
+  }
 
-    void main() {
-      vec2 uv = vUv;
-      float t = uTime * 0.16;
+  col *= uIntensity;
 
-      // Mouse influence
-      vec2 toPointer = uv - uPointer;
-      float distP = length(toPointer);
-      float pull = smoothstep(0.55, 0.0, distP) * 0.18;
-      uv += toPointer * pull;
+  if (uNoise > 0.0001) {
+    float n = fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453123);
+    col += (n - 0.5) * uNoise;
+    col = clamp(col, 0.0, 1.0);
+  }
 
-      // Multi-layer domain warping for Framer liquid silk waves
-      float n1 = snoise(uv * 2.4 + vec2(t * 0.35, t * 0.22));
-      float n2 = snoise(uv * 3.6 - vec2(n1 * 0.65, t * 0.3));
-      float n3 = snoise(uv * 2.0 + vec2(n2 * 0.55, -t * 0.18));
-
-      // Luxury IPTV Palette: Deep Noir, Molten Amber, Radiant 24K Gold, Warm Sunset Crimson
-      vec3 noir = vec3(0.02, 0.02, 0.025);
-      vec3 deepCrimson = vec3(0.65, 0.08, 0.15);
-      vec3 moltenAmber = vec3(1.0, 0.42, 0.04);
-      vec3 radiantGold = vec3(1.0, 0.78, 0.0);
-      vec3 specularGlow = vec3(1.0, 0.94, 0.55);
-
-      float wave1 = smoothstep(-0.35, 0.75, n2);
-      float wave2 = smoothstep(-0.45, 0.65, n3);
-      float highlight = pow(smoothstep(0.38, 0.92, n1 * n2), 2.4);
-
-      vec3 col = mix(noir, deepCrimson, wave1 * 0.4);
-      col = mix(col, moltenAmber, wave2 * 0.65);
-      col = mix(col, radiantGold, wave1 * wave2);
-      col += specularGlow * highlight * 0.85;
-
-      // Smooth vertical and horizontal vignette so it melts seamlessly into the background
-      float vY = smoothstep(0.0, 0.22, vUv.y) * smoothstep(1.0, 0.78, vUv.y);
-      float vX = smoothstep(0.0, 0.12, vUv.x) * smoothstep(1.0, 0.88, vUv.x);
-      float vignette = vY * vX;
-
-      gl_FragColor = vec4(col * vignette, vignette * 0.72);
-    }
-  `;
+  vec3 rgb = (uTransparent > 0) ? col * a : col;
+  gl_FragColor = vec4(rgb, a * 0.90);
+}
+`;
 
   const vert = `
-    varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = vec4(position, 1.0);
-    }
-  `;
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = vec4(position, 1.0);
+}
+`;
 
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
   const geometry = new THREE.PlaneGeometry(2, 2);
 
+  // Luxury Ultra Stream IPTV Theme Colors: 24K Gold, Molten Amber, Crimson Red, Deep Violet
+  const colors = ['#FFC800', '#FF730D', '#E50914', '#FFAA00', '#7928CA'];
+  const toVec3 = hex => {
+    const h = hex.replace('#','').trim();
+    const v = [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+    return new THREE.Vector3(v[0]/255, v[1]/255, v[2]/255);
+  };
+  const uColorsArray = Array.from({ length: MAX_COLORS }, () => new THREE.Vector3(0,0,0));
+  const colorVecs = colors.map(toVec3);
+  for (let i = 0; i < MAX_COLORS; i++) {
+    if (i < colorVecs.length) uColorsArray[i].copy(colorVecs[i]);
+  }
+
   const material = new THREE.ShaderMaterial({
     vertexShader: vert,
     fragmentShader: frag,
     uniforms: {
-      uResolution: { value: new THREE.Vector2(1, 1) },
+      uCanvas: { value: new THREE.Vector2(1, 1) },
       uTime: { value: 0 },
-      uPointer: { value: new THREE.Vector2(0.5, 0.5) }
+      uSpeed: { value: 0.22 },
+      uRot: { value: new THREE.Vector2(0, 1) },
+      uColorCount: { value: colorVecs.length },
+      uColors: { value: uColorsArray },
+      uTransparent: { value: 1 },
+      uScale: { value: 1.05 },
+      uFrequency: { value: 1.0 },
+      uWarpStrength: { value: 1.25 },
+      uPointer: { value: new THREE.Vector2(0, 0) },
+      uMouseInfluence: { value: 1.2 },
+      uParallax: { value: 0.55 },
+      uNoise: { value: 0.08 },
+      uIterations: { value: 1 },
+      uIntensity: { value: 2.3 },
+      uBandWidth: { value: 5.5 }
     },
-    transparent: true,
-    premultipliedAlpha: true
+    premultipliedAlpha: true,
+    transparent: true
   });
 
   const mesh = new THREE.Mesh(geometry, material);
@@ -1723,8 +2077,8 @@ function initPricingShader() {
   renderer.domElement.style.display = 'block';
   container.appendChild(renderer.domElement);
 
-  const pointerTarget = new THREE.Vector2(0.5, 0.5);
-  const pointerCurrent = new THREE.Vector2(0.5, 0.5);
+  const pointerTarget = new THREE.Vector2(0, 0);
+  const pointerCurrent = new THREE.Vector2(0, 0);
   const clock = new THREE.Clock();
   let rafId = null;
   let inView = false;
@@ -1733,7 +2087,7 @@ function initPricingShader() {
     const w = container.clientWidth || 1;
     const h = container.clientHeight || 1;
     renderer.setSize(w, h, false);
-    material.uniforms.uResolution.value.set(w, h);
+    material.uniforms.uCanvas.value.set(w, h);
   };
   handleResize();
   if ('ResizeObserver' in window) {
@@ -1745,8 +2099,8 @@ function initPricingShader() {
   const parentSec = container.closest('.pricing') || container;
   parentSec.addEventListener('pointermove', e => {
     const rect = container.getBoundingClientRect();
-    const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / (rect.width || 1)));
-    const y = Math.max(0, Math.min(1, 1.0 - (e.clientY - rect.top) / (rect.height || 1)));
+    const x = ((e.clientX - rect.left) / (rect.width || 1)) * 2 - 1;
+    const y = -(((e.clientY - rect.top) / (rect.height || 1)) * 2 - 1);
     pointerTarget.set(x, y);
   });
 
@@ -1756,7 +2110,7 @@ function initPricingShader() {
     const elapsed = clock.elapsedTime;
     material.uniforms.uTime.value = elapsed;
 
-    pointerCurrent.lerp(pointerTarget, Math.min(1, dt * 6));
+    pointerCurrent.lerp(pointerTarget, Math.min(1, dt * 6.5));
     material.uniforms.uPointer.value.copy(pointerCurrent);
 
     renderer.render(scene, camera);
@@ -1789,6 +2143,7 @@ function checkAndInitAllShaders() {
   if (typeof THREE !== 'undefined') {
     initColorBends();
     initPricingShader();
+    initPricingParticles();
   } else {
     setTimeout(checkAndInitAllShaders, 80);
   }
