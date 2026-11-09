@@ -1060,41 +1060,48 @@
       </section>
 
       <!-- ================= TAB 4: SECTION BACKGROUNDS ================= -->
-      <section id="pane-backgrounds" class="tab-pane">
+            <section id="pane-backgrounds" class="tab-pane">
         <div class="card-wrap">
           <div class="card-head">
             <div>
-              <h2>Section Background Themes &amp; Shaders</h2>
-              <p>Choose from curated luxury backgrounds, animated shaders, or clean minimal styles for each section.</p>
+              <h2>Section 4 &amp; Section 5 Backgrounds &amp; Theme Switcher</h2>
+              <p>سیکشن 4 (How It Works) اور سیکشن 5 (Pricing Plans) کا بیک گراؤنڈ اور کارڈ تھیم لائیو تبدیل کریں — نیچے لائیو پیش منظر میں فوراً دیکھیں کہ کیسا دکھے گا۔</p>
             </div>
             <button class="btn btn-gold" onclick="saveBackgrounds()">Apply &amp; Save Backgrounds</button>
           </div>
 
-                    <!-- Real-Time Interactive Live Visual Preview Box -->
-          <div class="live-preview-box" style="margin-bottom:28px;background:radial-gradient(ellipse at center, rgba(30,25,12,0.4) 0%, #060609 85%);border:1px solid rgba(255,200,0,0.35);border-radius:20px;padding:24px;position:relative;overflow:hidden;box-shadow:0 15px 45px rgba(0,0,0,0.8);">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+          <!-- Real-Time Interactive Live Visual Preview Box -->
+          <div class="live-preview-box" style="margin-bottom:28px;background:radial-gradient(ellipse at center, rgba(30,25,12,0.5) 0%, #060609 85%);border:1px solid rgba(255,200,0,0.4);border-radius:20px;padding:24px;position:relative;overflow:hidden;box-shadow:0 15px 45px rgba(0,0,0,0.85);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:12px;">
               <div>
                 <div style="display:flex;align-items:center;gap:10px;">
                   <span class="live-dot"></span>
-                  <h3 style="font-size:17px;font-weight:800;color:var(--gold);margin:0;">👁️ Live Visual Preview (سیکشن بیک گراؤنڈ اور کارڈ تھیم کا لائیو پیش منظر)</h3>
+                  <h3 style="font-size:17px;font-weight:800;color:var(--gold);margin:0;">👁️ Live Visual Stage (ایسا ہو جائے گا آپ کا بیک گراؤنڈ)</h3>
                 </div>
                 <p style="font-size:13px;color:var(--text-muted);margin:4px 0 0;">
-                  آپ نیچے جو بھی بیک گراؤنڈ یا کارڈ کا ڈیزائن سلیکٹ کریں گے، وہ فوراً یہاں لائیو نظر آئے گا کہ آپ کی ویب سائٹ پر کیسا دکھے گا۔
+                  آپ نیچے جو بھی بیک گراؤنڈ اسٹائل یا تھیم منتخب کریں گے، وہ اس لائیو اسٹیج پر فوراً متحرک ہو کر نظر آئے گا۔
                 </p>
               </div>
-              <div style="display:flex;gap:10px;">
+              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                <div style="display:flex;background:rgba(255,255,255,0.06);border-radius:999px;padding:4px;border:1px solid var(--border);">
+                  <button type="button" id="previewModeSec5" class="btn btn-sm btn-gold" style="border-radius:999px;padding:6px 14px;" onclick="setStagePreviewMode('sec5')">💎 Section 5 (Pricing)</button>
+                  <button type="button" id="previewModeSec4" class="btn btn-sm btn-outline" style="border-radius:999px;padding:6px 14px;border:none;" onclick="setStagePreviewMode('sec4')">⚙️ Section 4 (How It Works)</button>
+                </div>
                 <span id="previewBgTag" class="badge badge-gold">Fluid Gold Silk</span>
                 <span id="previewThemeTag" class="badge badge-plan">Obsidian Glass</span>
               </div>
             </div>
 
-            <!-- The Interactive Stage Canvas and Plan Card -->
-            <div id="adminLiveStage" style="position:relative;width:100%;height:380px;border-radius:16px;overflow:hidden;background:#050508;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.08);">
-              <!-- Shader Canvas -->
+            <!-- The Interactive Stage Canvas -->
+            <div id="adminLiveStage" style="position:relative;width:100%;min-height:390px;border-radius:16px;overflow:hidden;background:#050508;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.1);padding:24px;">
+              <!-- Shader Background Layer -->
               <div id="adminStageShader" style="position:absolute;inset:0;pointer-events:none;z-index:1;"></div>
+              
+              <!-- Custom Gradient/Color Layer (Fallback or Overlay) -->
+              <div id="adminStageCustomBg" style="position:absolute;inset:0;pointer-events:none;z-index:1;display:none;"></div>
 
-              <!-- The Interactive Sample Card -->
-              <div id="adminStageCard" class="pricing-card theme-obsidian_glass" style="position:relative;z-index:2;width:340px;max-width:90%;padding:26px 24px;border-radius:24px;transition:all 0.35s ease;">
+              <!-- Content Layer for Section 5 (Pricing Pass Card) -->
+              <div id="adminStageCardSec5" class="pricing-card theme-obsidian_glass" style="position:relative;z-index:2;width:340px;max-width:92%;padding:26px 24px;border-radius:24px;transition:all 0.35s ease;">
                 <span class="plan-badge-top hot" id="adminStageBadge">🔥 BEST VALUE — 12 MONTHS VIP</span>
                 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;">
                   <h4 id="adminStageName" style="font-size:20px;font-weight:800;color:#fff;margin:0;">Ultra VIP Pass</h4>
@@ -1102,18 +1109,74 @@
                 </div>
                 <p id="adminStageDesc" style="font-size:12px;color:var(--text-muted);margin:8px 0 16px;">The ultimate 4K cinema and sports experience for you &amp; family.</p>
                 <div style="display:flex;flex-direction:column;gap:7px;font-size:12px;color:#d1d5db;margin-bottom:18px;">
-                  <div><span class="chk" style="color:var(--gold);">✓</span> 22,000+ Worldwide Channels</div>
+                  <div><span class="chk" style="color:var(--gold);">✓</span> 22,000+ Worldwide Live Channels</div>
                   <div><span class="chk" style="color:var(--gold);">✓</span> 85,000+ Movies &amp; VOD Series</div>
                   <div><span class="chk" style="color:var(--gold);">✓</span> Anti-Freeze™ 9.0 Technology</div>
                   <div><span class="chk" style="color:var(--gold);">✓</span> ⚡ Guaranteed 10-Min Delivery via WhatsApp</div>
                 </div>
                 <a href="javascript:void(0)" class="plan-btn solid" style="display:block;text-align:center;padding:12px;font-weight:700;">Get Started via WhatsApp</a>
               </div>
+
+              <!-- Content Layer for Section 4 (How It Works Steps) -->
+              <div id="adminStageCardSec4" style="position:relative;z-index:2;width:100%;max-width:880px;display:none;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:14px;">
+                <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:18px 14px;text-align:center;backdrop-filter:blur(10px);">
+                  <div style="color:var(--gold);font-weight:800;font-size:11px;margin-bottom:6px;">STEP 1</div>
+                  <h5 style="color:#fff;font-size:14px;margin-bottom:6px;">Create Account</h5>
+                  <p style="color:#a1a1aa;font-size:11.5px;margin:0;">Sign up in seconds via email.</p>
+                </div>
+                <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:18px 14px;text-align:center;backdrop-filter:blur(10px);">
+                  <div style="color:var(--gold);font-weight:800;font-size:11px;margin-bottom:6px;">STEP 2</div>
+                  <h5 style="color:#fff;font-size:14px;margin-bottom:6px;">Choose Your Plan</h5>
+                  <p style="color:#a1a1aa;font-size:11.5px;margin:0;">Select 1, 6 or 12 months pass.</p>
+                </div>
+                <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:18px 14px;text-align:center;backdrop-filter:blur(10px);">
+                  <div style="color:var(--gold);font-weight:800;font-size:11px;margin-bottom:6px;">STEP 3</div>
+                  <h5 style="color:#fff;font-size:14px;margin-bottom:6px;">10-Min Delivery</h5>
+                  <p style="color:#a1a1aa;font-size:11.5px;margin:0;">Instant WhatsApp &amp; M3U delivery.</p>
+                </div>
+                <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:18px 14px;text-align:center;backdrop-filter:blur(10px);">
+                  <div style="color:var(--gold);font-weight:800;font-size:11px;margin-bottom:6px;">STEP 4</div>
+                  <h5 style="color:#fff;font-size:14px;margin-bottom:6px;">Start Streaming</h5>
+                  <p style="color:#a1a1aa;font-size:11.5px;margin:0;">Enjoy 4K IPTV on all devices.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Theme Changer (5 Luxury Styles) -->
+          <div class="content-box" style="margin-bottom:24px;">
+            <h3 style="margin-bottom:12px;font-size:16px;color:var(--gold);display:flex;align-items:center;gap:8px;">
+              🎨 Pricing Cards Visual Design Theme (کارڈز کا ڈیزائن اور تھیم)
+            </h3>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
+              ویب سائٹ کے تمام پلان کارڈز کا ڈیزائن ایک کلک پر تبدیل کریں۔ اوپر لائیو پیش منظر میں فوراً تبدیلی دکھائی دے گی۔
+            </p>
+            <div class="theme-card-picker" id="planThemePicker">
+              <div class="theme-choice active" onclick="selectCardTheme('obsidian_glass', this)">
+                <div class="theme-choice-name" style="color:var(--gold);">🌟 Obsidian Gold Glass</div>
+                <div class="theme-choice-desc">Dark 92% glass with 24px blur &amp; luxury gold border</div>
+              </div>
+              <div class="theme-choice" onclick="selectCardTheme('neon_cyber', this)">
+                <div class="theme-choice-name" style="color:#00E5FF;">⚡ Neon Cyber Laser</div>
+                <div class="theme-choice-desc">Glowing neon cyan &amp; purple laser perimeter</div>
+              </div>
+              <div class="theme-choice" onclick="selectCardTheme('crimson_ember', this)">
+                <div class="theme-choice-name" style="color:#FF3B30;">🔥 Crimson Ember Red</div>
+                <div class="theme-choice-desc">Deep fire glow with Netflix-style red accents</div>
+              </div>
+              <div class="theme-choice" onclick="selectCardTheme('emerald_tech', this)">
+                <div class="theme-choice-name" style="color:var(--green);">🌿 Emerald Anti-Freeze</div>
+                <div class="theme-choice-desc">Sleek tech green borders with graphite glass</div>
+              </div>
+              <div class="theme-choice" onclick="selectCardTheme('minimal_matte', this)">
+                <div class="theme-choice-name" style="color:#F2F2F7;">🖤 Minimal Stealth Dark</div>
+                <div class="theme-choice-desc">Pure matte dark black with thin crisp outline</div>
+              </div>
             </div>
           </div>
 
           <div class="bg-options-grid">
-            <!-- Pricing Section Background -->
+            <!-- SECTION 5: PRICING PLANS BACKGROUND -->
             <div class="bg-card">
               <h3>💎 Section 5 (Pricing Plans) Background</h3>
               <div class="form-group">
@@ -1122,26 +1185,74 @@
                   <option value="fluid_gold" selected>Option 1: 🌟 Fluid Silk Gold Shader (Fast Liquid Gold Ribbons)</option>
                   <option value="molten_amber">Option 2: 🔥 Molten Amber &amp; Crimson Fluid Shader</option>
                   <option value="midnight_aurora">Option 3: 🔮 Deep Midnight Aurora (Neon Purple &amp; Cyan Waves)</option>
-                  <option value="obsidian_mesh">Option 4: 🌌 Dark Obsidian Radial Glow (Non-Shader Glass)</option>
-                  <option value="cyber_grid">Option 5: ⚡ Cyber Laser Grid &amp; Starlight</option>
+                  <option value="emerald_matrix">Option 4: 🌿 Emerald Matrix &amp; Cyber Gold Fluid</option>
+                  <option value="obsidian_mesh">Option 5: 🌌 Dark Obsidian Radial Glow</option>
                   <option value="pitch_black">Option 6: 🖤 Pitch Black Luxury (#050505 Clean Minimal)</option>
+                  <option value="custom_gradient">Option 7: 🎨 Custom Radial Gradient</option>
                 </select>
               </div>
               <div class="form-group">
                 <label>Shader Wave Speed (Fast to Calm):</label>
-                <select id="bg_shader_speed" class="form-select">
+                <select id="bg_shader_speed" class="form-select" onchange="previewBgSelection()">
                   <option value="0.55" selected>⚡ Fast &amp; Lively (Speed: 0.55)</option>
                   <option value="0.35">🌊 Medium Flow (Speed: 0.35)</option>
                   <option value="0.18">🕊️ Gentle &amp; Calm (Speed: 0.18)</option>
                 </select>
               </div>
               <div class="form-group">
-                <label>Shader Background Opacity:</label>
-                <select id="bg_shader_opacity" class="form-select">
+                <label>Shader Background Opacity / Halky:</label>
+                <select id="bg_shader_opacity" class="form-select" onchange="previewBgSelection()">
                   <option value="0.58" selected>Halky / Soft (58% — Recommended for text readability)</option>
                   <option value="0.40">Very Subtle (40%)</option>
                   <option value="0.80">Luminous Vivid (80%)</option>
                 </select>
+              </div>
+              <div id="sec5_custom_colors" style="display:none;padding:12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;margin-top:10px;">
+                <label style="font-size:12px;color:var(--gold);">Custom Gradient Colors:</label>
+                <div style="display:flex;gap:10px;margin-top:6px;">
+                  <input type="color" id="bg_s5_c1" value="#ffc800" onchange="previewBgSelection()">
+                  <input type="color" id="bg_s5_c2" value="#050507" onchange="previewBgSelection()">
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION 4: HOW IT WORKS BACKGROUND -->
+            <div class="bg-card">
+              <h3>⚙️ Section 4 (How It Works) Background</h3>
+              <div class="form-group">
+                <label>Choose Background Style:</label>
+                <select id="bg_s4_select" class="form-select" onchange="previewBgSelection()">
+                  <option value="aurora_bends" selected>Option 1: 🌈 Aurora Color Bends Fluid Shader (Default)</option>
+                  <option value="fluid_gold">Option 2: 🌟 Liquid Gold Silk Ribbon Shader</option>
+                  <option value="molten_amber">Option 3: 🔥 Molten Amber &amp; Crimson Glow</option>
+                  <option value="midnight_nebula">Option 4: 🔮 Deep Midnight Nebula (Purple/Cyan)</option>
+                  <option value="cyber_grid">Option 5: ⚡ Cyber Neon Laser Grid</option>
+                  <option value="pitch_black">Option 6: 🖤 Pitch Black Luxury (#050505 Clean Minimal)</option>
+                  <option value="custom_gradient">Option 7: 🎨 Custom Radiant Gradient</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Section 4 Shader Speed:</label>
+                <select id="bg_s4_speed" class="form-select" onchange="previewBgSelection()">
+                  <option value="0.55" selected>⚡ Fast &amp; Lively (Speed: 0.55)</option>
+                  <option value="0.35">🌊 Medium Flow (Speed: 0.35)</option>
+                  <option value="0.18">🕊️ Gentle &amp; Calm (Speed: 0.18)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Section 4 Background Opacity / Halky:</label>
+                <select id="bg_s4_opacity" class="form-select" onchange="previewBgSelection()">
+                  <option value="0.52" selected>Halky / Soft (52% — Recommended)</option>
+                  <option value="0.35">Very Subtle (35%)</option>
+                  <option value="0.75">Luminous Vivid (75%)</option>
+                </select>
+              </div>
+              <div id="sec4_custom_colors" style="display:none;padding:12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;margin-top:10px;">
+                <label style="font-size:12px;color:var(--gold);">Custom Gradient Colors:</label>
+                <div style="display:flex;gap:10px;margin-top:6px;">
+                  <input type="color" id="bg_s4_c1" value="#3ddc84" onchange="previewBgSelection()">
+                  <input type="color" id="bg_s4_c2" value="#050507" onchange="previewBgSelection()">
+                </div>
               </div>
             </div>
 
@@ -1161,7 +1272,7 @@
             </div>
 
             <!-- About Section Background -->
-            <div class="bg-card" style="grid-column: 1 / -1;">
+            <div class="bg-card">
               <h3>🎬 Section 3 (About Ultra Stream) Background</h3>
               <div class="form-group">
                 <label>Choose About Section Background:</label>
@@ -1171,6 +1282,7 @@
                   <option value="clean_dark">Option 3: 🖤 Clean Obsidian Dark</option>
                 </select>
               </div>
+              <span class="form-hint">Controls the star dots animation behind the About paragraph.</span>
             </div>
           </div>
         </div>
@@ -1253,17 +1365,17 @@
       </section>
 
       <!-- ================= TAB 6: LEGAL POLICIES ================= -->
-      <section id="pane-policies" class="tab-pane">
+            <section id="pane-policies" class="tab-pane">
         <div class="card-wrap">
           <div class="card-head">
             <div>
               <h2>Legal Policies Content Form (کوئی کوڈ نہیں — آسان فارم)</h2>
-              <p>تمام لیگل پالیسیز کی ہیڈنگز، پیراگراف اور پوائنٹس کو آسان فارم میں بغیر کسی کوڈ کے الگ الگ ایڈٹ کریں۔</p>
+              <p>ہر پالیسی کے اندر تمام سیکشنز کو ون بائی ون ایڈٹ کریں: پہلے سب ہیڈنگ، پھر ہیڈنگ، پھر ڈسکرپشن اور پوائنٹس۔ ساتھ لائیو پریویو بھی دیکھیں۔</p>
             </div>
             <button class="btn btn-gold" onclick="saveAllPolicyForms()">💾 Save All Policies</button>
           </div>
 
-          <!-- Sub-tabs -->
+          <!-- Sub-tabs for 3 Policies -->
           <div style="display:flex;gap:10px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:14px;flex-wrap:wrap;">
             <button type="button" id="subtab_btn_priv" class="btn btn-outline pol-subtab-btn active" onclick="switchPolicyFormTab('priv', this)">🛡️ Privacy Policy Form</button>
             <button type="button" id="subtab_btn_ref" class="btn btn-outline pol-subtab-btn" onclick="switchPolicyFormTab('ref', this)">💰 7-Day Refund Policy Form</button>
@@ -1272,12 +1384,12 @@
 
           <!-- ================= 1. PRIVACY POLICY FORM ================= -->
           <div id="form_pane_priv" class="policy-pane active">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
               <div>
                 <h3 style="font-size:18px;color:#fff;display:flex;align-items:center;gap:8px;">
-                  🛡️ Privacy Policy Form <span style="font-size:12px;color:var(--text-muted);">(privacy.html)</span>
+                  🛡️ Privacy Policy (One-by-One Form) <span style="font-size:12px;color:var(--text-muted);">(privacy.html)</span>
                 </h3>
-                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">ہیڈنگز اور پیراگراف الگ الگ خانوں میں ایڈٹ کریں۔</p>
+                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">ہر سیکشن کی سب ہیڈنگ، مین ہیڈنگ، اور تفصیل کو الگ الگ خانوں میں لکھیں۔</p>
               </div>
               <div style="display:flex;gap:10px;">
                 <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicyForm('priv')">🔄 Reset to Original</button>
@@ -1290,43 +1402,51 @@
               <div style="display:flex;flex-direction:column;gap:16px;">
                 <!-- Header Info -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">📌 Page Header</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">📌 Top Page Header</h4>
                   <div class="form-group">
-                    <label>Top Badge Text</label>
+                    <label>Top Sub-Heading / Badge</label>
                     <input type="text" id="priv_badge" class="form-input" oninput="renderPolicyPreview('priv')">
                   </div>
                   <div class="form-group">
-                    <label>Page Title</label>
+                    <label>Main Page Heading</label>
                     <input type="text" id="priv_title" class="form-input" oninput="renderPolicyPreview('priv')">
                   </div>
                   <div class="form-group" style="margin-bottom:0;">
-                    <label>Subtitle / Policy Date</label>
+                    <label>Subtitle / Description (Date)</label>
                     <input type="text" id="priv_sub" class="form-input" oninput="renderPolicyPreview('priv')">
                   </div>
                 </div>
 
                 <!-- Section 1 -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 1: Commitment to User Privacy</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 1: User Privacy</h4>
                   <div class="form-group">
-                    <label>Section 1 Heading</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="priv_s1_sub" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading</label>
                     <input type="text" id="priv_s1_title" class="form-input" oninput="renderPolicyPreview('priv')">
                   </div>
                   <div class="form-group" style="margin-bottom:0;">
-                    <label>Section 1 Paragraph Text</label>
+                    <label>Description / Paragraph</label>
                     <textarea id="priv_s1_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('priv')"></textarea>
                   </div>
                 </div>
 
                 <!-- Highlight Box -->
                 <div class="content-box" style="border-color:rgba(37,211,102,0.3);background:rgba(37,211,102,0.03);">
-                  <h4 style="color:var(--green);font-size:14px;margin-bottom:10px;">🛡️ Highlight Box: Zero-Logs Policy</h4>
+                  <h4 style="color:var(--green);font-size:14px;margin-bottom:10px;">🛡️ Highlight Box: Zero-Logs Guarantee</h4>
                   <div class="form-group">
-                    <label>Highlight Title</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="priv_box_sub" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading / Title</label>
                     <input type="text" id="priv_box_title" class="form-input" oninput="renderPolicyPreview('priv')">
                   </div>
                   <div class="form-group" style="margin-bottom:0;">
-                    <label>Highlight Description</label>
+                    <label>Description</label>
                     <textarea id="priv_box_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('priv')"></textarea>
                   </div>
                 </div>
@@ -1335,62 +1455,82 @@
                 <div class="content-box">
                   <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 2: Information We Collect</h4>
                   <div class="form-group">
-                    <label>Section 2 Heading</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="priv_s2_sub" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading</label>
                     <input type="text" id="priv_s2_title" class="form-input" oninput="renderPolicyPreview('priv')">
                   </div>
                   <div class="form-group">
-                    <label>Introductory Paragraph</label>
+                    <label>Description (Intro)</label>
                     <textarea id="priv_s2_intro" class="form-textarea" style="min-height:60px;" oninput="renderPolicyPreview('priv')"></textarea>
                   </div>
-                  <div class="form-group">
-                    <label>Point 1 (Email Address)</label>
-                    <input type="text" id="priv_s2_pt1" class="form-input" oninput="renderPolicyPreview('priv')">
+                  <!-- Points -->
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">POINT 1</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Point 1 Sub-Heading / Title</label><input type="text" id="priv_s2_pt1_sub" class="form-input" oninput="renderPolicyPreview('priv')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Point 1 Description</label><textarea id="priv_s2_pt1_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('priv')"></textarea></div>
                   </div>
-                  <div class="form-group">
-                    <label>Point 2 (Device Information)</label>
-                    <input type="text" id="priv_s2_pt2" class="form-input" oninput="renderPolicyPreview('priv')">
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">POINT 2</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Point 2 Sub-Heading / Title</label><input type="text" id="priv_s2_pt2_sub" class="form-input" oninput="renderPolicyPreview('priv')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Point 2 Description</label><textarea id="priv_s2_pt2_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('priv')"></textarea></div>
                   </div>
-                  <div class="form-group" style="margin-bottom:0;">
-                    <label>Point 3 (Transaction Details)</label>
-                    <input type="text" id="priv_s2_pt3" class="form-input" oninput="renderPolicyPreview('priv')">
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">POINT 3</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Point 3 Sub-Heading / Title</label><input type="text" id="priv_s2_pt3_sub" class="form-input" oninput="renderPolicyPreview('priv')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Point 3 Description</label><textarea id="priv_s2_pt3_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('priv')"></textarea></div>
                   </div>
                 </div>
 
                 <!-- Section 3 -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 3: 10-Minute Fast Delivery Policy</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 3: 10-Minute Delivery</h4>
                   <div class="form-group">
-                    <label>Section 3 Heading</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="priv_s3_sub" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading</label>
                     <input type="text" id="priv_s3_title" class="form-input" oninput="renderPolicyPreview('priv')">
                   </div>
                   <div class="form-group" style="margin-bottom:0;">
-                    <label>Section 3 Paragraph Text</label>
+                    <label>Description / Paragraph</label>
                     <textarea id="priv_s3_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('priv')"></textarea>
                   </div>
                 </div>
 
                 <!-- Section 4 -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 4: Data Protection &amp; Security</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 4: Data Protection</h4>
                   <div class="form-group">
-                    <label>Section 4 Heading</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="priv_s4_sub" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading</label>
                     <input type="text" id="priv_s4_title" class="form-input" oninput="renderPolicyPreview('priv')">
                   </div>
                   <div class="form-group" style="margin-bottom:0;">
-                    <label>Section 4 Paragraph Text</label>
+                    <label>Description / Paragraph</label>
                     <textarea id="priv_s4_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('priv')"></textarea>
                   </div>
                 </div>
 
                 <!-- Section 5 -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 5: Contacting Support</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 5: VIP Support</h4>
                   <div class="form-group">
-                    <label>Section 5 Heading</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="priv_s5_sub" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading</label>
                     <input type="text" id="priv_s5_title" class="form-input" oninput="renderPolicyPreview('priv')">
                   </div>
                   <div class="form-group" style="margin-bottom:0;">
-                    <label>Section 5 Paragraph Text</label>
+                    <label>Description / Paragraph</label>
                     <textarea id="priv_s5_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('priv')"></textarea>
                   </div>
                 </div>
@@ -1411,12 +1551,12 @@
 
           <!-- ================= 2. REFUND POLICY FORM ================= -->
           <div id="form_pane_ref" class="policy-pane">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
               <div>
                 <h3 style="font-size:18px;color:#fff;display:flex;align-items:center;gap:8px;">
-                  💰 7-Day Refund Policy Form <span style="font-size:12px;color:var(--text-muted);">(refund.html)</span>
+                  💰 7-Day Refund Policy (One-by-One Form) <span style="font-size:12px;color:var(--text-muted);">(refund.html)</span>
                 </h3>
-                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">منی بیک گارنٹی اور ریفنڈ پروسیس کے تمام رولز یہاں سے الگ الگ ایڈٹ کریں۔</p>
+                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">منی بیک گارنٹی اور ریفنڈ رولز کی سب ہیڈنگ، مین ہیڈنگ اور تفصیل الگ الگ خانوں میں۔</p>
               </div>
               <div style="display:flex;gap:10px;">
                 <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicyForm('ref')">🔄 Reset to Original</button>
@@ -1429,98 +1569,123 @@
               <div style="display:flex;flex-direction:column;gap:16px;">
                 <!-- Header Info -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">📌 Page Header</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">📌 Top Page Header</h4>
                   <div class="form-group">
-                    <label>Top Badge Text</label>
+                    <label>Top Sub-Heading / Badge</label>
                     <input type="text" id="ref_badge" class="form-input" oninput="renderPolicyPreview('ref')">
                   </div>
                   <div class="form-group">
-                    <label>Page Title</label>
+                    <label>Main Page Heading</label>
                     <input type="text" id="ref_title" class="form-input" oninput="renderPolicyPreview('ref')">
                   </div>
                   <div class="form-group" style="margin-bottom:0;">
-                    <label>Subtitle / Tagline</label>
+                    <label>Subtitle / Description</label>
                     <input type="text" id="ref_sub" class="form-input" oninput="renderPolicyPreview('ref')">
                   </div>
                 </div>
 
                 <!-- Section 1 -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 1: 7-Day 100% Money-Back Guarantee</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 1: 7-Day Guarantee</h4>
                   <div class="form-group">
-                    <label>Section 1 Heading</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="ref_s1_sub" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading</label>
                     <input type="text" id="ref_s1_title" class="form-input" oninput="renderPolicyPreview('ref')">
                   </div>
                   <div class="form-group" style="margin-bottom:0;">
-                    <label>Section 1 Paragraph Text</label>
+                    <label>Description / Paragraph</label>
                     <textarea id="ref_s1_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('ref')"></textarea>
                   </div>
                 </div>
 
                 <!-- Highlight Box -->
                 <div class="content-box" style="border-color:rgba(255,200,0,0.3);background:rgba(255,200,0,0.03);">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">⚡ Highlight Box: 10-Minute Delivery Guarantee</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">⚡ Highlight Box: 10-Minute Delivery</h4>
                   <div class="form-group">
-                    <label>Highlight Title</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="ref_box_sub" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading / Title</label>
                     <input type="text" id="ref_box_title" class="form-input" oninput="renderPolicyPreview('ref')">
                   </div>
                   <div class="form-group" style="margin-bottom:0;">
-                    <label>Highlight Description</label>
+                    <label>Description</label>
                     <textarea id="ref_box_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('ref')"></textarea>
                   </div>
                 </div>
 
                 <!-- Section 2 -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 2: Refund Eligibility Criteria</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 2: Refund Eligibility</h4>
                   <div class="form-group">
-                    <label>Section 2 Heading</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="ref_s2_sub" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading</label>
                     <input type="text" id="ref_s2_title" class="form-input" oninput="renderPolicyPreview('ref')">
                   </div>
                   <div class="form-group">
-                    <label>Introductory Paragraph</label>
+                    <label>Description (Intro)</label>
                     <textarea id="ref_s2_intro" class="form-textarea" style="min-height:55px;" oninput="renderPolicyPreview('ref')"></textarea>
                   </div>
-                  <div class="form-group">
-                    <label>Eligibility Rule 1 (7 Days)</label>
-                    <input type="text" id="ref_s2_pt1" class="form-input" oninput="renderPolicyPreview('ref')">
+                  <!-- Points -->
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">RULE 1</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Rule 1 Title</label><input type="text" id="ref_s2_pt1_sub" class="form-input" oninput="renderPolicyPreview('ref')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Rule 1 Description</label><textarea id="ref_s2_pt1_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('ref')"></textarea></div>
                   </div>
-                  <div class="form-group">
-                    <label>Eligibility Rule 2 (Contact Support)</label>
-                    <input type="text" id="ref_s2_pt2" class="form-input" oninput="renderPolicyPreview('ref')">
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">RULE 2</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Rule 2 Title</label><input type="text" id="ref_s2_pt2_sub" class="form-input" oninput="renderPolicyPreview('ref')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Rule 2 Description</label><textarea id="ref_s2_pt2_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('ref')"></textarea></div>
                   </div>
-                  <div class="form-group">
-                    <label>Eligibility Rule 3 (Internet Speed)</label>
-                    <input type="text" id="ref_s2_pt3" class="form-input" oninput="renderPolicyPreview('ref')">
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">RULE 3</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Rule 3 Title</label><input type="text" id="ref_s2_pt3_sub" class="form-input" oninput="renderPolicyPreview('ref')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Rule 3 Description</label><textarea id="ref_s2_pt3_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('ref')"></textarea></div>
                   </div>
-                  <div class="form-group" style="margin-bottom:0;">
-                    <label>Eligibility Rule 4 (Device Rules)</label>
-                    <input type="text" id="ref_s2_pt4" class="form-input" oninput="renderPolicyPreview('ref')">
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">RULE 4</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Rule 4 Title</label><input type="text" id="ref_s2_pt4_sub" class="form-input" oninput="renderPolicyPreview('ref')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Rule 4 Description</label><textarea id="ref_s2_pt4_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('ref')"></textarea></div>
                   </div>
                 </div>
 
                 <!-- Section 3 -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 3: How to Request a Refund</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 3: How to Claim</h4>
                   <div class="form-group">
-                    <label>Section 3 Heading</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="ref_s3_sub" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading</label>
                     <input type="text" id="ref_s3_title" class="form-input" oninput="renderPolicyPreview('ref')">
                   </div>
                   <div class="form-group">
-                    <label>Introductory Paragraph</label>
+                    <label>Description (Intro)</label>
                     <textarea id="ref_s3_intro" class="form-textarea" style="min-height:55px;" oninput="renderPolicyPreview('ref')"></textarea>
                   </div>
-                  <div class="form-group">
-                    <label>Step 1 (Order ID)</label>
-                    <input type="text" id="ref_s3_pt1" class="form-input" oninput="renderPolicyPreview('ref')">
+                  <!-- Points -->
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">STEP 1</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Step 1 Title</label><input type="text" id="ref_s3_pt1_sub" class="form-input" oninput="renderPolicyPreview('ref')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Step 1 Description</label><textarea id="ref_s3_pt1_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('ref')"></textarea></div>
                   </div>
-                  <div class="form-group">
-                    <label>Step 2 (Explanation)</label>
-                    <input type="text" id="ref_s3_pt2" class="form-input" oninput="renderPolicyPreview('ref')">
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">STEP 2</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Step 2 Title</label><input type="text" id="ref_s3_pt2_sub" class="form-input" oninput="renderPolicyPreview('ref')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Step 2 Description</label><textarea id="ref_s3_pt2_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('ref')"></textarea></div>
                   </div>
-                  <div class="form-group" style="margin-bottom:0;">
-                    <label>Step 3 (24-48 Hours Processing)</label>
-                    <input type="text" id="ref_s3_pt3" class="form-input" oninput="renderPolicyPreview('ref')">
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">STEP 3</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Step 3 Title</label><input type="text" id="ref_s3_pt3_sub" class="form-input" oninput="renderPolicyPreview('ref')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Step 3 Description</label><textarea id="ref_s3_pt3_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('ref')"></textarea></div>
                   </div>
                 </div>
 
@@ -1528,24 +1693,32 @@
                 <div class="content-box">
                   <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 4: Non-Refundable Scenarios</h4>
                   <div class="form-group">
-                    <label>Section 4 Heading</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="ref_s4_sub" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading</label>
                     <input type="text" id="ref_s4_title" class="form-input" oninput="renderPolicyPreview('ref')">
                   </div>
                   <div class="form-group">
-                    <label>Introductory Paragraph</label>
+                    <label>Description (Intro)</label>
                     <textarea id="ref_s4_intro" class="form-textarea" style="min-height:55px;" oninput="renderPolicyPreview('ref')"></textarea>
                   </div>
-                  <div class="form-group">
-                    <label>Rule 1 (After 7 Days)</label>
-                    <input type="text" id="ref_s4_pt1" class="form-input" oninput="renderPolicyPreview('ref')">
+                  <!-- Points -->
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">EXCEPTION 1</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Exception 1 Title</label><input type="text" id="ref_s4_pt1_sub" class="form-input" oninput="renderPolicyPreview('ref')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Exception 1 Description</label><textarea id="ref_s4_pt1_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('ref')"></textarea></div>
                   </div>
-                  <div class="form-group">
-                    <label>Rule 2 (ISP Throttling)</label>
-                    <input type="text" id="ref_s4_pt2" class="form-input" oninput="renderPolicyPreview('ref')">
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">EXCEPTION 2</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Exception 2 Title</label><input type="text" id="ref_s4_pt2_sub" class="form-input" oninput="renderPolicyPreview('ref')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Exception 2 Description</label><textarea id="ref_s4_pt2_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('ref')"></textarea></div>
                   </div>
-                  <div class="form-group" style="margin-bottom:0;">
-                    <label>Rule 3 (Restreaming/Banned Account)</label>
-                    <input type="text" id="ref_s4_pt3" class="form-input" oninput="renderPolicyPreview('ref')">
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">EXCEPTION 3</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Exception 3 Title</label><input type="text" id="ref_s4_pt3_sub" class="form-input" oninput="renderPolicyPreview('ref')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Exception 3 Description</label><textarea id="ref_s4_pt3_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('ref')"></textarea></div>
                   </div>
                 </div>
 
@@ -1565,12 +1738,12 @@
 
           <!-- ================= 3. TERMS & CONDITIONS FORM ================= -->
           <div id="form_pane_terms" class="policy-pane">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
               <div>
                 <h3 style="font-size:18px;color:#fff;display:flex;align-items:center;gap:8px;">
-                  ⚖️ Terms &amp; Conditions Form <span style="font-size:12px;color:var(--text-muted);">(terms.html)</span>
+                  ⚖️ Terms &amp; Conditions (One-by-One Form) <span style="font-size:12px;color:var(--text-muted);">(terms.html)</span>
                 </h3>
-                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">سروس ایگریمنٹ، کنکشن لمٹس، اور بینڈوتھ کے رولز الگ الگ خانوں میں ایڈٹ کریں۔</p>
+                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">استعمال کی شرائط، ڈیوائسز اور قوانین کی سب ہیڈنگ، مین ہیڈنگ اور تفصیل الگ الگ خانوں میں۔</p>
               </div>
               <div style="display:flex;gap:10px;">
                 <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicyForm('terms')">🔄 Reset to Original</button>
@@ -1583,13 +1756,13 @@
               <div style="display:flex;flex-direction:column;gap:16px;">
                 <!-- Header Info -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">📌 Page Header</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">📌 Top Page Header</h4>
                   <div class="form-group">
-                    <label>Top Badge Text</label>
+                    <label>Top Sub-Heading / Badge</label>
                     <input type="text" id="terms_badge" class="form-input" oninput="renderPolicyPreview('terms')">
                   </div>
                   <div class="form-group">
-                    <label>Page Title</label>
+                    <label>Main Page Heading</label>
                     <input type="text" id="terms_title" class="form-input" oninput="renderPolicyPreview('terms')">
                   </div>
                   <div class="form-group" style="margin-bottom:0;">
@@ -1600,106 +1773,138 @@
 
                 <!-- Section 1 -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 1: Service Agreement &amp; Acceptance</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 1: Service Agreement</h4>
                   <div class="form-group">
-                    <label>Section 1 Heading</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="terms_s1_sub" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading</label>
                     <input type="text" id="terms_s1_title" class="form-input" oninput="renderPolicyPreview('terms')">
                   </div>
                   <div class="form-group" style="margin-bottom:0;">
-                    <label>Section 1 Paragraph Text</label>
+                    <label>Description / Paragraph</label>
                     <textarea id="terms_s1_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('terms')"></textarea>
                   </div>
                 </div>
 
                 <!-- Highlight Box -->
                 <div class="content-box" style="border-color:rgba(255,200,0,0.3);background:rgba(255,200,0,0.03);">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">⚡ Highlight Box: 10-Minute Express Delivery</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">⚡ Highlight Box: Express Delivery</h4>
                   <div class="form-group">
-                    <label>Highlight Title</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="terms_box_sub" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading / Title</label>
                     <input type="text" id="terms_box_title" class="form-input" oninput="renderPolicyPreview('terms')">
                   </div>
                   <div class="form-group" style="margin-bottom:0;">
-                    <label>Highlight Description</label>
+                    <label>Description</label>
                     <textarea id="terms_box_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('terms')"></textarea>
                   </div>
                 </div>
 
                 <!-- Section 2 -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 2: Permitted Devices &amp; Connections</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 2: Permitted Devices</h4>
                   <div class="form-group">
-                    <label>Section 2 Heading</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="terms_s2_sub" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading</label>
                     <input type="text" id="terms_s2_title" class="form-input" oninput="renderPolicyPreview('terms')">
                   </div>
                   <div class="form-group">
-                    <label>Introductory Paragraph</label>
+                    <label>Description (Intro)</label>
                     <textarea id="terms_s2_intro" class="form-textarea" style="min-height:55px;" oninput="renderPolicyPreview('terms')"></textarea>
                   </div>
-                  <div class="form-group">
-                    <label>Starter Pass Limit (1 Device)</label>
-                    <input type="text" id="terms_s2_pt1" class="form-input" oninput="renderPolicyPreview('terms')">
+                  <!-- Points -->
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">DEVICE TIER 1</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Tier 1 Title</label><input type="text" id="terms_s2_pt1_sub" class="form-input" oninput="renderPolicyPreview('terms')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Tier 1 Description</label><textarea id="terms_s2_pt1_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('terms')"></textarea></div>
                   </div>
-                  <div class="form-group">
-                    <label>Pro Pass Limit (2 Devices)</label>
-                    <input type="text" id="terms_s2_pt2" class="form-input" oninput="renderPolicyPreview('terms')">
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">DEVICE TIER 2</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Tier 2 Title</label><input type="text" id="terms_s2_pt2_sub" class="form-input" oninput="renderPolicyPreview('terms')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Tier 2 Description</label><textarea id="terms_s2_pt2_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('terms')"></textarea></div>
                   </div>
-                  <div class="form-group">
-                    <label>Ultra VIP Pass Limit (3 Devices)</label>
-                    <input type="text" id="terms_s2_pt3" class="form-input" oninput="renderPolicyPreview('terms')">
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">DEVICE TIER 3</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Tier 3 Title</label><input type="text" id="terms_s2_pt3_sub" class="form-input" oninput="renderPolicyPreview('terms')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Tier 3 Description</label><textarea id="terms_s2_pt3_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('terms')"></textarea></div>
                   </div>
-                  <div class="form-group" style="margin-bottom:0;">
-                    <label>Device Limit Suspension Warning</label>
-                    <input type="text" id="terms_s2_outro" class="form-input" oninput="renderPolicyPreview('terms')">
+                  <div class="form-group" style="margin-top:10px;margin-bottom:0;">
+                    <label>Additional Device Note</label>
+                    <textarea id="terms_s2_note" class="form-textarea" style="min-height:50px;" oninput="renderPolicyPreview('terms')"></textarea>
                   </div>
                 </div>
 
                 <!-- Section 3 -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 3: Bandwidth &amp; Network Requirements</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 3: Network &amp; Speed</h4>
                   <div class="form-group">
-                    <label>Section 3 Heading</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="terms_s3_sub" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading</label>
                     <input type="text" id="terms_s3_title" class="form-input" oninput="renderPolicyPreview('terms')">
                   </div>
                   <div class="form-group" style="margin-bottom:0;">
-                    <label>Section 3 Paragraph Text</label>
+                    <label>Description / Paragraph</label>
                     <textarea id="terms_s3_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('terms')"></textarea>
                   </div>
                 </div>
 
                 <!-- Section 4 -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 4: Prohibited Usage &amp; Anti-Piracy</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 4: Prohibited Usage</h4>
                   <div class="form-group">
-                    <label>Section 4 Heading</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="terms_s4_sub" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading</label>
                     <input type="text" id="terms_s4_title" class="form-input" oninput="renderPolicyPreview('terms')">
                   </div>
                   <div class="form-group">
-                    <label>Introductory Paragraph</label>
+                    <label>Description (Intro)</label>
                     <textarea id="terms_s4_intro" class="form-textarea" style="min-height:55px;" oninput="renderPolicyPreview('terms')"></textarea>
                   </div>
-                  <div class="form-group">
-                    <label>Prohibited Rule 1 (Restreaming)</label>
-                    <input type="text" id="terms_s4_pt1" class="form-input" oninput="renderPolicyPreview('terms')">
+                  <!-- Points -->
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">RULE 1</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Rule 1 Title</label><input type="text" id="terms_s4_pt1_sub" class="form-input" oninput="renderPolicyPreview('terms')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Rule 1 Description</label><textarea id="terms_s4_pt1_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('terms')"></textarea></div>
                   </div>
-                  <div class="form-group">
-                    <label>Prohibited Rule 2 (Sharing Logins)</label>
-                    <input type="text" id="terms_s4_pt2" class="form-input" oninput="renderPolicyPreview('terms')">
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">RULE 2</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Rule 2 Title</label><input type="text" id="terms_s4_pt2_sub" class="form-input" oninput="renderPolicyPreview('terms')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Rule 2 Description</label><textarea id="terms_s4_pt2_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('terms')"></textarea></div>
                   </div>
-                  <div class="form-group" style="margin-bottom:0;">
-                    <label>Prohibited Rule 3 (Bots &amp; Scrapers)</label>
-                    <input type="text" id="terms_s4_pt3" class="form-input" oninput="renderPolicyPreview('terms')">
+                  <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;">
+                    <div style="color:var(--gold);font-size:12px;font-weight:700;margin-bottom:6px;">RULE 3</div>
+                    <div class="form-group"><label style="font-size:11.5px;">Rule 3 Title</label><input type="text" id="terms_s4_pt3_sub" class="form-input" oninput="renderPolicyPreview('terms')"></div>
+                    <div class="form-group" style="margin-bottom:0;"><label style="font-size:11.5px;">Rule 3 Description</label><textarea id="terms_s4_pt3_text" class="form-textarea" style="min-height:50px;font-size:12px;" oninput="renderPolicyPreview('terms')"></textarea></div>
                   </div>
                 </div>
 
                 <!-- Section 5 -->
                 <div class="content-box">
-                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 5: Service Availability &amp; SLA</h4>
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 5: 99.9% Server SLA</h4>
                   <div class="form-group">
-                    <label>Section 5 Heading</label>
+                    <label>Sub-Heading / Tag</label>
+                    <input type="text" id="terms_s5_sub" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group">
+                    <label>Heading</label>
                     <input type="text" id="terms_s5_title" class="form-input" oninput="renderPolicyPreview('terms')">
                   </div>
                   <div class="form-group" style="margin-bottom:0;">
-                    <label>Section 5 Paragraph Text</label>
+                    <label>Description / Paragraph</label>
                     <textarea id="terms_s5_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('terms')"></textarea>
                   </div>
                 </div>
@@ -1815,488 +2020,766 @@
   </div>
 
   <script>
-    // ================= ADMIN STATE & STORAGE =================
-    const DEFAULT_PIN = 'admin123';
-    let db = null;
-    let isFirebaseReady = false;
+  (function() {
+    'use strict';
 
-    // Default Site Content
-    const defaultSiteContent = {
-      hero_title: 'Entertainment Without Boundaries',
-      hero_sub: '',
-      about_text: 'Ultra Stream brings you the IPTV service of the world\'s biggest platforms — Netflix, Apple TV, Amazon Prime Video, Disney+, and HBO Max — all in one place. Live TV, movies, sports, and series in crystal-clear quality, anytime, anywhere. Everything you love, simply and reliably — that is why Ultra Stream is the best.',
-      how_title: 'Get Started in 4 Simple Steps',
-      how_sub: 'Get instant access to your favorite entertainment in just a few easy steps.',
-      how_card1_title: 'Create Your Account',
-      how_card1_desc: 'Sign up in seconds using your email and create your personal account.',
-      how_card2_title: 'Choose Your Plan',
-      how_card2_desc: 'Select the perfect subscription plan that suits your entertainment needs.',
-      how_card3_title: '10-Min WhatsApp Delivery',
-      how_card3_desc: 'Receive your M3U playlist & 4K credentials within 10 minutes directly on WhatsApp & Email.',
-      how_card4_title: 'Start Streaming',
-      how_card4_desc: 'Enjoy your favorite movies, TV shows, and live entertainment across your devices.',
-      pricing_pill: 'Flexible Subscriptions',
-      pricing_title: 'Simple Pricing, Unlimited Entertainment',
-      pricing_sub: 'Get instant access to 22,000+ live HD/4K channels and 85,000+ movies & series. ⚡ Guaranteed 10-minute delivery via WhatsApp & Email with 7-day money-back guarantee.'
-    };
-
-    const defaultFooterNav = {
-      g_point1: '⚡ Guaranteed Delivery in 10 Mins',
-      g_point2: '🛡️ 7-Day 100% Money-Back Guarantee',
-      g_point3: '🔒 256-Bit SSL Encrypted Checkout',
-      g_point4: '💬 24/7 Priority VIP Support',
-      f_desc: 'Premium 4K & Ultra HD IPTV service with 22,000+ live channels, 85,000+ movies & VOD series worldwide. Anti-Freeze™ 9.0 technology.',
-      f_badge: '⚡ Instant 10-Minute Delivery via WhatsApp',
-      f_copy: '© 2026 Ultra Stream. All rights reserved. Worldwide Premium IPTV Entertainment.',
-      nav_item1: 'Home',
-      nav_item2: 'Supported Platforms',
-      nav_item3: 'How It Works',
-      nav_item4: 'Pricing Plans'
-    };
-
-    // Default Section Backgrounds
-    const defaultBackgrounds = {
-      pricing_bg: 'fluid_gold',
-      shader_speed: '0.55',
-      shader_opacity: '0.58',
-      hero_bg: 'poster_wall',
-      about_bg: 'dot_matrix',
-      card_theme: 'obsidian_glass'
-    };
-
-    // Default Pricing Plans (with interactive bullet points array & custom WhatsApp draft message)
-    let plansData = [
-      {
-        id: 'plan_1',
-        name: 'Starter Pass',
-        badge: '1 MONTH PASS',
-        price: '14',
-        cycle: '.99 / 1 Month',
-        origPrice: '$24.99',
-        savings: 'SAVE 40%',
-        desc: 'Ideal for testing our premium ultra-fast IPTV streaming quality.',
-        btnText: 'Get 1 Month Pass',
-        draftMessage: 'Hello Ultra Stream! 👋 I would like to order the 1 MONTH PASS ($14.99). Please provide me instant activation details and payment options via WhatsApp. Thank you!',
-        features: [
-          '10,000+ Live Worldwide Channels',
-          '40,000+ VOD Movies & Shows',
-          'Full HD & 4K Streaming Quality',
-          'Anti-Freeze™ 9.0 Technology',
-          '1 Device Connection',
-          '7-Day TV Guide (EPG)',
-          '⚡ Guaranteed Delivery in 10 Mins via WhatsApp',
-          '24/7 Priority Support'
-        ]
-      },
-      {
-        id: 'plan_2',
-        name: 'Ultra VIP Pass',
-        badge: '🔥 BEST VALUE — SAVE 65%',
-        price: '49',
-        cycle: '.99 / 12 Months',
-        origPrice: '$139.99',
-        savings: 'SAVE 65%',
-        desc: 'Our flagship VIP pass. Massive savings with maximum 4K channels and multi-room connections.',
-        btnText: 'Claim Ultra VIP Pass',
-        isFeatured: true,
-        draftMessage: 'Hello Ultra Stream! 🔥 I want to subscribe to the 12 MONTHS ULTRA VIP PASS ($49.99 - Best Value). Please send me priority login credentials (4K UHD + 5 Connections). Ready to order!',
-        features: [
-          '25,000+ Premium Live Channels (US, UK, CA, Arab, Europe & World)',
-          '120,000+ VOD Movies & Full Web Series',
-          'Crystal-Clear 4K Ultra HD & 60 FPS Sports Streams',
-          'All Major Live Sports PPV Events Included (UFC, EPL, Champions League)',
-          'Anti-Freeze™ 10.0 Zero-Buffer Server Cluster',
-          '5 Simultaneous Device Connections',
-          'Complete TV Guide (EPG) + Catch-Up TV (7 Days)',
-          'Adult Channels (18+) Included (Optional / Pin Protected)',
-          '⚡ VIP Fast-Track Delivery in 10 Mins via WhatsApp & Email',
-          '24/7 Dedicated VIP Account Manager'
-        ]
-      },
-      {
-        id: 'plan_3',
-        name: 'Pro Pass',
-        badge: '6 MONTHS PRO',
-        price: '29',
-        cycle: '.99 / 6 Months',
-        origPrice: '$59.99',
-        savings: 'SAVE 50%',
-        desc: 'Great value for families and sports lovers who want reliable half-year streaming.',
-        btnText: 'Get 6 Months Pass',
-        draftMessage: 'Hello Ultra Stream! ⚡ I want to get the 6 MONTHS PRO PASS ($29.99). Please provide setup guide and quick WhatsApp activation. Thanks!',
-        features: [
-          '20,000+ Live Worldwide Channels',
-          '80,000+ VOD Movies & TV Shows',
-          'Full HD & 4K High-Bitrate Streams',
-          'Major Sports Channels (Sky, TNT, beIN, DAZN, ESPN)',
-          'Anti-Freeze™ 9.5 High-Speed Core',
-          '2 Simultaneous Device Connections',
-          '7-Day TV Guide (EPG)',
-          '⚡ Guaranteed Delivery in 10 Mins via WhatsApp',
-          '24/7 Customer Support'
-        ]
-      }
-    ];
-
-    // Default Policies Content
-    const defaultPolicies = {
-      privacy: '<div class="policy-section">\n  <h2><span class="sec-num">1</span> Commitment to User Privacy</h2>\n  <p>At Ultra Stream, we value your privacy above all else. This Privacy Policy details how we collect, handle, and protect your information when you use our website and IPTV streaming services.</p>\n</div>\n\n<div class="highlight-box">\n  <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>\n  <div><strong>Strict Zero-Logs Policy:</strong> We do not log, monitor, or track the TV channels, movies, sports, or content you watch. Your streaming activity remains 100% private and confidential.</div>\n</div>\n\n<div class="policy-section">\n  <h2><span class="sec-num">2</span> Information We Collect</h2>\n  <p>To provide our services and complete our <strong>10-Minute Fast Delivery Guarantee</strong>, we only collect the minimum required information:</p>\n  <ul>\n    <li><strong>Email Address:</strong> To deliver your M3U playlist URL, Xtream Codes API credentials, and portal details within 10 minutes.</li>\n    <li><strong>Device Information:</strong> The device type you intend to use (Smart TV, Firestick, Android, iOS, Windows, Mac) to provide optimized setup tutorials.</li>\n    <li><strong>Transaction Details:</strong> Payment confirmation ID from our payment processors. We never store credit card numbers, CVVs, or sensitive payment tokens.</li>\n  </ul>\n</div>\n\n<div class="policy-section">\n  <h2><span class="sec-num">3</span> 10-Minute Fast Delivery Policy</h2>\n  <p>Upon receipt of payment, our automated server infrastructure generates and delivers your login credentials to your specified email within <strong>10 minutes</strong>. Transactional emails are strictly used for credential delivery, setup guides, and renewal reminders.</p>\n</div>\n\n<div class="policy-section">\n  <h2><span class="sec-num">4</span> Data Protection & Security</h2>\n  <p>All data exchanged on our website is secured with enterprise-grade <strong>256-bit SSL (TLS 1.3) encryption</strong>. We do not sell, rent, trade, or share your contact details with any third parties or advertisers.</p>\n</div>\n\n<div class="policy-section">\n  <h2><span class="sec-num">5</span> Contacting Support</h2>\n  <p>If you have any questions or wish to request data removal, our VIP Support team is available 24/7 via live support and email.</p>\n</div>',
-      refund: '<div class="policy-section">\n  <h2><span class="sec-num">1</span> 7-Day 100% Money-Back Guarantee</h2>\n  <p>We are confident in the premium streaming quality, anti-freeze stability, and channel selection of Ultra Stream. If you encounter any technical issues that our 24/7 support team cannot resolve within 24 hours of your report, you are entitled to a <strong>100% full refund within 7 days</strong> of purchase.</p>\n</div>\n\n<div class="highlight-box">\n  <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18z"/></svg>\n  <div><strong>10-Minute Delivery Guarantee:</strong> We promise delivery of your subscription credentials within 10 minutes of payment. If for any rare technical reason you do not receive them within 10 minutes, our priority support will dispatch them instantly or process a full refund immediately upon request.</div>\n</div>\n\n<div class="policy-section">\n  <h2><span class="sec-num">2</span> Refund Eligibility Criteria</h2>\n  <p>To qualify for a refund under our 7-day guarantee, please ensure:</p>\n  <ul>\n    <li>Your request is submitted within 7 days of the initial subscription purchase date.</li>\n    <li>You have contacted our support team and given us the opportunity to assist with app configuration or playlist setup.</li>\n    <li>Your internet connection meets the recommended minimum speed (15 Mbps for HD, 30+ Mbps for 4K).</li>\n    <li>Your account has not violated our single/multi-device connection rules.</li>\n  </ul>\n</div>\n\n<div class="policy-section">\n  <h2><span class="sec-num">3</span> How to Request a Refund</h2>\n  <p>Claiming a refund is simple and hassle-free:</p>\n  <ul>\n    <li>Email our support team with your <strong>Order ID</strong> and the email address used during checkout.</li>\n    <li>Include a brief note explaining the technical issue you experienced.</li>\n    <li>Our billing department will process your refund within <strong>24 to 48 hours</strong> back to your original payment method.</li>\n  </ul>\n</div>\n\n<div class="policy-section">\n  <h2><span class="sec-num">4</span> Non-Refundable Scenarios</h2>\n  <p>Refunds cannot be issued if:</p>\n  <ul>\n    <li>More than 7 days have elapsed since the date of purchase.</li>\n    <li>The issue is caused by local ISP throttling where the user declines to use a VPN.</li>\n    <li>An account was banned for unauthorized restreaming or sharing beyond the purchased device limit.</li>\n  </ul>\n</div>',
-      terms: '<div class="policy-section">\n  <h2><span class="sec-num">1</span> Service Agreement & Acceptance</h2>\n  <p>By purchasing, accessing, or using Ultra Stream IPTV services, you agree to comply with and be bound by these Terms and Conditions. If you do not agree, please do not use our services.</p>\n</div>\n\n<div class="highlight-box">\n  <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>\n  <div><strong>10-Minute Express Delivery:</strong> All valid subscription orders are fulfilled with M3U URLs, Xtream API logins, and setup instructions delivered via email within 10 minutes of completed payment.</div>\n</div>\n\n<div class="policy-section">\n  <h2><span class="sec-num">2</span> Permitted Devices & Connections</h2>\n  <p>Each subscription tier includes a specific number of simultaneous active streams:</p>\n  <ul>\n    <li><strong>Starter Pass (1 Month):</strong> 1 active connection at any time.</li>\n    <li><strong>Pro Pass (6 Months):</strong> Up to 2 simultaneous active connections.</li>\n    <li><strong>Ultra VIP Pass (12 Months):</strong> Up to 3 simultaneous active connections.</li>\n  </ul>\n  <p>Simultaneous streaming from more devices than permitted under your active plan may cause temporary line suspension.</p>\n</div>\n\n<div class="policy-section">\n  <h2><span class="sec-num">3</span> Bandwidth & Network Requirements</h2>\n  <p>To enjoy smooth, buffer-free playback with our Anti-Freeze™ technology, users must maintain a stable broadband or 4G/5G internet connection: minimum <strong>15 Mbps for Full HD 1080p</strong> and <strong>30+ Mbps for Ultra HD 4K streams</strong>.</p>\n</div>\n\n<div class="policy-section">\n  <h2><span class="sec-num">4</span> Prohibited Usage & Anti-Piracy</h2>\n  <p>The following activities are strictly prohibited and will result in immediate service termination without refund:</p>\n  <ul>\n    <li>Restreaming, re-broadcasting, or redistributing our stream feeds to third parties.</li>\n    <li>Reselling or sharing login credentials publicly on forums or social media.</li>\n    <li>Using automated scrapers or bots against our streaming servers.</li>\n  </ul>\n</div>\n\n<div class="policy-section">\n  <h2><span class="sec-num">5</span> Service Availability & SLA</h2>\n  <p>We strive to maintain a <strong>99.9% server uptime</strong>. Occasional maintenance or channel adjustments may occur to maintain optimum stream quality and anti-freeze server routing.</p>\n</div>'
-    };
-
-    // ================= AUTH & SECURITY PIN =================
-    function checkPin() {
-      const pin = document.getElementById('pinInput').value.trim();
-      const savedPin = localStorage.getItem('ultra_admin_pin') || DEFAULT_PIN;
-      if (pin === savedPin) {
-        sessionStorage.setItem('ultra_admin_authed', 'true');
-        document.getElementById('pinLockModal').style.display = 'none';
-        showToast('Welcome back, Admin!');
-      } else {
-        alert('Incorrect Password! Master default password is: admin123');
-      }
-    }
-
-    document.getElementById('pinInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter') checkPin();
-    });
-
-    function lockAdmin() {
-      sessionStorage.removeItem('ultra_admin_authed');
-      document.getElementById('pinLockModal').style.display = 'flex';
-      document.getElementById('pinInput').value = '';
-    }
-
-    if (sessionStorage.getItem('ultra_admin_authed') === 'true') {
-      document.getElementById('pinLockModal').style.display = 'none';
-    }
-
-    function updateAdminPin() {
-      const newPin = document.getElementById('set_new_pin').value.trim();
-      if (!newPin || newPin.length < 4) {
-        alert('Please enter a password with at least 4 characters.');
-        return;
-      }
-      localStorage.setItem('ultra_admin_pin', newPin);
-      document.getElementById('set_current_pin').value = newPin;
-      document.getElementById('set_new_pin').value = '';
-      if (db) {
-        db.collection('settings').doc('security').set({ admin_pin: newPin }, { merge: true }).catch(() => {});
-      }
-      showToast('Master Password updated to: ' + newPin);
-    }
-
-    // ================= TABS NAVIGATION =================
-    const tabTitles = {
-      dashboard: { title: 'Live Traffic & Button Clicks', sub: 'Real-time visitor analytics starting from pure zero (0)' },
-      content: { title: 'Headings & Sections Editor', sub: 'Edit hero titles, about text, how it works, and section headings' },
-      plans: { title: 'Plans, Points & Card Design', sub: 'Add/delete plans, add/edit/delete bullet points, and select visual card themes' },
-      backgrounds: { title: 'Section Backgrounds & Shaders', sub: 'Choose luxury fluid shaders, molten waves, or clean obsidian backgrounds' },
-      footer_nav: { title: 'Guarantees & Footer Navigation', sub: 'Edit the 4 trust guarantees, footer description, badge, and menu labels' },
-      policies: { title: 'Legal Policies Editor', sub: 'Update Privacy Policy, Refund Policy, and Terms & Conditions' },
-      firebase: { title: 'Firebase Cloud Database', sub: 'Connect Google Firestore for cloud backup & multi-admin sync' },
-      settings: { title: 'WhatsApp & Master Password', sub: 'WhatsApp order phone number and security credentials' }
-    };
-
-    function switchTab(tabId, el) {
-      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-
-      const targetPane = document.getElementById('pane-' + tabId);
-      if (tabId === 'policies') {
-        setTimeout(function() {
-          populatePolicyForms();
-        }, 60);
-      }
-      if (targetPane) targetPane.classList.add('active');
-
-      if (tabId === 'backgrounds') {
-        setTimeout(function() {
-          if (typeof initAdminPreviewShader === 'function') initAdminPreviewShader();
-          if (typeof updateAdminPreview === 'function') updateAdminPreview();
-        }, 120);
-      }
-
-      if (el) {
-        el.classList.add('active');
-      } else {
-        const matchingBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
-        if (matchingBtn) matchingBtn.classList.add('active');
-      }
-
-      const meta = tabTitles[tabId] || tabTitles.dashboard;
-      document.getElementById('pageTitle').textContent = meta.title;
-      document.getElementById('pageSub').textContent = meta.sub;
-    }
-
-    // ================= ANALYTICS & REAL TRAFFIC (STARTS AT ZERO) =================
-    function getAnalytics() {
-      try {
-        const a = localStorage.getItem('ultra_analytics');
-        if (a) return JSON.parse(a);
-      } catch(_) {}
-      
-      return {
-        daily: {},
-        weekly: {},
-        monthly: {},
-        total_views: 0,
-        unique_visitors: 0,
-        clicks: {},
-        recent_activity: []
-      };
-    }
-
-    function renderAnalytics() {
-      const a = getAnalytics();
-      const today = new Date().toISOString().slice(0, 10);
-      const now = new Date();
-      const week = now.getFullYear() + '-W' + Math.ceil(now.getDate() / 7);
-      const month = now.toISOString().slice(0, 7);
-
-      const daily = a.daily?.[today] || 0;
-      const weekly = a.weekly?.[week] || 0;
-      const monthly = a.monthly?.[month] || 0;
-
-      let totalWaClicks = 0;
-      if (a.clicks) {
-        for (let k in a.clicks) {
-          totalWaClicks += (a.clicks[k] || 0);
-        }
-      }
-
-      document.getElementById('statDailyVisits').textContent = Number(daily).toLocaleString();
-      document.getElementById('statWeeklyVisits').textContent = Number(weekly).toLocaleString();
-      document.getElementById('statMonthlyVisits').textContent = Number(monthly).toLocaleString();
-      document.getElementById('statWaClicks').textContent = Number(totalWaClicks).toLocaleString();
-
-      // Render Clicks Table
-      const plans = getPlans();
-      const clicksList = [
-        { key: 'whatsapp_floating', name: 'Floating WhatsApp Quick Button', loc: 'Bottom Right (Site-wide)' }
-      ];
-
-      plans.forEach((p, idx) => {
-        clicksList.push({
-          key: 'plan' + (idx + 1) + '_get_started',
-          name: p.name + ' ("Get Started")',
-          loc: 'Section 5 (Card ' + (idx + 1) + ')'
-        });
-      });
-
-      clicksList.push(
-        { key: 'hero_cta_whatsapp', name: 'Hero Instant WhatsApp Access', loc: 'Hero Section (Top)' },
-        { key: 'hero_cta_plans', name: 'Hero Explore Plans Button', loc: 'Hero Section (Top)' }
-      );
-
-      const clicksTbody = document.getElementById('clicksTableBody');
-      const totalClicks = totalWaClicks || 1;
-
-      clicksTbody.innerHTML = clicksList.map(item => {
-        const count = a.clicks?.[item.key] || 0;
-        const pct = totalWaClicks > 0 ? Math.round((count / totalClicks) * 100) : 0;
-        return `
-          <tr>
-            <td><strong>${item.name}</strong></td>
-            <td><span style="color:var(--text-muted);font-size:12.5px;">${item.loc}</span></td>
-            <td><span style="font-family:'Space Grotesk';font-weight:700;font-size:16px;color:var(--gold);">${count}</span> clicks</td>
-            <td>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <div style="flex:1;height:6px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;max-width:90px;">
-                  <div style="width:${pct}%;height:100%;background:var(--gold);"></div>
-                </div>
-                <span style="font-size:12px;color:var(--text-muted);">${pct}%</span>
-              </div>
-            </td>
-          </tr>
-        `;
-      }).join('');
-
-      // Render Recent Activity Stream
-      const actTbody = document.getElementById('visitorActivityTbody');
-      const acts = a.recent_activity || [];
-      if (acts.length === 0) {
-        actTbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:24px;">No visitors yet. Counters will increment as soon as visitors browse the site.</td></tr>`;
-      } else {
-        actTbody.innerHTML = acts.slice(0, 15).map(act => {
-          const timeAgo = formatTimeAgo(act.time);
-          return `
-            <tr>
-              <td style="color:var(--text-muted);font-size:12px;">${timeAgo}</td>
-              <td><strong>${escapeHtml(act.event)}</strong></td>
-              <td><span class="badge" style="background:rgba(255,255,255,0.06);color:#fff;">${act.device || 'Mobile'}</span></td>
-              <td><span style="color:var(--gold);font-size:13px;">${escapeHtml(act.target || 'Website')}</span></td>
-            </tr>
-          `;
-        }).join('');
-      }
-    }
-
-    function formatTimeAgo(timestamp) {
-      if (!timestamp) return 'Just now';
-      const sec = Math.floor((Date.now() - timestamp) / 1000);
-      if (sec < 60) return `${sec}s ago`;
-      const min = Math.floor(sec / 60);
-      if (min < 60) return `${min}m ago`;
-      const hrs = Math.floor(min / 60);
-      if (hrs < 24) return `${hrs}h ago`;
-      return `${Math.floor(hrs / 24)}d ago`;
-    }
-
-    function resetAnalytics() {
-      if (!confirm('Are you sure you want to reset all traffic and click analytics counters to 0?')) return;
-      localStorage.removeItem('ultra_analytics');
-      renderAnalytics();
-      showToast('Analytics counters reset to 0.');
-    }
-
-    // ================= HEADINGS & CONTENT =================
-    function getSiteContent() {
-      try {
-        const c = localStorage.getItem('ultra_site_content');
-        return c ? { ...defaultSiteContent, ...JSON.parse(c) } : defaultSiteContent;
-      } catch(_) {
-        return defaultSiteContent;
-      }
-    }
-
-    function populateSiteContent() {
-      const c = getSiteContent();
-      if (document.getElementById('cnt_hero_title')) document.getElementById('cnt_hero_title').value = c.hero_title || '';
-      if (document.getElementById('cnt_hero_sub')) document.getElementById('cnt_hero_sub').value = c.hero_sub || '';
-      if (document.getElementById('cnt_about_text')) document.getElementById('cnt_about_text').value = c.about_text || '';
-      if (document.getElementById('cnt_how_title')) document.getElementById('cnt_how_title').value = c.how_title || 'Get Started in 4 Simple Steps';
-      if (document.getElementById('cnt_how_sub')) document.getElementById('cnt_how_sub').value = c.how_sub || 'Get instant access to your favorite entertainment in just a few easy steps.';
-      
-      if (document.getElementById('cnt_how_card1_title')) {
-        document.getElementById('cnt_how_card1_title').value = c.how_card1_title || 'Create Your Account';
-        document.getElementById('cnt_how_card1_desc').value = c.how_card1_desc || 'Sign up in seconds using your email and create your personal account.';
-        document.getElementById('cnt_how_card2_title').value = c.how_card2_title || 'Choose Your Plan';
-        document.getElementById('cnt_how_card2_desc').value = c.how_card2_desc || 'Select the perfect subscription plan that suits your entertainment needs.';
-        document.getElementById('cnt_how_card3_title').value = c.how_card3_title || '10-Min WhatsApp Delivery';
-        document.getElementById('cnt_how_card3_desc').value = c.how_card3_desc || 'Receive your M3U playlist & 4K credentials within 10 minutes directly on WhatsApp & Email.';
-        document.getElementById('cnt_how_card4_title').value = c.how_card4_title || 'Start Streaming';
-        document.getElementById('cnt_how_card4_desc').value = c.how_card4_desc || 'Enjoy your favorite movies, TV shows, and live entertainment across your devices.';
-      }
-
-      if (document.getElementById('cnt_pricing_pill')) document.getElementById('cnt_pricing_pill').value = c.pricing_pill || '';
-      if (document.getElementById('cnt_pricing_title')) document.getElementById('cnt_pricing_title').value = c.pricing_title || '';
-      if (document.getElementById('cnt_pricing_sub')) document.getElementById('cnt_pricing_sub').value = c.pricing_sub || '';
-    }
-
-    function saveSiteContent() {
-      const c = {
-        hero_title: document.getElementById('cnt_hero_title').value.trim(),
-        hero_sub: document.getElementById('cnt_hero_sub').value.trim(),
-        about_text: document.getElementById('cnt_about_text').value.trim(),
-        how_title: document.getElementById('cnt_how_title').value.trim(),
-        how_sub: document.getElementById('cnt_how_sub').value.trim(),
-        how_card1_title: document.getElementById('cnt_how_card1_title') ? document.getElementById('cnt_how_card1_title').value.trim() : 'Create Your Account',
-        how_card1_desc: document.getElementById('cnt_how_card1_desc') ? document.getElementById('cnt_how_card1_desc').value.trim() : 'Sign up in seconds using your email and create your personal account.',
-        how_card2_title: document.getElementById('cnt_how_card2_title') ? document.getElementById('cnt_how_card2_title').value.trim() : 'Choose Your Plan',
-        how_card2_desc: document.getElementById('cnt_how_card2_desc') ? document.getElementById('cnt_how_card2_desc').value.trim() : 'Select the perfect subscription plan that suits your entertainment needs.',
-        how_card3_title: document.getElementById('cnt_how_card3_title') ? document.getElementById('cnt_how_card3_title').value.trim() : '10-Min WhatsApp Delivery',
-        how_card3_desc: document.getElementById('cnt_how_card3_desc') ? document.getElementById('cnt_how_card3_desc').value.trim() : 'Receive your M3U playlist & 4K credentials within 10 minutes directly on WhatsApp & Email.',
-        how_card4_title: document.getElementById('cnt_how_card4_title') ? document.getElementById('cnt_how_card4_title').value.trim() : 'Start Streaming',
-        how_card4_desc: document.getElementById('cnt_how_card4_desc') ? document.getElementById('cnt_how_card4_desc').value.trim() : 'Enjoy your favorite movies, TV shows, and live entertainment across your devices.',
-        pricing_pill: document.getElementById('cnt_pricing_pill').value.trim(),
-        pricing_title: document.getElementById('cnt_pricing_title').value.trim(),
-        pricing_sub: document.getElementById('cnt_pricing_sub').value.trim()
-      };
-
-      localStorage.setItem('ultra_site_content', JSON.stringify(c));
-
-      if (db) {
-        db.collection('settings').doc('site_content').set(c, { merge: true })
-          .then(() => showToast('Section headings saved & synced live!'))
-          .catch(() => showToast('Headings saved locally!'));
-      } else {
-        showToast('Saved headings to local device!');
-      }
-    }
-
-    // ================= LEGAL POLICIES 100% CODE-FREE FORM CONTROLLER =================
+    // MASTER DEFAULT LEGAL POLICIES (Exact Match with Live Website)
     const defaultPolicyForms = {
       priv: {
         badge: '⚡ Zero-Logs Protected',
         title: 'Privacy Policy',
         sub: 'Last Updated: November 2026 • Official Ultra Stream Policy',
-        s1_title: 'Commitment to User Privacy',
+        s1_sub: 'Section 01 • Privacy Commitment',
+        s1_title: '1. Commitment to User Privacy',
         s1_text: 'At Ultra Stream, we value your privacy above all else. This Privacy Policy details how we collect, handle, and protect your information when you use our website and IPTV streaming services.',
+        box_sub: '100% Confidential Guarantee',
         box_title: 'Strict Zero-Logs Policy:',
         box_text: 'We do not log, monitor, or track the TV channels, movies, sports, or content you watch. Your streaming activity remains 100% private and confidential.',
-        s2_title: 'Information We Collect',
+        s2_sub: 'Section 02 • Data Transparency',
+        s2_title: '2. Information We Collect',
         s2_intro: 'To provide our services and complete our 10-Minute Fast Delivery Guarantee, we only collect the minimum required information:',
-        s2_pt1: 'Email Address: To deliver your M3U playlist URL, Xtream Codes API credentials, and portal details within 10 minutes.',
-        s2_pt2: 'Device Information: The device type you intend to use (Smart TV, Firestick, Android, iOS, Windows, Mac) to provide optimized setup tutorials.',
-        s2_pt3: 'Transaction Details: Payment confirmation ID from our payment processors. We never store credit card numbers, CVVs, or sensitive payment tokens.',
-        s3_title: '10-Minute Fast Delivery Policy',
+        s2_pt1_sub: 'Email Address',
+        s2_pt1_text: 'To deliver your M3U playlist URL, Xtream Codes API credentials, and portal details within 10 minutes.',
+        s2_pt2_sub: 'Device Information',
+        s2_pt2_text: 'The device type you intend to use (Smart TV, Firestick, Android, iOS, Windows, Mac) to provide optimized setup tutorials.',
+        s2_pt3_sub: 'Transaction Details',
+        s2_pt3_text: 'Payment confirmation ID from our payment processors. We never store credit card numbers, CVVs, or sensitive payment tokens.',
+        s3_sub: 'Section 03 • Fast Fulfillment',
+        s3_title: '3. 10-Minute Fast Delivery Policy',
         s3_text: 'Upon receipt of payment, our automated server infrastructure generates and delivers your login credentials to your specified email within 10 minutes. Transactional emails are strictly used for credential delivery, setup guides, and renewal reminders.',
-        s4_title: 'Data Protection & Security',
+        s4_sub: 'Section 04 • Security Infrastructure',
+        s4_title: '4. Data Protection & Security',
         s4_text: 'All data exchanged on our website is secured with enterprise-grade 256-bit SSL (TLS 1.3) encryption. We do not sell, rent, trade, or share your contact details with any third parties or advertisers.',
-        s5_title: 'Contacting Support',
+        s5_sub: 'Section 05 • Support & Removal',
+        s5_title: '5. Contacting Support',
         s5_text: 'If you have any questions or wish to request data removal, our VIP Support team is available 24/7 via live support and email.'
       },
       ref: {
-        badge: '⚡ Satisfaction Guaranteed',
+        badge: '💰 7-Day Money-Back Guarantee',
         title: 'Refund Policy',
-        sub: '7-Day Money-Back Guarantee • 10-Minute Delivery Commitment',
-        s1_title: '7-Day 100% Money-Back Guarantee',
+        sub: 'Risk-Free IPTV Streaming • 100% Satisfaction Guarantee',
+        s1_sub: 'Section 01 • Satisfaction Promise',
+        s1_title: '1. 7-Day 100% Money-Back Guarantee',
         s1_text: 'We are confident in the premium streaming quality, anti-freeze stability, and channel selection of Ultra Stream. If you encounter any technical issues that our 24/7 support team cannot resolve within 24 hours of your report, you are entitled to a 100% full refund within 7 days of purchase.',
+        box_sub: 'Express Dispatch Promise',
         box_title: '10-Minute Delivery Guarantee:',
         box_text: 'We promise delivery of your subscription credentials within 10 minutes of payment. If for any rare technical reason you do not receive them within 10 minutes, our priority support will dispatch them instantly or process a full refund immediately upon request.',
-        s2_title: 'Refund Eligibility Criteria',
+        s2_sub: 'Section 02 • Eligibility Standards',
+        s2_title: '2. Refund Eligibility Criteria',
         s2_intro: 'To qualify for a refund under our 7-day guarantee, please ensure:',
-        s2_pt1: 'Your request is submitted within 7 days of the initial subscription purchase date.',
-        s2_pt2: 'You have contacted our support team and given us the opportunity to assist with app configuration or playlist setup.',
-        s2_pt3: 'Your internet connection meets the recommended minimum speed (15 Mbps for HD, 30+ Mbps for 4K).',
-        s2_pt4: 'Your account has not violated our single/multi-device connection rules.',
-        s3_title: 'How to Request a Refund',
+        s2_pt1_sub: '7-Day Window',
+        s2_pt1_text: 'Your request is submitted within 7 days of the initial subscription purchase date.',
+        s2_pt2_sub: 'Support Assistance',
+        s2_pt2_text: 'You have contacted our support team and given us the opportunity to assist with app configuration or playlist setup.',
+        s2_pt3_sub: 'Internet Speed',
+        s2_pt3_text: 'Your internet connection meets the recommended minimum speed (15 Mbps for HD, 30+ Mbps for 4K).',
+        s2_pt4_sub: 'Fair Usage',
+        s2_pt4_text: 'Your account has not violated our single/multi-device connection rules.',
+        s3_sub: 'Section 03 • Claim Procedure',
+        s3_title: '3. How to Request a Refund',
         s3_intro: 'Claiming a refund is simple and hassle-free:',
-        s3_pt1: 'Email our support team with your Order ID and the email address used during checkout.',
-        s3_pt2: 'Include a brief note explaining the technical issue you experienced.',
-        s3_pt3: 'Our billing department will process your refund within 24 to 48 hours back to your original payment method.',
-        s4_title: 'Non-Refundable Scenarios',
+        s3_pt1_sub: 'Provide Order Details',
+        s3_pt1_text: 'Email our support team with your Order ID and the email address used during checkout.',
+        s3_pt2_sub: 'Brief Reason',
+        s3_pt2_text: 'Include a brief note explaining the technical issue you experienced.',
+        s3_pt3_sub: 'Fast Processing',
+        s3_pt3_text: 'Our billing department will process your refund within 24 to 48 hours back to your original payment method.',
+        s4_sub: 'Section 04 • Exclusions & Limitations',
+        s4_title: '4. Non-Refundable Scenarios',
         s4_intro: 'Refunds cannot be issued if:',
-        s4_pt1: 'More than 7 days have elapsed since the date of purchase.',
-        s4_pt2: 'The issue is caused by local ISP throttling where the user declines to use a VPN.',
-        s4_pt3: 'An account was banned for unauthorized restreaming or sharing beyond the purchased device limit.'
+        s4_pt1_sub: 'Time Expired',
+        s4_pt1_text: 'More than 7 days have elapsed since the date of purchase.',
+        s4_pt2_sub: 'ISP Throttling',
+        s4_pt2_text: 'The issue is caused by local ISP throttling where the user declines to use a VPN.',
+        s4_pt3_sub: 'Rule Violations',
+        s4_pt3_text: 'An account was banned for unauthorized restreaming or sharing beyond the purchased device limit.'
       },
       terms: {
-        badge: '⚡ Terms of Service',
+        badge: '⚖️ Official User Terms',
         title: 'Terms & Conditions',
-        sub: 'Official Subscription Terms & Service Level Agreement',
-        s1_title: 'Service Agreement & Acceptance',
+        sub: 'Effective Date: November 2026 • Please read carefully before using Ultra Stream',
+        s1_sub: 'Section 01 • Binding Agreement',
+        s1_title: '1. Service Agreement & Acceptance',
         s1_text: 'By purchasing, accessing, or using Ultra Stream IPTV services, you agree to comply with and be bound by these Terms and Conditions. If you do not agree, please do not use our services.',
+        box_sub: 'Speed Fulfillment',
         box_title: '10-Minute Express Delivery:',
         box_text: 'All valid subscription orders are fulfilled with M3U URLs, Xtream API logins, and setup instructions delivered via email within 10 minutes of completed payment.',
-        s2_title: 'Permitted Devices & Connections',
+        s2_sub: 'Section 02 • Device Policy',
+        s2_title: '2. Permitted Devices & Connections',
         s2_intro: 'Each subscription tier includes a specific number of simultaneous active streams:',
-        s2_pt1: 'Starter Pass (1 Month): 1 active connection at any time.',
-        s2_pt2: 'Pro Pass (6 Months): Up to 2 simultaneous active connections.',
-        s2_pt3: 'Ultra VIP Pass (12 Months): Up to 3 simultaneous active connections.',
-        s2_outro: 'Simultaneous streaming from more devices than permitted under your active plan may cause temporary line suspension.',
-        s3_title: 'Bandwidth & Network Requirements',
+        s2_pt1_sub: 'Starter Pass (1 Month)',
+        s2_pt1_text: '1 active connection at any time.',
+        s2_pt2_sub: 'Pro Pass (6 Months)',
+        s2_pt2_text: 'Up to 2 simultaneous active connections.',
+        s2_pt3_sub: 'Ultra VIP Pass (12 Months)',
+        s2_pt3_text: 'Up to 3 simultaneous active connections.',
+        s2_note: 'Simultaneous streaming from more devices than permitted under your active plan may cause temporary line suspension.',
+        s3_sub: 'Section 03 • Network Requirements',
+        s3_title: '3. Bandwidth & Network Requirements',
         s3_text: 'To enjoy smooth, buffer-free playback with our Anti-Freeze™ technology, users must maintain a stable broadband or 4G/5G internet connection: minimum 15 Mbps for Full HD 1080p and 30+ Mbps for Ultra HD 4K streams.',
-        s4_title: 'Prohibited Usage & Anti-Piracy',
+        s4_sub: 'Section 04 • Usage Restrictions',
+        s4_title: '4. Prohibited Usage & Anti-Piracy',
         s4_intro: 'The following activities are strictly prohibited and will result in immediate service termination without refund:',
-        s4_pt1: 'Restreaming, re-broadcasting, or redistributing our stream feeds to third parties.',
-        s4_pt2: 'Reselling or sharing login credentials publicly on forums or social media.',
-        s4_pt3: 'Using automated scrapers or bots against our streaming servers.',
-        s5_title: 'Service Availability & SLA',
+        s4_pt1_sub: 'No Restreaming',
+        s4_pt1_text: 'Restreaming, re-broadcasting, or redistributing our stream feeds to third parties.',
+        s4_pt2_sub: 'No Public Reselling',
+        s4_pt2_text: 'Reselling or sharing login credentials publicly on forums or social media.',
+        s4_pt3_sub: 'No Scrapers or Bots',
+        s4_pt3_text: 'Using automated scrapers or bots against our streaming servers.',
+        s5_sub: 'Section 05 • Service Level Agreement',
+        s5_title: '5. Service Availability & SLA',
         s5_text: 'We strive to maintain a 99.9% server uptime. Occasional maintenance or channel adjustments may occur to maintain optimum stream quality and anti-freeze server routing.'
       }
     };
 
-    function switchPolicyFormTab(type, el) {
+    // DEFAULT PLANS DATA
+    const defaultPlans = [
+      {
+        id: 'starter',
+        badge: 'POPULAR CHOICE',
+        name: 'Starter Pass',
+        price: '$9.99',
+        period: '/ 1 Month',
+        desc: 'Ideal for testing out our 4K channels and sports streaming.',
+        points: [
+          '22,000+ Worldwide Live Channels',
+          '85,000+ Movies & VOD Series',
+          'Anti-Freeze™ 9.0 Technology',
+          '1 Active Connection Supported',
+          '⚡ Instant 10-Minute Delivery via WhatsApp'
+        ],
+        btn_text: 'Get Started via WhatsApp',
+        wa_msg: 'Hello Ultra Stream! ⚡ I want to subscribe to the *Starter Pass (1 Month - $9.99)*. Please send me payment details & M3U credentials.',
+        wa_link: ''
+      },
+      {
+        id: 'pro',
+        badge: 'RECOMMENDED',
+        name: 'Pro Pass',
+        price: '$24.99',
+        period: '/ 6 Months',
+        desc: 'Great value for sports lovers and multi-room viewing.',
+        points: [
+          '22,000+ Worldwide Live Channels',
+          '85,000+ Movies & VOD Series',
+          'Anti-Freeze™ 9.0 Technology',
+          'Up to 2 Connections Simultaneously',
+          'Priority 24/7 VIP WhatsApp Support',
+          '⚡ Instant 10-Minute Delivery via WhatsApp'
+        ],
+        btn_text: 'Get Started via WhatsApp',
+        wa_msg: 'Hello Ultra Stream! ⚡ I want to subscribe to the *Pro Pass (6 Months - $24.99)*. Please send me payment details & M3U credentials.',
+        wa_link: ''
+      },
+      {
+        id: 'vip',
+        badge: '🔥 BEST VALUE — 12 MONTHS VIP',
+        name: 'Ultra VIP Pass',
+        price: '$49.99',
+        period: '/ 12 Months',
+        desc: 'The ultimate 4K cinema and sports experience for you & family.',
+        points: [
+          '22,000+ Worldwide Live Channels',
+          '85,000+ Movies & VOD Series',
+          'Anti-Freeze™ 9.0 Technology',
+          'Up to 3 Connections Simultaneously',
+          'Dedicated VIP Concierge Setup',
+          '7-Day 100% Money-Back Guarantee',
+          '⚡ Instant 10-Minute Delivery via WhatsApp'
+        ],
+        btn_text: 'Get Started via WhatsApp',
+        wa_msg: 'Hello Ultra Stream! ⚡ I want to subscribe to the *Ultra VIP Pass (12 Months - $49.99)*. Please send me payment details & M3U credentials.',
+        wa_link: ''
+      }
+    ];
+
+    let currentPlans = JSON.parse(localStorage.getItem('ultra_plans') || 'null') || defaultPlans;
+    let selectedTheme = 'obsidian_glass';
+    let stagePreviewMode = 'sec5'; // 'sec5' or 'sec4'
+
+    // THREE.JS ADMIN PREVIEW SHADER GLOBALS
+    let adminPreviewScene, adminPreviewCam, adminPreviewRenderer, adminPreviewMaterial, adminPreviewRaf;
+
+    // -------------------------------------------------------------------------
+    // SECURITY PIN
+    // -------------------------------------------------------------------------
+    window.checkPin = function() {
+      const pin = document.getElementById('pinInput').value.trim();
+      const settings = JSON.parse(localStorage.getItem('ultra_settings') || 'null') || {};
+      const correctPin = settings.admin_pin || 'admin123';
+      if (pin === correctPin) {
+        document.getElementById('pinLockModal').classList.add('hidden');
+        sessionStorage.setItem('ultra_admin_auth', 'true');
+        showToast('🔓 Dashboard Unlocked Successfully!');
+        setTimeout(initAdminPreviewShader, 200);
+      } else {
+        alert('❌ Incorrect Password! (Default is admin123)');
+      }
+    };
+
+    window.lockAdmin = function() {
+      sessionStorage.removeItem('ultra_admin_auth');
+      document.getElementById('pinLockModal').classList.remove('hidden');
+      document.getElementById('pinInput').value = '';
+    };
+
+    window.updateAdminPin = function() {
+      const p1 = document.getElementById('new_pin').value.trim();
+      const p2 = document.getElementById('new_pin_confirm').value.trim();
+      if (!p1) return alert('Please enter a new password!');
+      if (p1 !== p2) return alert('Passwords do not match!');
+      const settings = JSON.parse(localStorage.getItem('ultra_settings') || 'null') || {};
+      settings.admin_pin = p1;
+      localStorage.setItem('ultra_settings', JSON.stringify(settings));
+      if (window.cloudDb) {
+        window.cloudDb.collection('settings').doc('config').set(settings, { merge: true });
+      }
+      showToast('🔑 Master Password Updated!');
+      document.getElementById('new_pin').value = '';
+      document.getElementById('new_pin_confirm').value = '';
+    };
+
+    // -------------------------------------------------------------------------
+    // TAB NAVIGATION
+    // -------------------------------------------------------------------------
+    window.switchTab = function(tabId, el) {
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      const target = document.getElementById('pane-' + tabId);
+      if (target) target.classList.add('active');
+      if (el) el.classList.add('active');
+
+      const titles = {
+        dashboard: ["Live Traffic & Button Clicks", "Real-time visitor analytics starting from pure zero (0)"],
+        content: ["All Section Headings & Content", "Directly control Hero, About, How It Works & Pricing text"],
+        plans: ["Plans, Points & Styles", "Add/edit plans, bullet points, card themes & WhatsApp messages"],
+        backgrounds: ["Section 4 & 5 Backgrounds", "Live Visual Stage: aisa ho jayega aapka background"],
+        footer_nav: ["Footer, Guarantees & Menu", "Edit trust badges, footer descriptions, copyright & nav links"],
+        policies: ["Legal Policies (One-by-One Form)", "Privacy, Refund & Terms form editor with live web view"],
+        firebase: ["Firebase Cloud Sync", "Sync admin changes live across all visitor browsers"],
+        settings: ["WhatsApp & Master Password", "Floating WhatsApp button, leads contact & admin password"]
+      };
+      if (titles[tabId]) {
+        document.getElementById('pageTitle').textContent = titles[tabId][0];
+        document.getElementById('pageSub').textContent = titles[tabId][1];
+      }
+
+      if (tabId === 'backgrounds') {
+        setTimeout(initAdminPreviewShader, 150);
+      }
+    };
+
+    // -------------------------------------------------------------------------
+    // REAL ZERO ANALYTICS
+    // -------------------------------------------------------------------------
+    function getAnalytics() {
+      return JSON.parse(localStorage.getItem('ultra_analytics') || 'null') || {
+        dailyVisits: 0,
+        weeklyVisits: 0,
+        monthlyVisits: 0,
+        waClicks: 0,
+        buttonClicks: {},
+        recentClicks: []
+      };
+    }
+
+    function renderAnalytics() {
+      const data = getAnalytics();
+      document.getElementById('statDailyVisits').textContent = data.dailyVisits;
+      document.getElementById('statWeeklyVisits').textContent = data.weeklyVisits;
+      document.getElementById('statMonthlyVisits').textContent = data.monthlyVisits;
+      document.getElementById('statWaClicks').textContent = data.waClicks;
+
+      const tbody = document.getElementById('clicksTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      const totalClicks = Object.values(data.buttonClicks || {}).reduce((a, b) => a + b, 0);
+
+      const items = [
+        { key: 'whatsapp_floating', name: '💬 Floating WhatsApp Button', loc: 'Bottom Right of All Pages' },
+        { key: 'hero_cta_whatsapp', name: '⚡ Hero WhatsApp CTA Button', loc: 'Hero Section Banner' },
+        { key: 'hero_cta_plans', name: '🎯 Hero "View Plans" Button', loc: 'Hero Section Banner' },
+        { key: 'plan_starter_click', name: '📦 Starter Pass (1 Month)', loc: 'Pricing Plans Section' },
+        { key: 'plan_pro_click', name: '🔥 Pro Pass (6 Months)', loc: 'Pricing Plans Section' },
+        { key: 'plan_vip_click', name: '👑 Ultra VIP Pass (12 Months)', loc: 'Pricing Plans Section' }
+      ];
+
+      items.forEach(item => {
+        const count = (data.buttonClicks && data.buttonClicks[item.key]) || 0;
+        const pct = totalClicks > 0 ? Math.round((count / totalClicks) * 100) : 0;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${item.name}</strong></td>
+          <td style="color:var(--text-muted);">${item.loc}</td>
+          <td><span class="badge badge-gold">${count} clicks</span></td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="flex:1;height:6px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;">
+                <div style="width:${pct}%;height:100%;background:var(--gold);"></div>
+              </div>
+              <span style="font-size:12px;color:var(--text-muted);min-width:32px;">${pct}%</span>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    window.resetAnalytics = function() {
+      if (!confirm('Are you sure you want to reset all visitor traffic and click counts to ZERO (0)?')) return;
+      const zeroData = {
+        dailyVisits: 0,
+        weeklyVisits: 0,
+        monthlyVisits: 0,
+        waClicks: 0,
+        buttonClicks: {},
+        recentClicks: []
+      };
+      localStorage.setItem('ultra_analytics', JSON.stringify(zeroData));
+      if (window.cloudDb) {
+        window.cloudDb.collection('analytics').doc('stats').set(zeroData);
+      }
+      renderAnalytics();
+      showToast('🔄 All traffic & click counters reset to 0!');
+    };
+
+    // -------------------------------------------------------------------------
+    // SITE HEADINGS & TEXT SECTIONS
+    // -------------------------------------------------------------------------
+    function getSiteContent() {
+      return JSON.parse(localStorage.getItem('ultra_site_content') || 'null') || {
+        hero_title: 'Entertainment Without Boundaries',
+        hero_sub: '',
+        about_text: "Ultra Stream brings you the IPTV service of the world's biggest platforms — Netflix, Apple TV, Amazon Prime Video, Disney+, and HBO Max — all in one place. Live TV, movies, sports, and series in crystal-clear quality, anytime, anywhere. Everything you love, simply and reliably — that is why Ultra Stream is the best.",
+        how_title: 'Get Started in 4 Simple Steps',
+        how_sub: 'Get instant access to your favorite entertainment in just a few easy steps.',
+        how_card1_title: 'Create Your Account',
+        how_card1_desc: 'Sign up in seconds using your email and create your personal account.',
+        how_card2_title: 'Choose Your Plan',
+        how_card2_desc: 'Select the perfect subscription plan that suits your entertainment needs.',
+        how_card3_title: '10-Min WhatsApp Delivery',
+        how_card3_desc: 'Receive your M3U playlist & 4K credentials within 10 minutes directly on WhatsApp & Email.',
+        how_card4_title: 'Start Streaming',
+        how_card4_desc: 'Enjoy your favorite movies, TV shows, and live entertainment across your devices.',
+        pricing_pill: 'Flexible Subscriptions',
+        pricing_title: 'Simple Pricing, Unlimited Entertainment',
+        pricing_sub: 'Get instant access to 22,000+ live HD/4K channels and 85,000+ movies & series. ⚡ Guaranteed 10-minute delivery via WhatsApp & Email with 7-day money-back guarantee.'
+      };
+    }
+
+    function populateSiteContent() {
+      const data = getSiteContent();
+      const setVal = (id, val) => { const el = document.getElementById(id); if (el && val !== undefined) el.value = val; };
+      setVal('cnt_hero_title', data.hero_title);
+      setVal('cnt_hero_sub', data.hero_sub);
+      setVal('cnt_about_text', data.about_text);
+      setVal('cnt_how_title', data.how_title);
+      setVal('cnt_how_sub', data.how_sub);
+      setVal('cnt_how_card1_title', data.how_card1_title);
+      setVal('cnt_how_card1_desc', data.how_card1_desc);
+      setVal('cnt_how_card2_title', data.how_card2_title);
+      setVal('cnt_how_card2_desc', data.how_card2_desc);
+      setVal('cnt_how_card3_title', data.how_card3_title);
+      setVal('cnt_how_card3_desc', data.how_card3_desc);
+      setVal('cnt_how_card4_title', data.how_card4_title);
+      setVal('cnt_how_card4_desc', data.how_card4_desc);
+      setVal('cnt_pricing_pill', data.pricing_pill);
+      setVal('cnt_pricing_title', data.pricing_title);
+      setVal('cnt_pricing_sub', data.pricing_sub);
+    }
+
+    window.saveSiteContent = function() {
+      const getVal = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+      const data = {
+        hero_title: getVal('cnt_hero_title'),
+        hero_sub: getVal('cnt_hero_sub'),
+        about_text: getVal('cnt_about_text'),
+        how_title: getVal('cnt_how_title'),
+        how_sub: getVal('cnt_how_sub'),
+        how_card1_title: getVal('cnt_how_card1_title'),
+        how_card1_desc: getVal('cnt_how_card1_desc'),
+        how_card2_title: getVal('cnt_how_card2_title'),
+        how_card2_desc: getVal('cnt_how_card2_desc'),
+        how_card3_title: getVal('cnt_how_card3_title'),
+        how_card3_desc: getVal('cnt_how_card3_desc'),
+        how_card4_title: getVal('cnt_how_card4_title'),
+        how_card4_desc: getVal('cnt_how_card4_desc'),
+        pricing_pill: getVal('cnt_pricing_pill'),
+        pricing_title: getVal('cnt_pricing_title'),
+        pricing_sub: getVal('cnt_pricing_sub')
+      };
+      localStorage.setItem('ultra_site_content', JSON.stringify(data));
+      if (window.cloudDb) {
+        window.cloudDb.collection('settings').doc('site_content').set(data);
+      }
+      showToast('💾 All Section Headings & Texts Saved!');
+    };
+
+    // -------------------------------------------------------------------------
+    // PLANS, POINTS & THEME MANAGER
+    // -------------------------------------------------------------------------
+    function renderPlansEditor() {
+      const container = document.getElementById('plansDynamicContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      currentPlans.forEach((plan, planIdx) => {
+        const card = document.createElement('div');
+        card.className = 'content-box';
+        card.style.background = 'rgba(255,255,255,0.025)';
+        card.style.border = '1px solid var(--border)';
+
+        let pointsHtml = plan.points.map((pt, ptIdx) => `
+          <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;">
+            <input type="text" class="form-input" value="${escapeHtml(pt)}" onchange="updatePlanPoint(${planIdx}, ${ptIdx}, this.value)" style="font-size:12.5px;">
+            <button type="button" class="btn btn-sm btn-outline" style="color:#ff5f57;padding:6px 10px;" onclick="deletePlanPoint(${planIdx}, ${ptIdx})">✕</button>
+          </div>
+        `).join('');
+
+        card.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <h3 style="font-size:16px;color:var(--gold);margin:0;">📦 Plan #${planIdx + 1}: ${escapeHtml(plan.name)}</h3>
+            <span class="badge badge-gold">${escapeHtml(plan.period || '')}</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+              <label>Plan Badge (Top)</label>
+              <input type="text" class="form-input" value="${escapeHtml(plan.badge || '')}" onchange="updatePlanField(${planIdx}, 'badge', this.value)">
+            </div>
+            <div class="form-group">
+              <label>Plan Name</label>
+              <input type="text" class="form-input" value="${escapeHtml(plan.name || '')}" onchange="updatePlanField(${planIdx}, 'name', this.value)">
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+              <label>Price Display</label>
+              <input type="text" class="form-input" value="${escapeHtml(plan.price || '')}" onchange="updatePlanField(${planIdx}, 'price', this.value)">
+            </div>
+            <div class="form-group">
+              <label>Duration / Period</label>
+              <input type="text" class="form-input" value="${escapeHtml(plan.period || '')}" onchange="updatePlanField(${planIdx}, 'period', this.value)">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Plan Description</label>
+            <input type="text" class="form-input" value="${escapeHtml(plan.desc || '')}" onchange="updatePlanField(${planIdx}, 'desc', this.value)">
+          </div>
+
+          <div style="margin:16px 0;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <label style="font-size:13px;font-weight:700;color:#fff;margin:0;">Feature Points (بُلٹ پوائنٹس):</label>
+              <button type="button" class="btn btn-sm btn-outline" onclick="addPlanPoint(${planIdx})">➕ Add Point</button>
+            </div>
+            <div id="plan_${planIdx}_points">${pointsHtml}</div>
+          </div>
+
+          <div class="form-group">
+            <label>Button Label Text</label>
+            <input type="text" class="form-input" value="${escapeHtml(plan.btn_text || 'Get Started via WhatsApp')}" onchange="updatePlanField(${planIdx}, 'btn_text', this.value)">
+          </div>
+
+          <div class="form-group">
+            <label>WhatsApp Draft Message (جب یوزر کلک کرے گا تو یہ میسج ٹائپ ہوگا):</label>
+            <textarea class="form-textarea" style="min-height:65px;font-size:12px;" onchange="updatePlanField(${planIdx}, 'wa_msg', this.value)">${escapeHtml(plan.wa_msg || '')}</textarea>
+          </div>
+
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Custom WhatsApp Link / Phone (اختیاری — خالی چھوڑیں تو ڈیفالٹ نمبر لگے گا):</label>
+            <input type="text" class="form-input" placeholder="e.g. 447458196522 or https://wa.me/..." value="${escapeHtml(plan.wa_link || '')}" onchange="updatePlanField(${planIdx}, 'wa_link', this.value)">
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.updatePlanField = function(idx, field, val) {
+      if (currentPlans[idx]) {
+        currentPlans[idx][field] = val;
+      }
+    };
+
+    window.updatePlanPoint = function(planIdx, ptIdx, val) {
+      if (currentPlans[planIdx] && currentPlans[planIdx].points) {
+        currentPlans[planIdx].points[ptIdx] = val;
+      }
+    };
+
+    window.addPlanPoint = function(planIdx) {
+      if (currentPlans[planIdx]) {
+        currentPlans[planIdx].points.push('New Premium IPTV Feature');
+        renderPlansEditor();
+      }
+    };
+
+    window.deletePlanPoint = function(planIdx, ptIdx) {
+      if (currentPlans[planIdx] && currentPlans[planIdx].points.length > 1) {
+        currentPlans[planIdx].points.splice(ptIdx, 1);
+        renderPlansEditor();
+      } else {
+        alert('Plan must have at least one feature point.');
+      }
+    };
+
+    window.addNewPlanModal = function() {
+      const newPlan = {
+        id: 'plan_' + (currentPlans.length + 1),
+        badge: 'NEW PASS',
+        name: 'Custom VIP Pass',
+        price: '$39.99',
+        period: '/ 3 Months',
+        desc: 'Custom high-speed streaming pass.',
+        points: [
+          '22,000+ Worldwide Live Channels',
+          '85,000+ Movies & VOD Series',
+          'Anti-Freeze™ 9.0 Technology',
+          '⚡ Instant 10-Minute Delivery via WhatsApp'
+        ],
+        btn_text: 'Get Started via WhatsApp',
+        wa_msg: 'Hello Ultra Stream! I want to order the Custom VIP Pass.',
+        wa_link: ''
+      };
+      currentPlans.push(newPlan);
+      renderPlansEditor();
+      showToast('➕ New Plan Added! Don\'t forget to save.');
+    };
+
+    window.savePlansToStorage = function() {
+      localStorage.setItem('ultra_plans', JSON.stringify(currentPlans));
+      if (window.cloudDb) {
+        window.cloudDb.collection('settings').doc('pricing_plans').set({ plans: currentPlans });
+      }
+      showToast('💾 All Plans, Points & WhatsApp Messages Saved!');
+    };
+
+    // -------------------------------------------------------------------------
+    // CARD THEME SWITCHER
+    // -------------------------------------------------------------------------
+    window.selectCardTheme = function(themeKey, el) {
+      selectedTheme = themeKey;
+      document.querySelectorAll('#planThemePicker .theme-choice').forEach(tc => tc.classList.remove('active'));
+      if (el) el.classList.add('active');
+
+      const stageCard = document.getElementById('adminStageCardSec5');
+      if (stageCard) {
+        stageCard.className = 'pricing-card theme-' + themeKey;
+      }
+      const tag = document.getElementById('previewThemeTag');
+      if (tag) {
+        const names = {
+          obsidian_glass: 'Obsidian Gold Glass',
+          neon_cyber: 'Neon Cyber Laser',
+          crimson_ember: 'Crimson Ember Red',
+          emerald_tech: 'Emerald Anti-Freeze',
+          minimal_matte: 'Minimal Stealth Dark'
+        };
+        tag.textContent = names[themeKey] || themeKey;
+      }
+    };
+
+    // -------------------------------------------------------------------------
+    // SECTION 4 & 5 BACKGROUND CONTROLS & LIVE STAGE PREVIEW
+    // -------------------------------------------------------------------------
+    window.setStagePreviewMode = function(mode) {
+      stagePreviewMode = mode;
+      const sec5Card = document.getElementById('adminStageCardSec5');
+      const sec4Card = document.getElementById('adminStageCardSec4');
+      const btn5 = document.getElementById('previewModeSec5');
+      const btn4 = document.getElementById('previewModeSec4');
+
+      if (mode === 'sec4') {
+        if (sec5Card) sec5Card.style.display = 'none';
+        if (sec4Card) sec4Card.style.display = 'grid';
+        if (btn4) { btn4.className = 'btn btn-sm btn-gold'; btn4.style.border = 'none'; }
+        if (btn5) { btn5.className = 'btn btn-sm btn-outline'; btn5.style.border = 'none'; }
+      } else {
+        if (sec5Card) sec5Card.style.display = 'block';
+        if (sec4Card) sec4Card.style.display = 'none';
+        if (btn5) { btn5.className = 'btn btn-sm btn-gold'; btn5.style.border = 'none'; }
+        if (btn4) { btn4.className = 'btn btn-sm btn-outline'; btn4.style.border = 'none'; }
+      }
+      previewBgSelection();
+    };
+
+    window.previewBgSelection = function() {
+      const isSec4 = (stagePreviewMode === 'sec4');
+      const select = document.getElementById(isSec4 ? 'bg_s4_select' : 'bg_pricing_select');
+      const speedEl = document.getElementById(isSec4 ? 'bg_s4_speed' : 'bg_shader_speed');
+      const opacEl = document.getElementById(isSec4 ? 'bg_s4_opacity' : 'bg_shader_opacity');
+      const bgTag = document.getElementById('previewBgTag');
+      const container = document.getElementById('adminStageShader');
+      const customBg = document.getElementById('adminStageCustomBg');
+
+      const sec4Cust = document.getElementById('sec4_custom_colors');
+      const sec5Cust = document.getElementById('sec5_custom_colors');
+      if (sec4Cust) sec4Cust.style.display = (document.getElementById('bg_s4_select').value === 'custom_gradient') ? 'block' : 'none';
+      if (sec5Cust) sec5Cust.style.display = (document.getElementById('bg_pricing_select').value === 'custom_gradient') ? 'block' : 'none';
+
+      if (!select) return;
+      const val = select.value;
+      const speed = speedEl ? parseFloat(speedEl.value) : 0.55;
+      const opacity = opacEl ? parseFloat(opacEl.value) : 0.55;
+
+      if (bgTag) {
+        const names = {
+          aurora_bends: 'Aurora Color Bends',
+          fluid_gold: 'Fluid Gold Silk',
+          molten_amber: 'Molten Amber & Crimson',
+          midnight_aurora: 'Midnight Aurora Waves',
+          midnight_nebula: 'Deep Midnight Nebula',
+          emerald_matrix: 'Emerald Matrix & Gold',
+          obsidian_mesh: 'Dark Obsidian Radial',
+          cyber_grid: 'Cyber Neon Grid',
+          pitch_black: 'Pitch Black Luxury',
+          custom_gradient: 'Custom Radiant Gradient'
+        };
+        bgTag.textContent = names[val] || val;
+      }
+
+      if (val === 'pitch_black') {
+        if (container) container.style.display = 'none';
+        if (customBg) {
+          customBg.style.display = 'block';
+          customBg.style.background = '#050507';
+        }
+      } else if (val === 'custom_gradient') {
+        if (container) container.style.display = 'none';
+        if (customBg) {
+          customBg.style.display = 'block';
+          const c1 = isSec4 ? document.getElementById('bg_s4_c1').value : document.getElementById('bg_s5_c1').value;
+          const c2 = isSec4 ? document.getElementById('bg_s4_c2').value : document.getElementById('bg_s5_c2').value;
+          customBg.style.background = `radial-gradient(ellipse at center, ${c1}33 0%, ${c2} 80%)`;
+        }
+      } else {
+        if (container) {
+          container.style.display = 'block';
+          container.style.opacity = opacity;
+        }
+        if (customBg) customBg.style.display = 'none';
+
+        if (adminPreviewMaterial) {
+          adminPreviewMaterial.uniforms.uSpeed.value = speed;
+          const palettes = {
+            aurora_bends: ['#3DDC84', '#00E5FF', '#7F00FF', '#FF007F'],
+            fluid_gold: ['#FFE885', '#FFC800', '#FFA726', '#FFD54F'],
+            molten_amber: ['#FF4D4D', '#FF8C00', '#FFAA00', '#D32F2F'],
+            midnight_aurora: ['#00F2FE', '#4FACFE', '#7F00FF', '#E100FF'],
+            midnight_nebula: ['#7F00FF', '#00E5FF', '#2D0A4E', '#120E2E'],
+            emerald_matrix: ['#00FF87', '#60EFFF', '#0B5345', '#0E2820'],
+            obsidian_mesh: ['#FFC800', '#3A2E12', '#221805', '#0D0D12'],
+            cyber_grid: ['#00FFA3', '#00B8D9', '#053828', '#0F172A']
+          };
+          const pColors = palettes[val] || palettes.fluid_gold;
+          const toVec3 = hex => {
+            const h = hex.replace('#','').trim();
+            const v = [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+            return new THREE.Vector3(v[0]/255, v[1]/255, v[2]/255);
+          };
+          const newVecs = pColors.map(toVec3);
+          const MAX_COLORS = 8;
+          for (let i = 0; i < MAX_COLORS; i++) {
+            if (i < newVecs.length) adminPreviewMaterial.uniforms.uColors.value[i].copy(newVecs[i]);
+            else adminPreviewMaterial.uniforms.uColors.value[i].set(0, 0, 0);
+          }
+          adminPreviewMaterial.uniforms.uColorCount.value = newVecs.length;
+        }
+      }
+    };
+
+    window.saveBackgrounds = function() {
+      const getVal = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+      const config = {
+        card_theme: selectedTheme,
+        // Section 5 Pricing
+        pricing_bg: getVal('bg_pricing_select'),
+        shader_speed: parseFloat(getVal('bg_shader_speed') || '0.55'),
+        shader_opacity: parseFloat(getVal('bg_shader_opacity') || '0.58'),
+        sec5_c1: getVal('bg_s5_c1'),
+        sec5_c2: getVal('bg_s5_c2'),
+        // Section 4 How It Works
+        s4_bg: getVal('bg_s4_select'),
+        s4_speed: parseFloat(getVal('bg_s4_speed') || '0.55'),
+        s4_opacity: parseFloat(getVal('bg_s4_opacity') || '0.52'),
+        sec4_c1: getVal('bg_s4_c1'),
+        sec4_c2: getVal('bg_s4_c2'),
+        // Hero & About
+        hero_bg: getVal('bg_hero_select'),
+        about_bg: getVal('bg_about_select')
+      };
+      localStorage.setItem('ultra_backgrounds', JSON.stringify(config));
+      if (window.cloudDb) {
+        window.cloudDb.collection('settings').doc('backgrounds').set(config);
+      }
+      showToast('🌟 Section 4 & 5 Backgrounds & Theme Saved! Live Website Updated.');
+    };
+
+    // -------------------------------------------------------------------------
+    // FOOTER, GUARANTEES & NAVIGATION
+    // -------------------------------------------------------------------------
+    function populateFooterNav() {
+      const fNav = JSON.parse(localStorage.getItem('ultra_footer_nav') || 'null') || {
+        g1: '⚡ Guaranteed Delivery in 10 Mins',
+        g2: '🛡️ 7-Day 100% Money-Back Guarantee',
+        g3: '🔒 256-Bit SSL Encrypted Checkout',
+        g4: '💬 24/7 Priority VIP Support',
+        f_desc: 'Premium 4K & Ultra HD IPTV service with 22,000+ live channels, 85,000+ movies & VOD series worldwide. Anti-Freeze™ 9.0 technology.',
+        f_badge: '⚡ Instant 10-Minute Delivery via WhatsApp',
+        f_copy: '© 2026 Ultra Stream. All rights reserved. Worldwide Premium IPTV Entertainment.',
+        nav1: 'Home',
+        nav2: 'Supported Platforms',
+        nav3: 'How It Works',
+        nav4: 'Pricing Plans'
+      };
+      const setVal = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+      setVal('g_point1', fNav.g1);
+      setVal('g_point2', fNav.g2);
+      setVal('g_point3', fNav.g3);
+      setVal('g_point4', fNav.g4);
+      setVal('f_desc_text', fNav.f_desc);
+      setVal('f_badge_text', fNav.f_badge);
+      setVal('f_copyright_text', fNav.f_copy);
+      setVal('nav_item1', fNav.nav1);
+      setVal('nav_item2', fNav.nav2);
+      setVal('nav_item3', fNav.nav3);
+      setVal('nav_item4', fNav.nav4);
+    }
+
+    window.saveFooterNav = function() {
+      const getVal = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+      const data = {
+        g1: getVal('g_point1'),
+        g2: getVal('g_point2'),
+        g3: getVal('g_point3'),
+        g4: getVal('g_point4'),
+        f_desc: getVal('f_desc_text'),
+        f_badge: getVal('f_badge_text'),
+        f_copy: getVal('f_copyright_text'),
+        nav1: getVal('nav_item1'),
+        nav2: getVal('nav_item2'),
+        nav3: getVal('nav_item3'),
+        nav4: getVal('nav_item4')
+      };
+      localStorage.setItem('ultra_footer_nav', JSON.stringify(data));
+      if (window.cloudDb) {
+        window.cloudDb.collection('settings').doc('footer_nav').set(data);
+      }
+      showToast('💾 Footer, Guarantees & Navigation Saved!');
+    };
+
+    // -------------------------------------------------------------------------
+    // LEGAL POLICIES FORM & LIVE CARD PREVIEW
+    // -------------------------------------------------------------------------
+    window.switchPolicyFormTab = function(type, el) {
       document.querySelectorAll('.pol-subtab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.policy-pane').forEach(p => p.classList.remove('active'));
       if (el) el.classList.add('active');
-      const pane = document.getElementById('form_pane_' + type);
-      if (pane) pane.classList.add('active');
+      const target = document.getElementById('form_pane_' + type);
+      if (target) target.classList.add('active');
       renderPolicyPreview(type);
-    }
+    };
 
     function getPolicyFormData(type) {
       let saved = null;
@@ -2318,268 +2801,273 @@
     function generatePolicyHTML(type, d) {
       if (type === 'priv') {
         return `<div class="policy-section">
-  <h2><span class="sec-num">1</span> ${escapeHtml(d.s1_title || 'Commitment to User Privacy')}</h2>
+  <div class="sec-tag" style="color:var(--gold);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.s1_sub || 'Section 01')}</div>
+  <h2><span class="sec-num">01</span> ${escapeHtml(d.s1_title || 'Commitment to User Privacy')}</h2>
   <p>${escapeHtml(d.s1_text || '')}</p>
 </div>
 
 <div class="highlight-box">
   <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-  <div><strong>${escapeHtml(d.box_title || 'Strict Zero-Logs Policy:')}</strong> ${escapeHtml(d.box_text || '')}</div>
+  <div>
+    <div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:2px;">${escapeHtml(d.box_sub || 'GUARANTEE')}</div>
+    <strong>${escapeHtml(d.box_title || 'Strict Zero-Logs Policy:')}</strong> ${escapeHtml(d.box_text || '')}
+  </div>
 </div>
 
 <div class="policy-section">
-  <h2><span class="sec-num">2</span> ${escapeHtml(d.s2_title || 'Information We Collect')}</h2>
+  <div class="sec-tag" style="color:var(--gold);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.s2_sub || 'Section 02')}</div>
+  <h2><span class="sec-num">02</span> ${escapeHtml(d.s2_title || 'Information We Collect')}</h2>
   <p>${escapeHtml(d.s2_intro || '')}</p>
   <ul>
-    <li>${escapeHtml(d.s2_pt1 || '')}</li>
-    <li>${escapeHtml(d.s2_pt2 || '')}</li>
-    <li>${escapeHtml(d.s2_pt3 || '')}</li>
+    <li><strong>${escapeHtml(d.s2_pt1_sub || 'Email Address')}:</strong> ${escapeHtml(d.s2_pt1_text || '')}</li>
+    <li><strong>${escapeHtml(d.s2_pt2_sub || 'Device Information')}:</strong> ${escapeHtml(d.s2_pt2_text || '')}</li>
+    <li><strong>${escapeHtml(d.s2_pt3_sub || 'Transaction Details')}:</strong> ${escapeHtml(d.s2_pt3_text || '')}</li>
   </ul>
 </div>
 
 <div class="policy-section">
-  <h2><span class="sec-num">3</span> ${escapeHtml(d.s3_title || '10-Minute Fast Delivery Policy')}</h2>
+  <div class="sec-tag" style="color:var(--gold);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.s3_sub || 'Section 03')}</div>
+  <h2><span class="sec-num">03</span> ${escapeHtml(d.s3_title || '10-Minute Fast Delivery Policy')}</h2>
   <p>${escapeHtml(d.s3_text || '')}</p>
 </div>
 
 <div class="policy-section">
-  <h2><span class="sec-num">4</span> ${escapeHtml(d.s4_title || 'Data Protection & Security')}</h2>
+  <div class="sec-tag" style="color:var(--gold);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.s4_sub || 'Section 04')}</div>
+  <h2><span class="sec-num">04</span> ${escapeHtml(d.s4_title || 'Data Protection & Security')}</h2>
   <p>${escapeHtml(d.s4_text || '')}</p>
 </div>
 
 <div class="policy-section">
-  <h2><span class="sec-num">5</span> ${escapeHtml(d.s5_title || 'Contacting Support')}</h2>
+  <div class="sec-tag" style="color:var(--gold);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.s5_sub || 'Section 05')}</div>
+  <h2><span class="sec-num">05</span> ${escapeHtml(d.s5_title || 'Contacting Support')}</h2>
   <p>${escapeHtml(d.s5_text || '')}</p>
 </div>`;
       } else if (type === 'ref') {
         return `<div class="policy-section">
-  <h2><span class="sec-num">1</span> ${escapeHtml(d.s1_title || '7-Day 100% Money-Back Guarantee')}</h2>
+  <div class="sec-tag" style="color:var(--gold);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.s1_sub || 'Section 01')}</div>
+  <h2><span class="sec-num">01</span> ${escapeHtml(d.s1_title || '7-Day 100% Money-Back Guarantee')}</h2>
   <p>${escapeHtml(d.s1_text || '')}</p>
 </div>
 
 <div class="highlight-box">
   <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18z"/></svg>
-  <div><strong>${escapeHtml(d.box_title || '10-Minute Delivery Guarantee:')}</strong> ${escapeHtml(d.box_text || '')}</div>
+  <div>
+    <div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:2px;">${escapeHtml(d.box_sub || 'DISPATCH PROMISE')}</div>
+    <strong>${escapeHtml(d.box_title || '10-Minute Delivery Guarantee:')}</strong> ${escapeHtml(d.box_text || '')}
+  </div>
 </div>
 
 <div class="policy-section">
-  <h2><span class="sec-num">2</span> ${escapeHtml(d.s2_title || 'Refund Eligibility Criteria')}</h2>
+  <div class="sec-tag" style="color:var(--gold);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.s2_sub || 'Section 02')}</div>
+  <h2><span class="sec-num">02</span> ${escapeHtml(d.s2_title || 'Refund Eligibility Criteria')}</h2>
   <p>${escapeHtml(d.s2_intro || '')}</p>
   <ul>
-    <li>${escapeHtml(d.s2_pt1 || '')}</li>
-    <li>${escapeHtml(d.s2_pt2 || '')}</li>
-    <li>${escapeHtml(d.s2_pt3 || '')}</li>
-    <li>${escapeHtml(d.s2_pt4 || '')}</li>
+    <li><strong>${escapeHtml(d.s2_pt1_sub || '7-Day Window')}:</strong> ${escapeHtml(d.s2_pt1_text || '')}</li>
+    <li><strong>${escapeHtml(d.s2_pt2_sub || 'Support Assistance')}:</strong> ${escapeHtml(d.s2_pt2_text || '')}</li>
+    <li><strong>${escapeHtml(d.s2_pt3_sub || 'Internet Speed')}:</strong> ${escapeHtml(d.s2_pt3_text || '')}</li>
+    <li><strong>${escapeHtml(d.s2_pt4_sub || 'Fair Usage')}:</strong> ${escapeHtml(d.s2_pt4_text || '')}</li>
   </ul>
 </div>
 
 <div class="policy-section">
-  <h2><span class="sec-num">3</span> ${escapeHtml(d.s3_title || 'How to Request a Refund')}</h2>
+  <div class="sec-tag" style="color:var(--gold);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.s3_sub || 'Section 03')}</div>
+  <h2><span class="sec-num">03</span> ${escapeHtml(d.s3_title || 'How to Request a Refund')}</h2>
   <p>${escapeHtml(d.s3_intro || '')}</p>
   <ul>
-    <li>${escapeHtml(d.s3_pt1 || '')}</li>
-    <li>${escapeHtml(d.s3_pt2 || '')}</li>
-    <li>${escapeHtml(d.s3_pt3 || '')}</li>
+    <li><strong>${escapeHtml(d.s3_pt1_sub || 'Order Details')}:</strong> ${escapeHtml(d.s3_pt1_text || '')}</li>
+    <li><strong>${escapeHtml(d.s3_pt2_sub || 'Brief Note')}:</strong> ${escapeHtml(d.s3_pt2_text || '')}</li>
+    <li><strong>${escapeHtml(d.s3_pt3_sub || 'Fast Processing')}:</strong> ${escapeHtml(d.s3_pt3_text || '')}</li>
   </ul>
 </div>
 
 <div class="policy-section">
-  <h2><span class="sec-num">4</span> ${escapeHtml(d.s4_title || 'Non-Refundable Scenarios')}</h2>
+  <div class="sec-tag" style="color:var(--gold);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.s4_sub || 'Section 04')}</div>
+  <h2><span class="sec-num">04</span> ${escapeHtml(d.s4_title || 'Non-Refundable Scenarios')}</h2>
   <p>${escapeHtml(d.s4_intro || '')}</p>
   <ul>
-    <li>${escapeHtml(d.s4_pt1 || '')}</li>
-    <li>${escapeHtml(d.s4_pt2 || '')}</li>
-    <li>${escapeHtml(d.s4_pt3 || '')}</li>
+    <li><strong>${escapeHtml(d.s4_pt1_sub || 'Expired Window')}:</strong> ${escapeHtml(d.s4_pt1_text || '')}</li>
+    <li><strong>${escapeHtml(d.s4_pt2_sub || 'ISP Throttling')}:</strong> ${escapeHtml(d.s4_pt2_text || '')}</li>
+    <li><strong>${escapeHtml(d.s4_pt3_sub || 'Rule Violations')}:</strong> ${escapeHtml(d.s4_pt3_text || '')}</li>
   </ul>
 </div>`;
       } else if (type === 'terms') {
         return `<div class="policy-section">
-  <h2><span class="sec-num">1</span> ${escapeHtml(d.s1_title || 'Service Agreement & Acceptance')}</h2>
+  <div class="sec-tag" style="color:var(--gold);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.s1_sub || 'Section 01')}</div>
+  <h2><span class="sec-num">01</span> ${escapeHtml(d.s1_title || 'Service Agreement & Acceptance')}</h2>
   <p>${escapeHtml(d.s1_text || '')}</p>
 </div>
 
 <div class="highlight-box">
   <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-  <div><strong>${escapeHtml(d.box_title || '10-Minute Express Delivery:')}</strong> ${escapeHtml(d.box_text || '')}</div>
+  <div>
+    <div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:2px;">${escapeHtml(d.box_sub || 'FULFILLMENT PROMISE')}</div>
+    <strong>${escapeHtml(d.box_title || '10-Minute Express Delivery:')}</strong> ${escapeHtml(d.box_text || '')}
+  </div>
 </div>
 
 <div class="policy-section">
-  <h2><span class="sec-num">2</span> ${escapeHtml(d.s2_title || 'Permitted Devices & Connections')}</h2>
+  <div class="sec-tag" style="color:var(--gold);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.s2_sub || 'Section 02')}</div>
+  <h2><span class="sec-num">02</span> ${escapeHtml(d.s2_title || 'Permitted Devices & Connections')}</h2>
   <p>${escapeHtml(d.s2_intro || '')}</p>
   <ul>
-    <li>${escapeHtml(d.s2_pt1 || '')}</li>
-    <li>${escapeHtml(d.s2_pt2 || '')}</li>
-    <li>${escapeHtml(d.s2_pt3 || '')}</li>
+    <li><strong>${escapeHtml(d.s2_pt1_sub || 'Starter Pass (1 Month)')}:</strong> ${escapeHtml(d.s2_pt1_text || '')}</li>
+    <li><strong>${escapeHtml(d.s2_pt2_sub || 'Pro Pass (6 Months)')}:</strong> ${escapeHtml(d.s2_pt2_text || '')}</li>
+    <li><strong>${escapeHtml(d.s2_pt3_sub || 'Ultra VIP Pass (12 Months)')}:</strong> ${escapeHtml(d.s2_pt3_text || '')}</li>
   </ul>
-  ${d.s2_outro ? `<p>${escapeHtml(d.s2_outro)}</p>` : ''}
+  <p style="margin-top:12px;font-size:13.5px;color:#cbd5e1;">${escapeHtml(d.s2_note || '')}</p>
 </div>
 
 <div class="policy-section">
-  <h2><span class="sec-num">3</span> ${escapeHtml(d.s3_title || 'Bandwidth & Network Requirements')}</h2>
+  <div class="sec-tag" style="color:var(--gold);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.s3_sub || 'Section 03')}</div>
+  <h2><span class="sec-num">03</span> ${escapeHtml(d.s3_title || 'Bandwidth & Network Requirements')}</h2>
   <p>${escapeHtml(d.s3_text || '')}</p>
 </div>
 
 <div class="policy-section">
-  <h2><span class="sec-num">4</span> ${escapeHtml(d.s4_title || 'Prohibited Usage & Anti-Piracy')}</h2>
+  <div class="sec-tag" style="color:var(--gold);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.s4_sub || 'Section 04')}</div>
+  <h2><span class="sec-num">04</span> ${escapeHtml(d.s4_title || 'Prohibited Usage & Anti-Piracy')}</h2>
   <p>${escapeHtml(d.s4_intro || '')}</p>
   <ul>
-    <li>${escapeHtml(d.s4_pt1 || '')}</li>
-    <li>${escapeHtml(d.s4_pt2 || '')}</li>
-    <li>${escapeHtml(d.s4_pt3 || '')}</li>
+    <li><strong>${escapeHtml(d.s4_pt1_sub || 'No Restreaming')}:</strong> ${escapeHtml(d.s4_pt1_text || '')}</li>
+    <li><strong>${escapeHtml(d.s4_pt2_sub || 'No Public Reselling')}:</strong> ${escapeHtml(d.s4_pt2_text || '')}</li>
+    <li><strong>${escapeHtml(d.s4_pt3_sub || 'No Scrapers or Bots')}:</strong> ${escapeHtml(d.s4_pt3_text || '')}</li>
   </ul>
 </div>
 
 <div class="policy-section">
-  <h2><span class="sec-num">5</span> ${escapeHtml(d.s5_title || 'Service Availability & SLA')}</h2>
+  <div class="sec-tag" style="color:var(--gold);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(d.s5_sub || 'Section 05')}</div>
+  <h2><span class="sec-num">05</span> ${escapeHtml(d.s5_title || 'Service Availability & SLA')}</h2>
   <p>${escapeHtml(d.s5_text || '')}</p>
 </div>`;
       }
       return '';
     }
 
-    function renderPolicyPreview(type) {
+    window.renderPolicyPreview = function(type) {
+      const container = document.getElementById('preview_card_' + type);
+      if (!container) return;
       const data = collectPolicyFormInputs(type);
-      const html = generatePolicyHTML(type, data);
-      const card = document.getElementById('preview_card_' + type);
-      if (card) {
-        card.innerHTML = `
-          <div style="margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08);">
-            <div style="display:inline-block;padding:3px 10px;background:rgba(255,200,0,0.12);color:var(--gold);border-radius:12px;font-size:11px;font-weight:700;margin-bottom:6px;">${escapeHtml(data.badge || '')}</div>
-            <h2 style="font-size:20px;font-weight:800;color:#fff;margin:0 0 4px;">${escapeHtml(data.title || '')}</h2>
-            <div style="font-size:11.5px;color:var(--text-muted);">${escapeHtml(data.sub || '')}</div>
-          </div>
-          ${html}
-        `;
-      }
-    }
+      const htmlBody = generatePolicyHTML(type, data);
+
+      container.innerHTML = `
+        <div style="border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:18px;margin-bottom:22px;text-align:center;">
+          <div class="badge badge-gold" style="font-size:11px;margin-bottom:8px;">${escapeHtml(data.badge || '')}</div>
+          <h2 style="font-size:24px;color:#fff;margin:0 0 6px;">${escapeHtml(data.title || '')}</h2>
+          <p style="font-size:12.5px;color:var(--text-muted);margin:0;">${escapeHtml(data.sub || '')}</p>
+        </div>
+        ${htmlBody}
+      `;
+    };
 
     function populatePolicyForms() {
       ['priv', 'ref', 'terms'].forEach(type => {
         const data = getPolicyFormData(type);
         Object.keys(data).forEach(k => {
           const el = document.getElementById(`${type}_${k}`);
-          if (el) el.value = data[k] || '';
+          if (el) el.value = data[k];
         });
         renderPolicyPreview(type);
       });
     }
 
-    function saveSinglePolicyForm(type) {
-      const currentData = collectPolicyFormInputs(type);
-      
-      // 1. Update form cache
-      let formCache = {};
-      try { formCache = JSON.parse(localStorage.getItem('ultra_legal_policies_form')) || {}; } catch(_) {}
-      formCache[type] = currentData;
-      localStorage.setItem('ultra_legal_policies_form', JSON.stringify(formCache));
+    window.saveSinglePolicyForm = function(type) {
+      const formData = collectPolicyFormInputs(type);
+      const generatedHTML = generatePolicyHTML(type, formData);
 
-      // 2. Generate HTML & save to ultra_legal_policies
-      let policies = {};
-      try { policies = JSON.parse(localStorage.getItem('ultra_legal_policies')) || {}; } catch(_) {}
-      const keyMap = { priv: 'privacy', ref: 'refund', terms: 'terms' };
-      const polKey = keyMap[type];
-      policies[polKey] = generatePolicyHTML(type, currentData);
-      localStorage.setItem('ultra_legal_policies', JSON.stringify(policies));
+      // Save structured form
+      let formsCache = JSON.parse(localStorage.getItem('ultra_legal_policies_form') || '{}');
+      formsCache[type] = formData;
+      localStorage.setItem('ultra_legal_policies_form', JSON.stringify(formsCache));
 
-      // 3. Save header meta
-      let meta = {};
-      try { meta = JSON.parse(localStorage.getItem('ultra_legal_policies_meta')) || {}; } catch(_) {}
-      meta[polKey] = { badge: currentData.badge, title: currentData.title, sub: currentData.sub };
-      localStorage.setItem('ultra_legal_policies_meta', JSON.stringify(meta));
+      // Save generated HTML for website page
+      let polCache = JSON.parse(localStorage.getItem('ultra_legal_policies') || '{}');
+      const pageKey = (type === 'priv') ? 'privacy' : (type === 'ref') ? 'refund' : 'terms';
+      polCache[pageKey] = generatedHTML;
+      localStorage.setItem('ultra_legal_policies', JSON.stringify(polCache));
 
-      // 4. Update preview
-      renderPolicyPreview(type);
+      // Save meta headers
+      let metaCache = JSON.parse(localStorage.getItem('ultra_legal_policies_meta') || '{}');
+      metaCache[pageKey] = { badge: formData.badge, title: formData.title, sub: formData.sub };
+      localStorage.setItem('ultra_legal_policies_meta', JSON.stringify(metaCache));
 
-      // 5. Cloud Sync if enabled
-      if (db) {
-        db.collection('settings').doc('legal_policies').set(policies, { merge: true }).catch(() => {});
-        db.collection('settings').doc('legal_policies_meta').set(meta, { merge: true }).catch(() => {});
-        showToast(currentData.title + ' saved & synced live!');
-      } else {
-        showToast(currentData.title + ' saved locally! Synced to ' + polKey + '.html');
+      // Firebase Sync
+      if (window.cloudDb) {
+        window.cloudDb.collection('settings').doc('legal_policies').set(polCache, { merge: true });
+        window.cloudDb.collection('settings').doc('legal_policies_meta').set(metaCache, { merge: true });
       }
-    }
 
-    function saveAllPolicyForms() {
-      ['priv', 'ref', 'terms'].forEach(saveSinglePolicyForm);
-      showToast('All 3 Legal Policies saved & synced live!');
-    }
+      showToast(`💾 ${formData.title} Saved & Updated Live on Website!`);
+    };
 
-    function resetPolicyForm(type) {
-      const names = { priv: 'Privacy Policy', ref: 'Refund Policy', terms: 'Terms & Conditions' };
-      if (!confirm('Are you sure you want to restore the official default text for ' + names[type] + '?')) return;
+    window.saveAllPolicyForms = function() {
+      ['priv', 'ref', 'terms'].forEach(t => saveSinglePolicyForm(t));
+      showToast('🌟 All Legal Policies Saved & Synchronized Live!');
+    };
+
+    window.resetPolicyForm = function(type) {
+      if (!confirm('Reset this policy back to official default text?')) return;
       const def = defaultPolicyForms[type];
       Object.keys(def).forEach(k => {
         const el = document.getElementById(`${type}_${k}`);
         if (el) el.value = def[k];
       });
+      renderPolicyPreview(type);
       saveSinglePolicyForm(type);
-      showToast('Restored ' + names[type] + ' to official default text!');
-    }
+      showToast('🔄 Policy Reset to Official Defaults!');
+    };
 
-    // ================= SETTINGS & WHATSAPP =================
+    // -------------------------------------------------------------------------
+    // WHATSAPP & GENERAL SETTINGS
+    // -------------------------------------------------------------------------
     function getSettings() {
-      try {
-        const s = localStorage.getItem('ultra_settings');
-        return s ? JSON.parse(s) : {
-          wa_phone: '447458196522',
-          wa_float_msg: 'Hello Ultra Stream Support! 👋 I have a question about your IPTV subscription and channels list. Please assist me.'
-        };
-      } catch(_) {
-        return { wa_phone: '447458196522', wa_float_msg: 'Hello Ultra Stream Support! 👋 I have a question...' };
-      }
+      return JSON.parse(localStorage.getItem('ultra_settings') || 'null') || {
+        wa_phone: '447458196522',
+        wa_float_msg: 'Hello Ultra Stream Support! 👋 I have a question about your IPTV subscription and channels list. Please assist me.',
+        admin_pin: 'admin123'
+      };
     }
 
     function populateSettings() {
       const s = getSettings();
-      document.getElementById('set_wa_phone').value = s.wa_phone || '447458196522';
-      document.getElementById('set_wa_float_msg').value = s.wa_float_msg || '';
-
-      const currentPin = localStorage.getItem('ultra_admin_pin') || DEFAULT_PIN;
-      document.getElementById('set_current_pin').value = currentPin;
+      const p = document.getElementById('set_wa_phone');
+      if (p) p.value = s.wa_phone || '';
+      const m = document.getElementById('set_wa_msg');
+      if (m) m.value = s.wa_float_msg || '';
     }
 
-    function saveSettings() {
-      const s = {
-        wa_phone: document.getElementById('set_wa_phone').value.trim().replace(/[^0-9]/g, ''),
-        wa_float_msg: document.getElementById('set_wa_float_msg').value.trim()
-      };
-
+    window.saveSettings = function() {
+      const s = getSettings();
+      const p = document.getElementById('set_wa_phone');
+      if (p) s.wa_phone = p.value.trim();
+      const m = document.getElementById('set_wa_msg');
+      if (m) s.wa_float_msg = m.value.trim();
       localStorage.setItem('ultra_settings', JSON.stringify(s));
-
-      if (db) {
-        db.collection('settings').doc('general').set(s, { merge: true })
-          .then(() => showToast('Settings saved & synced live!'))
-          .catch(() => showToast('Settings saved locally!'));
-      } else {
-        showToast('Settings saved! WhatsApp links updated live.');
+      if (window.cloudDb) {
+        window.cloudDb.collection('settings').doc('config').set(s, { merge: true });
       }
-    }
+      showToast('📱 WhatsApp Settings Saved Successfully!');
+    };
 
-    // ================= FIREBASE CLOUD SYNC =================
+    // -------------------------------------------------------------------------
+    // FIREBASE CLOUD SETUP
+    // -------------------------------------------------------------------------
+    window.cloudDb = null;
     function getFirebaseConfig() {
-      try {
-        const c = localStorage.getItem('ultra_firebase_config');
-        return c ? JSON.parse(c) : null;
-      } catch(_) { return null; }
+      return JSON.parse(localStorage.getItem('ultra_firebase_config') || 'null');
     }
 
     function initFirebase() {
       const cfg = getFirebaseConfig();
-      if (!cfg || !cfg.apiKey || !cfg.projectId) {
+      if (!cfg || !cfg.apiKey || typeof firebase === 'undefined') {
         setCloudStatus(false);
         return;
       }
       try {
-        if (!firebase.apps.length) {
-          firebase.initializeApp(cfg);
-        }
-        db = firebase.firestore();
-        isFirebaseReady = true;
+        if (!firebase.apps.length) firebase.initializeApp(cfg);
+        window.cloudDb = firebase.firestore();
         setCloudStatus(true);
-        console.log('Firebase Firestore initialized successfully.');
-      } catch(e) {
-        console.error('Firebase init error:', e);
+      } catch (err) {
+        console.warn('Firebase init error:', err);
         setCloudStatus(false);
       }
     }
@@ -2587,55 +3075,34 @@
     function setCloudStatus(connected) {
       const dot = document.getElementById('cloudStatusDot');
       const text = document.getElementById('cloudStatusText');
-      if (connected) {
-        dot.className = 'status-dot connected';
-        text.textContent = 'Firestore Connected';
-      } else {
-        dot.className = 'status-dot local';
-        text.textContent = 'Local Storage Mode';
+      if (dot && text) {
+        dot.className = connected ? 'status-dot cloud' : 'status-dot local';
+        text.textContent = connected ? 'Firebase Cloud Live' : 'Local Storage Mode';
       }
     }
 
-    function saveFirebaseConfig() {
-      const cfg = {
-        apiKey: document.getElementById('fb_apiKey').value.trim(),
-        authDomain: document.getElementById('fb_authDomain').value.trim(),
-        projectId: document.getElementById('fb_projectId').value.trim(),
-        storageBucket: document.getElementById('fb_storageBucket').value.trim(),
-        messagingSenderId: document.getElementById('fb_messagingSenderId').value.trim(),
-        appId: document.getElementById('fb_appId').value.trim()
-      };
-
-      if (!cfg.apiKey || !cfg.projectId) {
-        alert('Please fill in at least the API Key and Project ID from your Firebase Console.');
-        return;
+    window.saveFirebaseConfig = function() {
+      const val = document.getElementById('fb_config_json').value.trim();
+      try {
+        const parsed = JSON.parse(val);
+        localStorage.setItem('ultra_firebase_config', JSON.stringify(parsed));
+        initFirebase();
+        showToast('🔥 Firebase Connected Successfully!');
+      } catch (err) {
+        alert('Invalid Firebase Config JSON! Please check format.');
       }
+    };
 
-      localStorage.setItem('ultra_firebase_config', JSON.stringify(cfg));
-      initFirebase();
-      showToast('Firebase credentials saved!');
-    }
+    window.testFirebaseConnection = function() {
+      if (!window.cloudDb) return alert('Firebase is not initialized yet.');
+      window.cloudDb.collection('_test').doc('ping').set({ timestamp: Date.now() })
+        .then(() => alert('✅ Firebase Connection Working Perfectly!'))
+        .catch(err => alert('❌ Firebase error: ' + err.message));
+    };
 
-    function testFirebaseConnection() {
-      const cfg = getFirebaseConfig();
-      if (!cfg) saveFirebaseConfig();
-      if (!db) {
-        alert('Please save valid Firebase config first.');
-        return;
-      }
-      showToast('Testing connection with Firestore...');
-      db.collection('test').doc('ping').set({ timestamp: Date.now() })
-        .then(() => {
-          alert('✓ Success! Your Firebase Firestore database is connected and active.');
-          setCloudStatus(true);
-        })
-        .catch(err => {
-          alert('Firebase Error: ' + err.message);
-          setCloudStatus(false);
-        });
-    }
-
-    // ================= HELPERS & INITIALIZATION =================
+    // -------------------------------------------------------------------------
+    // HELPERS
+    // -------------------------------------------------------------------------
     function escapeHtml(str) {
       if (!str) return '';
       return String(str)
@@ -2647,44 +3114,24 @@
     }
 
     function showToast(msg) {
-      const t = document.getElementById('adminToast');
-      document.getElementById('toastMsg').textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3500);
+      const toast = document.createElement('div');
+      toast.className = 'toast-alert';
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.classList.add('show'), 20);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+      }, 3500);
     }
 
-    // Window Load Init
-    window.addEventListener('DOMContentLoaded', () => {
-      initFirebase();
-      renderAnalytics();
-      populateSiteContent();
-      renderPlans();
-      populateBackgrounds();
-      populateFooterNav();
-      populatePolicyForms();
-      populateSettings();
-
-      const fb = getFirebaseConfig();
-      if (fb) {
-        document.getElementById('fb_apiKey').value = fb.apiKey || '';
-        document.getElementById('fb_authDomain').value = fb.authDomain || '';
-        document.getElementById('fb_projectId').value = fb.projectId || '';
-        document.getElementById('fb_storageBucket').value = fb.storageBucket || '';
-        document.getElementById('fb_messagingSenderId').value = fb.messagingSenderId || '';
-        document.getElementById('fb_appId').value = fb.appId || '';
-      }
-    });
-  
-    // ========================================================
-    // INTERACTIVE REAL-TIME LIVE PREVIEW SHADER (IN ADMIN PANEL)
-    // ========================================================
-    let adminPreviewScene, adminPreviewCam, adminPreviewRenderer, adminPreviewMaterial;
-    let adminPreviewRaf = null;
-
+    // -------------------------------------------------------------------------
+    // THREE.JS LIVE PREVIEW SHADER INITIALIZATION
+    // -------------------------------------------------------------------------
     function initAdminPreviewShader() {
       const container = document.getElementById('adminStageShader');
       if (!container || typeof THREE === 'undefined') return;
-      if (container.querySelector('canvas')) return; // already initialized
+      if (container.querySelector('canvas')) return; // already running
 
       const MAX_COLORS = 8;
       const frag = `
@@ -2837,76 +3284,49 @@ void main() {
         adminPreviewRaf = requestAnimationFrame(previewLoop);
       }
       previewLoop();
-      updateAdminPreview();
+      previewBgSelection();
     }
 
-    function updateAdminPreview() {
-      const select = document.getElementById('bg_pricing_select');
-      const speedEl = document.getElementById('bg_shader_speed');
-      const opacEl = document.getElementById('bg_shader_opacity');
-      const bgTag = document.getElementById('previewBgTag');
-      const container = document.getElementById('adminStageShader');
-
-      if (!select) return;
-      const val = select.value;
-      const speed = speedEl ? parseFloat(speedEl.value) : 0.55;
-      const opacity = opacEl ? parseFloat(opacEl.value) : 0.58;
-
-      if (container) {
-        container.style.opacity = opacity;
-        container.style.display = (val === 'pitch_black') ? 'none' : 'block';
-      }
-
-      if (bgTag) {
-        const bgNames = {
-          fluid_gold: 'Fluid Gold Silk',
-          molten_amber: 'Molten Amber & Crimson',
-          midnight_aurora: 'Midnight Aurora Violet/Cyan',
-          obsidian_mesh: 'Dark Obsidian Radial',
-          cyber_grid: 'Cyber Laser Grid',
-          pitch_black: 'Pitch Black Luxury'
-        };
-        bgTag.textContent = bgNames[val] || val;
-      }
-
-      if (adminPreviewMaterial) {
-        adminPreviewMaterial.uniforms.uSpeed.value = speed;
-        const palettes = {
-          fluid_gold: ['#FFE885', '#FFC800', '#FFA726', '#FFD54F'],
-          molten_amber: ['#FF4D4D', '#FF8C00', '#FFAA00', '#D32F2F'],
-          midnight_aurora: ['#00F2FE', '#4FACFE', '#7F00FF', '#E100FF'],
-          obsidian_mesh: ['#FFC800', '#3A2E12', '#221805', '#0D0D12'],
-          cyber_grid: ['#00FFA3', '#00B8D9', '#053828', '#0F172A'],
-          pitch_black: ['#000000', '#030305', '#060608', '#000000']
-        };
-        const pColors = palettes[val] || palettes.fluid_gold;
-        const toVec3 = hex => {
-          const h = hex.replace('#','').trim();
-          const v = [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
-          return new THREE.Vector3(v[0]/255, v[1]/255, v[2]/255);
-        };
-        const newVecs = pColors.map(toVec3);
-        const MAX_COLORS = 8;
-        for (let i = 0; i < MAX_COLORS; i++) {
-          if (i < newVecs.length) adminPreviewMaterial.uniforms.uColors.value[i].copy(newVecs[i]);
-          else adminPreviewMaterial.uniforms.uColors.value[i].set(0, 0, 0);
-        }
-        adminPreviewMaterial.uniforms.uColorCount.value = newVecs.length;
-      }
-    }
-
-    // Attach listeners to update live preview immediately
+    // -------------------------------------------------------------------------
+    // DOM READY INITIALIZER
+    // -------------------------------------------------------------------------
     document.addEventListener('DOMContentLoaded', function() {
-      const select = document.getElementById('bg_pricing_select');
-      const speed = document.getElementById('bg_shader_speed');
-      const opac = document.getElementById('bg_shader_opacity');
-      if (select) select.addEventListener('change', updateAdminPreview);
-      if (speed) speed.addEventListener('change', updateAdminPreview);
-      if (opac) opac.addEventListener('change', updateAdminPreview);
+      // Check Pin Auth
+      if (sessionStorage.getItem('ultra_admin_auth') === 'true') {
+        const pinModal = document.getElementById('pinLockModal');
+        if (pinModal) pinModal.classList.add('hidden');
+      }
 
-      setTimeout(initAdminPreviewShader, 200);
+      renderAnalytics();
+      populateSiteContent();
+      renderPlansEditor();
+      populateFooterNav();
+      populatePolicyForms();
+      populateSettings();
+      initFirebase();
+
+      // Read stored backgrounds
+      const storedBgs = JSON.parse(localStorage.getItem('ultra_backgrounds') || 'null');
+      if (storedBgs) {
+        if (storedBgs.card_theme) selectCardTheme(storedBgs.card_theme);
+        if (storedBgs.pricing_bg && document.getElementById('bg_pricing_select')) {
+          document.getElementById('bg_pricing_select').value = storedBgs.pricing_bg;
+        }
+        if (storedBgs.s4_bg && document.getElementById('bg_s4_select')) {
+          document.getElementById('bg_s4_select').value = storedBgs.s4_bg;
+        }
+        if (storedBgs.shader_speed && document.getElementById('bg_shader_speed')) {
+          document.getElementById('bg_shader_speed').value = storedBgs.shader_speed;
+        }
+        if (storedBgs.shader_opacity && document.getElementById('bg_shader_opacity')) {
+          document.getElementById('bg_shader_opacity').value = storedBgs.shader_opacity;
+        }
+      }
+
+      setTimeout(initAdminPreviewShader, 250);
     });
 
+  })();
 </script>
 </body>
 </html>

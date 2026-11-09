@@ -2309,15 +2309,23 @@ if (document.readyState === 'loading') {
         cardsContainer.className = 'pricing-cards theme-' + themeKey;
       }
 
-      // Apply Shader Palette & Speed
+      // Apply Section 5 Pricing Shader & Theme
       if (window.ultraUpdatePricingShader) {
         window.ultraUpdatePricingShader(bgs.pricing_bg, bgs.shader_speed, bgs.shader_opacity);
+      }
+
+      // Apply Section 4 How It Works Shader
+      if (window.ultraUpdateSection4Shader) {
+        window.ultraUpdateSection4Shader(bgs.s4_bg, bgs.s4_speed, bgs.s4_opacity, bgs.sec4_c1, bgs.sec4_c2);
       }
     }
 
     // E. Dynamic Pricing Plans & Points Manager (Allows Add New Plan / Delete / Edit Points)
     let plans = null;
-    try { plans = JSON.parse(localStorage.getItem('ultra_pricing_plans')); } catch(_) {}
+    try {
+      plans = JSON.parse(localStorage.getItem('ultra_plans'));
+      if (!plans) plans = JSON.parse(localStorage.getItem('ultra_pricing_plans'));
+    } catch(_) {}
     if (plans && Array.isArray(plans) && plans.length > 0) {
       const cardsContainer = document.querySelector('.pricing-cards');
       if (cardsContainer) {
