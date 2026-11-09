@@ -119,13 +119,37 @@
     <div>© 2026 Ultra Stream. All rights reserved. 10-Minute Guaranteed IPTV Delivery Worldwide.</div>
   </footer>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
 (function() {
+  function applyPolicy() {
+    try {
+      var policies = JSON.parse(localStorage.getItem('ultra_legal_policies') || 'null');
+      if (policies && policies['privacy']) {
+        var area = document.getElementById('policyContentArea');
+        if (area) area.innerHTML = policies['privacy'];
+      }
+    } catch(_) {}
+  }
+  applyPolicy();
+
+  // Cloud Live Sync if Firebase Configured
   try {
-    var policies = JSON.parse(localStorage.getItem('ultra_legal_policies') || 'null');
-    if (policies && policies['privacy']) {
-      var area = document.getElementById('policyContentArea');
-      if (area) area.innerHTML = policies['privacy'];
+    var cfg = JSON.parse(localStorage.getItem('ultra_firebase_config') || 'null');
+    if (cfg && cfg.apiKey && typeof firebase !== 'undefined') {
+      if (!firebase.apps.length) firebase.initializeApp(cfg);
+      var db = firebase.firestore();
+      db.collection('settings').doc('legal_policies').onSnapshot(function(doc) {
+        if (doc.exists) {
+          var data = doc.data();
+          localStorage.setItem('ultra_legal_policies', JSON.stringify(data));
+          if (data && data['privacy']) {
+            var area = document.getElementById('policyContentArea');
+            if (area) area.innerHTML = data['privacy'];
+          }
+        }
+      });
     }
   } catch(_) {}
 })();
