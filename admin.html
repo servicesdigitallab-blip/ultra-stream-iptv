@@ -1257,107 +1257,462 @@
         <div class="card-wrap">
           <div class="card-head">
             <div>
-              <h2>Legal Policies Content Editor</h2>
-              <p>تمام لیگل پالیسیز بالکل ویسے ہی دیکھیں اور ایڈٹ کریں جیسے مین ویب سائٹ پر ہیں۔</p>
+              <h2>Legal Policies Content Form (کوئی کوڈ نہیں — آسان فارم)</h2>
+              <p>تمام لیگل پالیسیز کی ہیڈنگز، پیراگراف اور پوائنٹس کو آسان فارم میں بغیر کسی کوڈ کے الگ الگ ایڈٹ کریں۔</p>
             </div>
-            <button class="btn btn-gold" onclick="savePolicies()">💾 Save All Policies</button>
+            <button class="btn btn-gold" onclick="saveAllPolicyForms()">💾 Save All Policies</button>
           </div>
 
-          <!-- Policy Subtabs -->
-          <div style="display:flex;gap:10px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px;">
-            <button type="button" id="subtab_btn_privacy" class="btn btn-outline pol-subtab-btn active" onclick="switchPolicyTab('privacy', this)">🛡️ Privacy Policy</button>
-            <button type="button" id="subtab_btn_refund" class="btn btn-outline pol-subtab-btn" onclick="switchPolicyTab('refund', this)">💰 7-Day Refund Policy</button>
-            <button type="button" id="subtab_btn_terms" class="btn btn-outline pol-subtab-btn" onclick="switchPolicyTab('terms', this)">⚖️ Terms &amp; Conditions</button>
+          <!-- Sub-tabs -->
+          <div style="display:flex;gap:10px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:14px;flex-wrap:wrap;">
+            <button type="button" id="subtab_btn_priv" class="btn btn-outline pol-subtab-btn active" onclick="switchPolicyFormTab('priv', this)">🛡️ Privacy Policy Form</button>
+            <button type="button" id="subtab_btn_ref" class="btn btn-outline pol-subtab-btn" onclick="switchPolicyFormTab('ref', this)">💰 7-Day Refund Policy Form</button>
+            <button type="button" id="subtab_btn_terms" class="btn btn-outline pol-subtab-btn" onclick="switchPolicyFormTab('terms', this)">⚖️ Terms &amp; Conditions Form</button>
           </div>
 
-          <!-- TAB 1: PRIVACY POLICY -->
-          <div id="pol_pane_privacy" class="policy-pane active">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <!-- ================= 1. PRIVACY POLICY FORM ================= -->
+          <div id="form_pane_priv" class="policy-pane active">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
               <div>
-                <h3 style="font-size:17px;color:#fff;display:flex;align-items:center;gap:8px;">
-                  🛡️ Privacy Policy <span style="font-size:12px;color:var(--text-muted);">(privacy.html)</span>
+                <h3 style="font-size:18px;color:#fff;display:flex;align-items:center;gap:8px;">
+                  🛡️ Privacy Policy Form <span style="font-size:12px;color:var(--text-muted);">(privacy.html)</span>
                 </h3>
-                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">ویب سائٹ پر لائیو پیج کی تمام ہیڈنگز اور پوائنٹس یہاں موجود ہیں۔</p>
+                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">ہیڈنگز اور پیراگراف الگ الگ خانوں میں ایڈٹ کریں۔</p>
               </div>
               <div style="display:flex;gap:10px;">
-                <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicy('privacy')">🔄 Reset to Website Original</button>
+                <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicyForm('priv')">🔄 Reset to Original</button>
                 <a href="privacy.html" target="_blank" class="btn btn-sm btn-gold" style="text-decoration:none;">👁️ View Live Page</a>
               </div>
             </div>
 
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
-              <div>
-                <label style="font-size:12.5px;font-weight:700;color:var(--gold);margin-bottom:8px;display:block;">📝 Edit Policy Content (HTML / Text):</label>
-                <textarea id="policy_privacy" class="form-textarea" style="min-height:540px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.6;" oninput="updatePolicyPreview('privacy')"></textarea>
-                <button class="btn btn-gold" onclick="savePolicies()" style="margin-top:12px;width:100%;">💾 Save Privacy Policy Now</button>
+            <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:24px;align-items:start;">
+              <!-- Form Fields -->
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <!-- Header Info -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">📌 Page Header</h4>
+                  <div class="form-group">
+                    <label>Top Badge Text</label>
+                    <input type="text" id="priv_badge" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group">
+                    <label>Page Title</label>
+                    <input type="text" id="priv_title" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Subtitle / Policy Date</label>
+                    <input type="text" id="priv_sub" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                </div>
+
+                <!-- Section 1 -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 1: Commitment to User Privacy</h4>
+                  <div class="form-group">
+                    <label>Section 1 Heading</label>
+                    <input type="text" id="priv_s1_title" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Section 1 Paragraph Text</label>
+                    <textarea id="priv_s1_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('priv')"></textarea>
+                  </div>
+                </div>
+
+                <!-- Highlight Box -->
+                <div class="content-box" style="border-color:rgba(37,211,102,0.3);background:rgba(37,211,102,0.03);">
+                  <h4 style="color:var(--green);font-size:14px;margin-bottom:10px;">🛡️ Highlight Box: Zero-Logs Policy</h4>
+                  <div class="form-group">
+                    <label>Highlight Title</label>
+                    <input type="text" id="priv_box_title" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Highlight Description</label>
+                    <textarea id="priv_box_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('priv')"></textarea>
+                  </div>
+                </div>
+
+                <!-- Section 2 -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 2: Information We Collect</h4>
+                  <div class="form-group">
+                    <label>Section 2 Heading</label>
+                    <input type="text" id="priv_s2_title" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group">
+                    <label>Introductory Paragraph</label>
+                    <textarea id="priv_s2_intro" class="form-textarea" style="min-height:60px;" oninput="renderPolicyPreview('priv')"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>Point 1 (Email Address)</label>
+                    <input type="text" id="priv_s2_pt1" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group">
+                    <label>Point 2 (Device Information)</label>
+                    <input type="text" id="priv_s2_pt2" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Point 3 (Transaction Details)</label>
+                    <input type="text" id="priv_s2_pt3" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                </div>
+
+                <!-- Section 3 -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 3: 10-Minute Fast Delivery Policy</h4>
+                  <div class="form-group">
+                    <label>Section 3 Heading</label>
+                    <input type="text" id="priv_s3_title" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Section 3 Paragraph Text</label>
+                    <textarea id="priv_s3_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('priv')"></textarea>
+                  </div>
+                </div>
+
+                <!-- Section 4 -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 4: Data Protection &amp; Security</h4>
+                  <div class="form-group">
+                    <label>Section 4 Heading</label>
+                    <input type="text" id="priv_s4_title" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Section 4 Paragraph Text</label>
+                    <textarea id="priv_s4_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('priv')"></textarea>
+                  </div>
+                </div>
+
+                <!-- Section 5 -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 5: Contacting Support</h4>
+                  <div class="form-group">
+                    <label>Section 5 Heading</label>
+                    <input type="text" id="priv_s5_title" class="form-input" oninput="renderPolicyPreview('priv')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Section 5 Paragraph Text</label>
+                    <textarea id="priv_s5_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('priv')"></textarea>
+                  </div>
+                </div>
+
+                <button class="btn btn-gold" onclick="saveSinglePolicyForm('priv')" style="padding:14px;font-size:15px;">💾 Save Privacy Policy</button>
               </div>
-              <div>
-                <label style="font-size:12.5px;font-weight:700;color:#22c55e;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+
+              <!-- Live Web Preview Card -->
+              <div style="position:sticky;top:90px;">
+                <label style="font-size:13px;font-weight:700;color:#22c55e;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
                   <span class="live-dot"></span> 👁️ Live Web View (جیسے ویب سائٹ پر دکھے گا):
                 </label>
-                <div class="policy-card-preview" id="policy_preview_privacy" style="background:linear-gradient(180deg,rgba(16,16,22,0.95) 0%,rgba(10,10,14,0.98) 100%);border:1px solid rgba(255,200,0,0.3);border-radius:20px;padding:26px 22px;box-shadow:0 15px 45px rgba(0,0,0,0.8);max-height:540px;overflow-y:auto;">
+                <div class="policy-card-preview" id="preview_card_priv" style="background:linear-gradient(180deg,rgba(16,16,22,0.96) 0%,rgba(10,10,14,0.98) 100%);border:1px solid rgba(255,200,0,0.3);border-radius:20px;padding:26px 22px;box-shadow:0 15px 45px rgba(0,0,0,0.85);max-height:85vh;overflow-y:auto;">
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- TAB 2: REFUND POLICY -->
-          <div id="pol_pane_refund" class="policy-pane">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <!-- ================= 2. REFUND POLICY FORM ================= -->
+          <div id="form_pane_ref" class="policy-pane">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
               <div>
-                <h3 style="font-size:17px;color:#fff;display:flex;align-items:center;gap:8px;">
-                  💰 7-Day Refund Policy <span style="font-size:12px;color:var(--text-muted);">(refund.html)</span>
+                <h3 style="font-size:18px;color:#fff;display:flex;align-items:center;gap:8px;">
+                  💰 7-Day Refund Policy Form <span style="font-size:12px;color:var(--text-muted);">(refund.html)</span>
                 </h3>
-                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">منی بیک گارنٹی اور ریفنڈ پروسیس کے تمام رولز یہاں سے ایڈٹ کریں۔</p>
+                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">منی بیک گارنٹی اور ریفنڈ پروسیس کے تمام رولز یہاں سے الگ الگ ایڈٹ کریں۔</p>
               </div>
               <div style="display:flex;gap:10px;">
-                <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicy('refund')">🔄 Reset to Website Original</button>
+                <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicyForm('ref')">🔄 Reset to Original</button>
                 <a href="refund.html" target="_blank" class="btn btn-sm btn-gold" style="text-decoration:none;">👁️ View Live Page</a>
               </div>
             </div>
 
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
-              <div>
-                <label style="font-size:12.5px;font-weight:700;color:var(--gold);margin-bottom:8px;display:block;">📝 Edit Policy Content (HTML / Text):</label>
-                <textarea id="policy_refund" class="form-textarea" style="min-height:540px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.6;" oninput="updatePolicyPreview('refund')"></textarea>
-                <button class="btn btn-gold" onclick="savePolicies()" style="margin-top:12px;width:100%;">💾 Save Refund Policy Now</button>
+            <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:24px;align-items:start;">
+              <!-- Form Fields -->
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <!-- Header Info -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">📌 Page Header</h4>
+                  <div class="form-group">
+                    <label>Top Badge Text</label>
+                    <input type="text" id="ref_badge" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group">
+                    <label>Page Title</label>
+                    <input type="text" id="ref_title" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Subtitle / Tagline</label>
+                    <input type="text" id="ref_sub" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                </div>
+
+                <!-- Section 1 -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 1: 7-Day 100% Money-Back Guarantee</h4>
+                  <div class="form-group">
+                    <label>Section 1 Heading</label>
+                    <input type="text" id="ref_s1_title" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Section 1 Paragraph Text</label>
+                    <textarea id="ref_s1_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('ref')"></textarea>
+                  </div>
+                </div>
+
+                <!-- Highlight Box -->
+                <div class="content-box" style="border-color:rgba(255,200,0,0.3);background:rgba(255,200,0,0.03);">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">⚡ Highlight Box: 10-Minute Delivery Guarantee</h4>
+                  <div class="form-group">
+                    <label>Highlight Title</label>
+                    <input type="text" id="ref_box_title" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Highlight Description</label>
+                    <textarea id="ref_box_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('ref')"></textarea>
+                  </div>
+                </div>
+
+                <!-- Section 2 -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 2: Refund Eligibility Criteria</h4>
+                  <div class="form-group">
+                    <label>Section 2 Heading</label>
+                    <input type="text" id="ref_s2_title" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group">
+                    <label>Introductory Paragraph</label>
+                    <textarea id="ref_s2_intro" class="form-textarea" style="min-height:55px;" oninput="renderPolicyPreview('ref')"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>Eligibility Rule 1 (7 Days)</label>
+                    <input type="text" id="ref_s2_pt1" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group">
+                    <label>Eligibility Rule 2 (Contact Support)</label>
+                    <input type="text" id="ref_s2_pt2" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group">
+                    <label>Eligibility Rule 3 (Internet Speed)</label>
+                    <input type="text" id="ref_s2_pt3" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Eligibility Rule 4 (Device Rules)</label>
+                    <input type="text" id="ref_s2_pt4" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                </div>
+
+                <!-- Section 3 -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 3: How to Request a Refund</h4>
+                  <div class="form-group">
+                    <label>Section 3 Heading</label>
+                    <input type="text" id="ref_s3_title" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group">
+                    <label>Introductory Paragraph</label>
+                    <textarea id="ref_s3_intro" class="form-textarea" style="min-height:55px;" oninput="renderPolicyPreview('ref')"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>Step 1 (Order ID)</label>
+                    <input type="text" id="ref_s3_pt1" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group">
+                    <label>Step 2 (Explanation)</label>
+                    <input type="text" id="ref_s3_pt2" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Step 3 (24-48 Hours Processing)</label>
+                    <input type="text" id="ref_s3_pt3" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                </div>
+
+                <!-- Section 4 -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 4: Non-Refundable Scenarios</h4>
+                  <div class="form-group">
+                    <label>Section 4 Heading</label>
+                    <input type="text" id="ref_s4_title" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group">
+                    <label>Introductory Paragraph</label>
+                    <textarea id="ref_s4_intro" class="form-textarea" style="min-height:55px;" oninput="renderPolicyPreview('ref')"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>Rule 1 (After 7 Days)</label>
+                    <input type="text" id="ref_s4_pt1" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group">
+                    <label>Rule 2 (ISP Throttling)</label>
+                    <input type="text" id="ref_s4_pt2" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Rule 3 (Restreaming/Banned Account)</label>
+                    <input type="text" id="ref_s4_pt3" class="form-input" oninput="renderPolicyPreview('ref')">
+                  </div>
+                </div>
+
+                <button class="btn btn-gold" onclick="saveSinglePolicyForm('ref')" style="padding:14px;font-size:15px;">💾 Save Refund Policy</button>
               </div>
-              <div>
-                <label style="font-size:12.5px;font-weight:700;color:#22c55e;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+
+              <!-- Live Web Preview Card -->
+              <div style="position:sticky;top:90px;">
+                <label style="font-size:13px;font-weight:700;color:#22c55e;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
                   <span class="live-dot"></span> 👁️ Live Web View (جیسے ویب سائٹ پر دکھے گا):
                 </label>
-                <div class="policy-card-preview" id="policy_preview_refund" style="background:linear-gradient(180deg,rgba(16,16,22,0.95) 0%,rgba(10,10,14,0.98) 100%);border:1px solid rgba(255,200,0,0.3);border-radius:20px;padding:26px 22px;box-shadow:0 15px 45px rgba(0,0,0,0.8);max-height:540px;overflow-y:auto;">
+                <div class="policy-card-preview" id="preview_card_ref" style="background:linear-gradient(180deg,rgba(16,16,22,0.96) 0%,rgba(10,10,14,0.98) 100%);border:1px solid rgba(255,200,0,0.3);border-radius:20px;padding:26px 22px;box-shadow:0 15px 45px rgba(0,0,0,0.85);max-height:85vh;overflow-y:auto;">
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- TAB 3: TERMS & CONDITIONS -->
-          <div id="pol_pane_terms" class="policy-pane">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <!-- ================= 3. TERMS & CONDITIONS FORM ================= -->
+          <div id="form_pane_terms" class="policy-pane">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
               <div>
-                <h3 style="font-size:17px;color:#fff;display:flex;align-items:center;gap:8px;">
-                  ⚖️ Terms &amp; Conditions <span style="font-size:12px;color:var(--text-muted);">(terms.html)</span>
+                <h3 style="font-size:18px;color:#fff;display:flex;align-items:center;gap:8px;">
+                  ⚖️ Terms &amp; Conditions Form <span style="font-size:12px;color:var(--text-muted);">(terms.html)</span>
                 </h3>
-                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">کنکشن لمٹس، بینڈوتھ، اور سروس ایگریمنٹ کے رولز یہاں سے ایڈٹ کریں۔</p>
+                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">سروس ایگریمنٹ، کنکشن لمٹس، اور بینڈوتھ کے رولز الگ الگ خانوں میں ایڈٹ کریں۔</p>
               </div>
               <div style="display:flex;gap:10px;">
-                <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicy('terms')">🔄 Reset to Website Original</button>
+                <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicyForm('terms')">🔄 Reset to Original</button>
                 <a href="terms.html" target="_blank" class="btn btn-sm btn-gold" style="text-decoration:none;">👁️ View Live Page</a>
               </div>
             </div>
 
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
-              <div>
-                <label style="font-size:12.5px;font-weight:700;color:var(--gold);margin-bottom:8px;display:block;">📝 Edit Policy Content (HTML / Text):</label>
-                <textarea id="policy_terms" class="form-textarea" style="min-height:540px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.6;" oninput="updatePolicyPreview('terms')"></textarea>
-                <button class="btn btn-gold" onclick="savePolicies()" style="margin-top:12px;width:100%;">💾 Save Terms &amp; Conditions Now</button>
+            <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:24px;align-items:start;">
+              <!-- Form Fields -->
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <!-- Header Info -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">📌 Page Header</h4>
+                  <div class="form-group">
+                    <label>Top Badge Text</label>
+                    <input type="text" id="terms_badge" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group">
+                    <label>Page Title</label>
+                    <input type="text" id="terms_title" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Subtitle / Description</label>
+                    <input type="text" id="terms_sub" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                </div>
+
+                <!-- Section 1 -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 1: Service Agreement &amp; Acceptance</h4>
+                  <div class="form-group">
+                    <label>Section 1 Heading</label>
+                    <input type="text" id="terms_s1_title" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Section 1 Paragraph Text</label>
+                    <textarea id="terms_s1_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('terms')"></textarea>
+                  </div>
+                </div>
+
+                <!-- Highlight Box -->
+                <div class="content-box" style="border-color:rgba(255,200,0,0.3);background:rgba(255,200,0,0.03);">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">⚡ Highlight Box: 10-Minute Express Delivery</h4>
+                  <div class="form-group">
+                    <label>Highlight Title</label>
+                    <input type="text" id="terms_box_title" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Highlight Description</label>
+                    <textarea id="terms_box_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('terms')"></textarea>
+                  </div>
+                </div>
+
+                <!-- Section 2 -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 2: Permitted Devices &amp; Connections</h4>
+                  <div class="form-group">
+                    <label>Section 2 Heading</label>
+                    <input type="text" id="terms_s2_title" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group">
+                    <label>Introductory Paragraph</label>
+                    <textarea id="terms_s2_intro" class="form-textarea" style="min-height:55px;" oninput="renderPolicyPreview('terms')"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>Starter Pass Limit (1 Device)</label>
+                    <input type="text" id="terms_s2_pt1" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group">
+                    <label>Pro Pass Limit (2 Devices)</label>
+                    <input type="text" id="terms_s2_pt2" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group">
+                    <label>Ultra VIP Pass Limit (3 Devices)</label>
+                    <input type="text" id="terms_s2_pt3" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Device Limit Suspension Warning</label>
+                    <input type="text" id="terms_s2_outro" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                </div>
+
+                <!-- Section 3 -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 3: Bandwidth &amp; Network Requirements</h4>
+                  <div class="form-group">
+                    <label>Section 3 Heading</label>
+                    <input type="text" id="terms_s3_title" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Section 3 Paragraph Text</label>
+                    <textarea id="terms_s3_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('terms')"></textarea>
+                  </div>
+                </div>
+
+                <!-- Section 4 -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 4: Prohibited Usage &amp; Anti-Piracy</h4>
+                  <div class="form-group">
+                    <label>Section 4 Heading</label>
+                    <input type="text" id="terms_s4_title" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group">
+                    <label>Introductory Paragraph</label>
+                    <textarea id="terms_s4_intro" class="form-textarea" style="min-height:55px;" oninput="renderPolicyPreview('terms')"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>Prohibited Rule 1 (Restreaming)</label>
+                    <input type="text" id="terms_s4_pt1" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group">
+                    <label>Prohibited Rule 2 (Sharing Logins)</label>
+                    <input type="text" id="terms_s4_pt2" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Prohibited Rule 3 (Bots &amp; Scrapers)</label>
+                    <input type="text" id="terms_s4_pt3" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                </div>
+
+                <!-- Section 5 -->
+                <div class="content-box">
+                  <h4 style="color:var(--gold);font-size:14px;margin-bottom:10px;">Section 5: Service Availability &amp; SLA</h4>
+                  <div class="form-group">
+                    <label>Section 5 Heading</label>
+                    <input type="text" id="terms_s5_title" class="form-input" oninput="renderPolicyPreview('terms')">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label>Section 5 Paragraph Text</label>
+                    <textarea id="terms_s5_text" class="form-textarea" style="min-height:75px;" oninput="renderPolicyPreview('terms')"></textarea>
+                  </div>
+                </div>
+
+                <button class="btn btn-gold" onclick="saveSinglePolicyForm('terms')" style="padding:14px;font-size:15px;">💾 Save Terms &amp; Conditions</button>
               </div>
-              <div>
-                <label style="font-size:12.5px;font-weight:700;color:#22c55e;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+
+              <!-- Live Web Preview Card -->
+              <div style="position:sticky;top:90px;">
+                <label style="font-size:13px;font-weight:700;color:#22c55e;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
                   <span class="live-dot"></span> 👁️ Live Web View (جیسے ویب سائٹ پر دکھے گا):
                 </label>
-                <div class="policy-card-preview" id="policy_preview_terms" style="background:linear-gradient(180deg,rgba(16,16,22,0.95) 0%,rgba(10,10,14,0.98) 100%);border:1px solid rgba(255,200,0,0.3);border-radius:20px;padding:26px 22px;box-shadow:0 15px 45px rgba(0,0,0,0.8);max-height:540px;overflow-y:auto;">
+                <div class="policy-card-preview" id="preview_card_terms" style="background:linear-gradient(180deg,rgba(16,16,22,0.96) 0%,rgba(10,10,14,0.98) 100%);border:1px solid rgba(255,200,0,0.3);border-radius:20px;padding:26px 22px;box-shadow:0 15px 45px rgba(0,0,0,0.85);max-height:85vh;overflow-y:auto;">
                 </div>
               </div>
             </div>
@@ -1651,7 +2006,7 @@
       const targetPane = document.getElementById('pane-' + tabId);
       if (tabId === 'policies') {
         setTimeout(function() {
-          populatePolicies();
+          populatePolicyForms();
         }, 60);
       }
       if (targetPane) targetPane.classList.add('active');
@@ -1861,88 +2216,305 @@
       }
     }
 
-    function getPolicies() {
-      try {
-        const p = localStorage.getItem('ultra_legal_policies');
-        if (p) {
-          const parsed = JSON.parse(p);
-          // Auto-heal: If empty string, null, or short dummy text, FORCE restore exact website official policies!
-          const result = {
-            privacy: (parsed.privacy && parsed.privacy.trim().length > 100 && parsed.privacy.includes('policy-section')) ? parsed.privacy : defaultPolicies.privacy,
-            refund: (parsed.refund && parsed.refund.trim().length > 100 && parsed.refund.includes('policy-section')) ? parsed.refund : defaultPolicies.refund,
-            terms: (parsed.terms && parsed.terms.trim().length > 100 && parsed.terms.includes('policy-section')) ? parsed.terms : defaultPolicies.terms
-          };
-          if (result.privacy !== parsed.privacy || result.refund !== parsed.refund || result.terms !== parsed.terms) {
-            localStorage.setItem('ultra_legal_policies', JSON.stringify(result));
-          }
-          return result;
-        }
-      } catch(_) {}
-      localStorage.setItem('ultra_legal_policies', JSON.stringify(defaultPolicies));
-      return defaultPolicies;
-    }
+    // ================= LEGAL POLICIES 100% CODE-FREE FORM CONTROLLER =================
+    const defaultPolicyForms = {
+      priv: {
+        badge: '⚡ Zero-Logs Protected',
+        title: 'Privacy Policy',
+        sub: 'Last Updated: November 2026 • Official Ultra Stream Policy',
+        s1_title: 'Commitment to User Privacy',
+        s1_text: 'At Ultra Stream, we value your privacy above all else. This Privacy Policy details how we collect, handle, and protect your information when you use our website and IPTV streaming services.',
+        box_title: 'Strict Zero-Logs Policy:',
+        box_text: 'We do not log, monitor, or track the TV channels, movies, sports, or content you watch. Your streaming activity remains 100% private and confidential.',
+        s2_title: 'Information We Collect',
+        s2_intro: 'To provide our services and complete our 10-Minute Fast Delivery Guarantee, we only collect the minimum required information:',
+        s2_pt1: 'Email Address: To deliver your M3U playlist URL, Xtream Codes API credentials, and portal details within 10 minutes.',
+        s2_pt2: 'Device Information: The device type you intend to use (Smart TV, Firestick, Android, iOS, Windows, Mac) to provide optimized setup tutorials.',
+        s2_pt3: 'Transaction Details: Payment confirmation ID from our payment processors. We never store credit card numbers, CVVs, or sensitive payment tokens.',
+        s3_title: '10-Minute Fast Delivery Policy',
+        s3_text: 'Upon receipt of payment, our automated server infrastructure generates and delivers your login credentials to your specified email within 10 minutes. Transactional emails are strictly used for credential delivery, setup guides, and renewal reminders.',
+        s4_title: 'Data Protection & Security',
+        s4_text: 'All data exchanged on our website is secured with enterprise-grade 256-bit SSL (TLS 1.3) encryption. We do not sell, rent, trade, or share your contact details with any third parties or advertisers.',
+        s5_title: 'Contacting Support',
+        s5_text: 'If you have any questions or wish to request data removal, our VIP Support team is available 24/7 via live support and email.'
+      },
+      ref: {
+        badge: '⚡ Satisfaction Guaranteed',
+        title: 'Refund Policy',
+        sub: '7-Day Money-Back Guarantee • 10-Minute Delivery Commitment',
+        s1_title: '7-Day 100% Money-Back Guarantee',
+        s1_text: 'We are confident in the premium streaming quality, anti-freeze stability, and channel selection of Ultra Stream. If you encounter any technical issues that our 24/7 support team cannot resolve within 24 hours of your report, you are entitled to a 100% full refund within 7 days of purchase.',
+        box_title: '10-Minute Delivery Guarantee:',
+        box_text: 'We promise delivery of your subscription credentials within 10 minutes of payment. If for any rare technical reason you do not receive them within 10 minutes, our priority support will dispatch them instantly or process a full refund immediately upon request.',
+        s2_title: 'Refund Eligibility Criteria',
+        s2_intro: 'To qualify for a refund under our 7-day guarantee, please ensure:',
+        s2_pt1: 'Your request is submitted within 7 days of the initial subscription purchase date.',
+        s2_pt2: 'You have contacted our support team and given us the opportunity to assist with app configuration or playlist setup.',
+        s2_pt3: 'Your internet connection meets the recommended minimum speed (15 Mbps for HD, 30+ Mbps for 4K).',
+        s2_pt4: 'Your account has not violated our single/multi-device connection rules.',
+        s3_title: 'How to Request a Refund',
+        s3_intro: 'Claiming a refund is simple and hassle-free:',
+        s3_pt1: 'Email our support team with your Order ID and the email address used during checkout.',
+        s3_pt2: 'Include a brief note explaining the technical issue you experienced.',
+        s3_pt3: 'Our billing department will process your refund within 24 to 48 hours back to your original payment method.',
+        s4_title: 'Non-Refundable Scenarios',
+        s4_intro: 'Refunds cannot be issued if:',
+        s4_pt1: 'More than 7 days have elapsed since the date of purchase.',
+        s4_pt2: 'The issue is caused by local ISP throttling where the user declines to use a VPN.',
+        s4_pt3: 'An account was banned for unauthorized restreaming or sharing beyond the purchased device limit.'
+      },
+      terms: {
+        badge: '⚡ Terms of Service',
+        title: 'Terms & Conditions',
+        sub: 'Official Subscription Terms & Service Level Agreement',
+        s1_title: 'Service Agreement & Acceptance',
+        s1_text: 'By purchasing, accessing, or using Ultra Stream IPTV services, you agree to comply with and be bound by these Terms and Conditions. If you do not agree, please do not use our services.',
+        box_title: '10-Minute Express Delivery:',
+        box_text: 'All valid subscription orders are fulfilled with M3U URLs, Xtream API logins, and setup instructions delivered via email within 10 minutes of completed payment.',
+        s2_title: 'Permitted Devices & Connections',
+        s2_intro: 'Each subscription tier includes a specific number of simultaneous active streams:',
+        s2_pt1: 'Starter Pass (1 Month): 1 active connection at any time.',
+        s2_pt2: 'Pro Pass (6 Months): Up to 2 simultaneous active connections.',
+        s2_pt3: 'Ultra VIP Pass (12 Months): Up to 3 simultaneous active connections.',
+        s2_outro: 'Simultaneous streaming from more devices than permitted under your active plan may cause temporary line suspension.',
+        s3_title: 'Bandwidth & Network Requirements',
+        s3_text: 'To enjoy smooth, buffer-free playback with our Anti-Freeze™ technology, users must maintain a stable broadband or 4G/5G internet connection: minimum 15 Mbps for Full HD 1080p and 30+ Mbps for Ultra HD 4K streams.',
+        s4_title: 'Prohibited Usage & Anti-Piracy',
+        s4_intro: 'The following activities are strictly prohibited and will result in immediate service termination without refund:',
+        s4_pt1: 'Restreaming, re-broadcasting, or redistributing our stream feeds to third parties.',
+        s4_pt2: 'Reselling or sharing login credentials publicly on forums or social media.',
+        s4_pt3: 'Using automated scrapers or bots against our streaming servers.',
+        s5_title: 'Service Availability & SLA',
+        s5_text: 'We strive to maintain a 99.9% server uptime. Occasional maintenance or channel adjustments may occur to maintain optimum stream quality and anti-freeze server routing.'
+      }
+    };
 
-    function switchPolicyTab(tabKey, el) {
+    function switchPolicyFormTab(type, el) {
       document.querySelectorAll('.pol-subtab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.policy-pane').forEach(p => p.classList.remove('active'));
       if (el) el.classList.add('active');
-      const pane = document.getElementById('pol_pane_' + tabKey);
+      const pane = document.getElementById('form_pane_' + type);
       if (pane) pane.classList.add('active');
-      updatePolicyPreview(tabKey);
+      renderPolicyPreview(type);
     }
 
-    function updatePolicyPreview(key) {
-      const textarea = document.getElementById('policy_' + key);
-      const preview = document.getElementById('policy_preview_' + key);
-      if (textarea && preview) {
-        preview.innerHTML = textarea.value;
+    function getPolicyFormData(type) {
+      let saved = null;
+      try { saved = JSON.parse(localStorage.getItem('ultra_legal_policies_form')); } catch(_) {}
+      const def = defaultPolicyForms[type];
+      return (saved && saved[type]) ? { ...def, ...saved[type] } : def;
+    }
+
+    function collectPolicyFormInputs(type) {
+      const keys = Object.keys(defaultPolicyForms[type]);
+      const data = {};
+      keys.forEach(k => {
+        const el = document.getElementById(`${type}_${k}`);
+        data[k] = el ? el.value.trim() : (defaultPolicyForms[type][k] || '');
+      });
+      return data;
+    }
+
+    function generatePolicyHTML(type, d) {
+      if (type === 'priv') {
+        return `<div class="policy-section">
+  <h2><span class="sec-num">1</span> ${escapeHtml(d.s1_title || 'Commitment to User Privacy')}</h2>
+  <p>${escapeHtml(d.s1_text || '')}</p>
+</div>
+
+<div class="highlight-box">
+  <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+  <div><strong>${escapeHtml(d.box_title || 'Strict Zero-Logs Policy:')}</strong> ${escapeHtml(d.box_text || '')}</div>
+</div>
+
+<div class="policy-section">
+  <h2><span class="sec-num">2</span> ${escapeHtml(d.s2_title || 'Information We Collect')}</h2>
+  <p>${escapeHtml(d.s2_intro || '')}</p>
+  <ul>
+    <li>${escapeHtml(d.s2_pt1 || '')}</li>
+    <li>${escapeHtml(d.s2_pt2 || '')}</li>
+    <li>${escapeHtml(d.s2_pt3 || '')}</li>
+  </ul>
+</div>
+
+<div class="policy-section">
+  <h2><span class="sec-num">3</span> ${escapeHtml(d.s3_title || '10-Minute Fast Delivery Policy')}</h2>
+  <p>${escapeHtml(d.s3_text || '')}</p>
+</div>
+
+<div class="policy-section">
+  <h2><span class="sec-num">4</span> ${escapeHtml(d.s4_title || 'Data Protection & Security')}</h2>
+  <p>${escapeHtml(d.s4_text || '')}</p>
+</div>
+
+<div class="policy-section">
+  <h2><span class="sec-num">5</span> ${escapeHtml(d.s5_title || 'Contacting Support')}</h2>
+  <p>${escapeHtml(d.s5_text || '')}</p>
+</div>`;
+      } else if (type === 'ref') {
+        return `<div class="policy-section">
+  <h2><span class="sec-num">1</span> ${escapeHtml(d.s1_title || '7-Day 100% Money-Back Guarantee')}</h2>
+  <p>${escapeHtml(d.s1_text || '')}</p>
+</div>
+
+<div class="highlight-box">
+  <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18z"/></svg>
+  <div><strong>${escapeHtml(d.box_title || '10-Minute Delivery Guarantee:')}</strong> ${escapeHtml(d.box_text || '')}</div>
+</div>
+
+<div class="policy-section">
+  <h2><span class="sec-num">2</span> ${escapeHtml(d.s2_title || 'Refund Eligibility Criteria')}</h2>
+  <p>${escapeHtml(d.s2_intro || '')}</p>
+  <ul>
+    <li>${escapeHtml(d.s2_pt1 || '')}</li>
+    <li>${escapeHtml(d.s2_pt2 || '')}</li>
+    <li>${escapeHtml(d.s2_pt3 || '')}</li>
+    <li>${escapeHtml(d.s2_pt4 || '')}</li>
+  </ul>
+</div>
+
+<div class="policy-section">
+  <h2><span class="sec-num">3</span> ${escapeHtml(d.s3_title || 'How to Request a Refund')}</h2>
+  <p>${escapeHtml(d.s3_intro || '')}</p>
+  <ul>
+    <li>${escapeHtml(d.s3_pt1 || '')}</li>
+    <li>${escapeHtml(d.s3_pt2 || '')}</li>
+    <li>${escapeHtml(d.s3_pt3 || '')}</li>
+  </ul>
+</div>
+
+<div class="policy-section">
+  <h2><span class="sec-num">4</span> ${escapeHtml(d.s4_title || 'Non-Refundable Scenarios')}</h2>
+  <p>${escapeHtml(d.s4_intro || '')}</p>
+  <ul>
+    <li>${escapeHtml(d.s4_pt1 || '')}</li>
+    <li>${escapeHtml(d.s4_pt2 || '')}</li>
+    <li>${escapeHtml(d.s4_pt3 || '')}</li>
+  </ul>
+</div>`;
+      } else if (type === 'terms') {
+        return `<div class="policy-section">
+  <h2><span class="sec-num">1</span> ${escapeHtml(d.s1_title || 'Service Agreement & Acceptance')}</h2>
+  <p>${escapeHtml(d.s1_text || '')}</p>
+</div>
+
+<div class="highlight-box">
+  <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  <div><strong>${escapeHtml(d.box_title || '10-Minute Express Delivery:')}</strong> ${escapeHtml(d.box_text || '')}</div>
+</div>
+
+<div class="policy-section">
+  <h2><span class="sec-num">2</span> ${escapeHtml(d.s2_title || 'Permitted Devices & Connections')}</h2>
+  <p>${escapeHtml(d.s2_intro || '')}</p>
+  <ul>
+    <li>${escapeHtml(d.s2_pt1 || '')}</li>
+    <li>${escapeHtml(d.s2_pt2 || '')}</li>
+    <li>${escapeHtml(d.s2_pt3 || '')}</li>
+  </ul>
+  ${d.s2_outro ? `<p>${escapeHtml(d.s2_outro)}</p>` : ''}
+</div>
+
+<div class="policy-section">
+  <h2><span class="sec-num">3</span> ${escapeHtml(d.s3_title || 'Bandwidth & Network Requirements')}</h2>
+  <p>${escapeHtml(d.s3_text || '')}</p>
+</div>
+
+<div class="policy-section">
+  <h2><span class="sec-num">4</span> ${escapeHtml(d.s4_title || 'Prohibited Usage & Anti-Piracy')}</h2>
+  <p>${escapeHtml(d.s4_intro || '')}</p>
+  <ul>
+    <li>${escapeHtml(d.s4_pt1 || '')}</li>
+    <li>${escapeHtml(d.s4_pt2 || '')}</li>
+    <li>${escapeHtml(d.s4_pt3 || '')}</li>
+  </ul>
+</div>
+
+<div class="policy-section">
+  <h2><span class="sec-num">5</span> ${escapeHtml(d.s5_title || 'Service Availability & SLA')}</h2>
+  <p>${escapeHtml(d.s5_text || '')}</p>
+</div>`;
+      }
+      return '';
+    }
+
+    function renderPolicyPreview(type) {
+      const data = collectPolicyFormInputs(type);
+      const html = generatePolicyHTML(type, data);
+      const card = document.getElementById('preview_card_' + type);
+      if (card) {
+        card.innerHTML = `
+          <div style="margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08);">
+            <div style="display:inline-block;padding:3px 10px;background:rgba(255,200,0,0.12);color:var(--gold);border-radius:12px;font-size:11px;font-weight:700;margin-bottom:6px;">${escapeHtml(data.badge || '')}</div>
+            <h2 style="font-size:20px;font-weight:800;color:#fff;margin:0 0 4px;">${escapeHtml(data.title || '')}</h2>
+            <div style="font-size:11.5px;color:var(--text-muted);">${escapeHtml(data.sub || '')}</div>
+          </div>
+          ${html}
+        `;
       }
     }
 
-    function resetPolicy(key) {
-      if (!confirm('Are you sure you want to restore ' + key + ' to the official website default text?')) return;
-      const el = document.getElementById('policy_' + key);
-      if (el && defaultPolicies[key]) {
-        el.value = defaultPolicies[key];
-        updatePolicyPreview(key);
-        showToast('Restored ' + key + ' policy to official website text!');
-      }
+    function populatePolicyForms() {
+      ['priv', 'ref', 'terms'].forEach(type => {
+        const data = getPolicyFormData(type);
+        Object.keys(data).forEach(k => {
+          const el = document.getElementById(`${type}_${k}`);
+          if (el) el.value = data[k] || '';
+        });
+        renderPolicyPreview(type);
+      });
     }
 
-    function populatePolicies() {
-      const p = getPolicies();
-      const privEl = document.getElementById('policy_privacy');
-      const refEl = document.getElementById('policy_refund');
-      const termsEl = document.getElementById('policy_terms');
+    function saveSinglePolicyForm(type) {
+      const currentData = collectPolicyFormInputs(type);
+      
+      // 1. Update form cache
+      let formCache = {};
+      try { formCache = JSON.parse(localStorage.getItem('ultra_legal_policies_form')) || {}; } catch(_) {}
+      formCache[type] = currentData;
+      localStorage.setItem('ultra_legal_policies_form', JSON.stringify(formCache));
 
-      if (privEl) privEl.value = (p.privacy && p.privacy.trim().length > 100) ? p.privacy : defaultPolicies.privacy;
-      if (refEl) refEl.value = (p.refund && p.refund.trim().length > 100) ? p.refund : defaultPolicies.refund;
-      if (termsEl) termsEl.value = (p.terms && p.terms.trim().length > 100) ? p.terms : defaultPolicies.terms;
+      // 2. Generate HTML & save to ultra_legal_policies
+      let policies = {};
+      try { policies = JSON.parse(localStorage.getItem('ultra_legal_policies')) || {}; } catch(_) {}
+      const keyMap = { priv: 'privacy', ref: 'refund', terms: 'terms' };
+      const polKey = keyMap[type];
+      policies[polKey] = generatePolicyHTML(type, currentData);
+      localStorage.setItem('ultra_legal_policies', JSON.stringify(policies));
 
-      updatePolicyPreview('privacy');
-      updatePolicyPreview('refund');
-      updatePolicyPreview('terms');
-    }
+      // 3. Save header meta
+      let meta = {};
+      try { meta = JSON.parse(localStorage.getItem('ultra_legal_policies_meta')) || {}; } catch(_) {}
+      meta[polKey] = { badge: currentData.badge, title: currentData.title, sub: currentData.sub };
+      localStorage.setItem('ultra_legal_policies_meta', JSON.stringify(meta));
 
-    function savePolicies() {
-      const p = {
-        privacy: document.getElementById('policy_privacy').value.trim() || defaultPolicies.privacy,
-        refund: document.getElementById('policy_refund').value.trim() || defaultPolicies.refund,
-        terms: document.getElementById('policy_terms').value.trim() || defaultPolicies.terms
-      };
-      localStorage.setItem('ultra_legal_policies', JSON.stringify(p));
+      // 4. Update preview
+      renderPolicyPreview(type);
 
-      updatePolicyPreview('privacy');
-      updatePolicyPreview('refund');
-      updatePolicyPreview('terms');
-
+      // 5. Cloud Sync if enabled
       if (db) {
-        db.collection('settings').doc('legal_policies').set(p, { merge: true })
-          .then(() => showToast('Legal policies saved & synced live to all pages!'))
-          .catch(() => showToast('Saved policies locally!'));
+        db.collection('settings').doc('legal_policies').set(policies, { merge: true }).catch(() => {});
+        db.collection('settings').doc('legal_policies_meta').set(meta, { merge: true }).catch(() => {});
+        showToast(currentData.title + ' saved & synced live!');
       } else {
-        showToast('Policies saved locally! Synced to policy pages.');
+        showToast(currentData.title + ' saved locally! Synced to ' + polKey + '.html');
       }
+    }
+
+    function saveAllPolicyForms() {
+      ['priv', 'ref', 'terms'].forEach(saveSinglePolicyForm);
+      showToast('All 3 Legal Policies saved & synced live!');
+    }
+
+    function resetPolicyForm(type) {
+      const names = { priv: 'Privacy Policy', ref: 'Refund Policy', terms: 'Terms & Conditions' };
+      if (!confirm('Are you sure you want to restore the official default text for ' + names[type] + '?')) return;
+      const def = defaultPolicyForms[type];
+      Object.keys(def).forEach(k => {
+        const el = document.getElementById(`${type}_${k}`);
+        if (el) el.value = def[k];
+      });
+      saveSinglePolicyForm(type);
+      showToast('Restored ' + names[type] + ' to official default text!');
     }
 
     // ================= SETTINGS & WHATSAPP =================
@@ -2089,7 +2661,7 @@
       renderPlans();
       populateBackgrounds();
       populateFooterNav();
-      populatePolicies();
+      populatePolicyForms();
       populateSettings();
 
       const fb = getFirebaseConfig();

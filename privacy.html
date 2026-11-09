@@ -130,6 +130,16 @@
         var area = document.getElementById('policyContentArea');
         if (area) area.innerHTML = policies['privacy'];
       }
+      var meta = JSON.parse(localStorage.getItem('ultra_legal_policies_meta') || 'null');
+      if (meta && meta['privacy']) {
+        var m = meta['privacy'];
+        var b = document.querySelector('.policy-badge');
+        if (b && m.badge) b.textContent = m.badge;
+        var t = document.querySelector('.policy-title');
+        if (t && m.title) t.textContent = m.title;
+        var s = document.querySelector('.policy-sub');
+        if (s && m.sub) s.textContent = m.sub;
+      }
     } catch(_) {}
   }
   applyPolicy();
@@ -147,6 +157,21 @@
           if (data && data['privacy']) {
             var area = document.getElementById('policyContentArea');
             if (area) area.innerHTML = data['privacy'];
+          }
+        }
+      });
+      db.collection('settings').doc('legal_policies_meta').onSnapshot(function(doc) {
+        if (doc.exists) {
+          var mData = doc.data();
+          localStorage.setItem('ultra_legal_policies_meta', JSON.stringify(mData));
+          if (mData && mData['privacy']) {
+            var m = mData['privacy'];
+            var b = document.querySelector('.policy-badge');
+            if (b && m.badge) b.textContent = m.badge;
+            var t = document.querySelector('.policy-title');
+            if (t && m.title) t.textContent = m.title;
+            var s = document.querySelector('.policy-sub');
+            if (s && m.sub) s.textContent = m.sub;
           }
         }
       });
