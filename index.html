@@ -345,67 +345,39 @@ footer{background:#040406;border-top:1px solid rgba(255,255,255,.08);padding:68p
   100% { transform: translateY(-4px); box-shadow: 0 0 28px rgba(255,200,0,0.75); }
 }
 
-/* FLOATING WHATSAPP BUTTON WITH BEST ANIMATIONS (RADAR PULSE + BOB + WIGGLE) */
+/* FLOATING WHATSAPP BUTTON (NO VIBRATION, STEADY CALM LUXURY) */
 .wa-float {
   position: fixed;
   bottom: 28px;
   right: 28px;
-  width: 64px;
-  height: 64px;
+  width: 62px;
+  height: 62px;
   background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
   color: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 32px rgba(37, 211, 102, 0.55), 0 0 35px rgba(37, 211, 102, 0.35);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
   z-index: 9999;
   text-decoration: none;
-  animation: waBob 3s ease-in-out infinite;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  animation: waSoftGlow 3s ease-in-out infinite alternate;
+}
+@keyframes waSoftGlow {
+  0% { box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45); }
+  100% { box-shadow: 0 10px 32px rgba(37, 211, 102, 0.65), 0 0 25px rgba(37, 211, 102, 0.45); }
 }
 .wa-float:hover {
-  transform: scale(1.15) translateY(-4px);
-  box-shadow: 0 16px 45px rgba(37, 211, 102, 0.75), 0 0 55px rgba(37, 211, 102, 0.6);
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 14px 40px rgba(37, 211, 102, 0.75), 0 0 35px rgba(37, 211, 102, 0.55);
 }
-
-/* Radar Pulse Wave 1 */
-.wa-float::before {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 2px solid rgba(37, 211, 102, 0.75);
-  animation: waPulseRadar 2.4s cubic-bezier(0.24, 0, 0.38, 1) infinite;
-  pointer-events: none;
-}
-/* Radar Pulse Wave 2 */
-.wa-float::after {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 2px solid rgba(37, 211, 102, 0.5);
-  animation: waPulseRadar 2.4s cubic-bezier(0.24, 0, 0.38, 1) infinite 1.2s;
-  pointer-events: none;
-}
-@keyframes waPulseRadar {
-  0% { transform: scale(1); opacity: 0.9; }
-  100% { transform: scale(1.9); opacity: 0; }
-}
-
-@keyframes waBob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-7px); }
-}
-
-/* Calm, smooth SVG icon with zero vibration */
 .wa-float svg {
   transform-origin: center center;
   transition: transform 0.25s ease;
 }
 .wa-float:hover svg {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 /* SECTION 5 — Premium IPTV Pricing Plans (Best Animations & 3D Interactive FX) */
@@ -1729,112 +1701,140 @@ if(document.readyState==='loading'){
 }
 
 // Framer Golden Star Dust & Embers Particle Animation for Section 5
-// High-Visibility Liquid Gold & Molten Amber Plasma Shader for Section 5
+// Proven Framer ColorBends Liquid Silk Shader for Section 5 (Gold & Amber IPTV Luxury Palette)
 function initPricingShader() {
   const container = document.getElementById('pricingShaderCanvas');
   if (!container || typeof THREE === 'undefined') return;
 
+  const MAX_COLORS = 8;
   const frag = `
-    uniform vec2 uResolution;
-    uniform float uTime;
-    uniform vec2 uPointer;
-    varying vec2 vUv;
+#define MAX_COLORS 8
+uniform vec2 uCanvas;
+uniform float uTime;
+uniform float uSpeed;
+uniform vec2 uRot;
+uniform int uColorCount;
+uniform vec3 uColors[MAX_COLORS];
+uniform int uTransparent;
+uniform float uScale;
+uniform float uFrequency;
+uniform float uWarpStrength;
+uniform vec2 uPointer;
+uniform float uMouseInfluence;
+uniform float uParallax;
+uniform float uNoise;
+uniform int uIterations;
+uniform float uIntensity;
+uniform float uBandWidth;
+varying vec2 vUv;
 
-    // Simplex 2D noise
-    vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-    vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-    vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+void main() {
+  float t = uTime * uSpeed;
+  vec2 p = vUv * 2.0 - 1.0;
+  p += uPointer * uParallax * 0.1;
+  vec2 rp = vec2(p.x * uRot.x - p.y * uRot.y, p.x * uRot.y + p.y * uRot.x);
+  vec2 q = vec2(rp.x * (uCanvas.x / uCanvas.y), rp.y);
+  q /= max(uScale, 0.0001);
+  q /= 0.5 + 0.2 * dot(q, q);
+  q += 0.2 * cos(t) - 7.56;
+  vec2 toward = (uPointer - rp);
+  q += toward * uMouseInfluence * 0.2;
 
-    float snoise(vec2 v) {
-      const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
-      vec2 i  = floor(v + dot(v, C.yy) );
-      vec2 x0 = v -   i + dot(i, C.xx);
-      vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-      vec4 x12 = x0.xyxy + C.xxzz;
-      x12.xy -= i1;
-      i = mod289(i);
-      vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 ));
-      vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
-      m = m*m; m = m*m;
-      vec3 x = 2.0 * fract(p * C.www) - 1.0;
-      vec3 h = abs(x) - 0.5;
-      vec3 ox = floor(x + 0.5);
-      vec3 a0 = x - ox;
-      m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
-      vec3 g;
-      g.x  = a0.x  * x0.x  + h.x  * x0.y;
-      g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-      return 130.0 * dot(m, g);
+  for (int j = 0; j < 5; j++) {
+    if (j >= uIterations - 1) break;
+    vec2 rr = sin(1.5 * (q.yx * uFrequency) + 2.0 * cos(q * uFrequency));
+    q += (rr - q) * 0.15;
+  }
+
+  vec3 col = vec3(0.0);
+  float a = 1.0;
+
+  if (uColorCount > 0) {
+    vec2 s = q;
+    vec3 sumCol = vec3(0.0);
+    float cover = 0.0;
+    for (int i = 0; i < MAX_COLORS; ++i) {
+      if (i >= uColorCount) break;
+      s -= 0.01;
+      vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));
+      float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(i)) / 4.0);
+      float kBelow = clamp(uWarpStrength, 0.0, 1.0);
+      float kMix = pow(kBelow, 0.3);
+      float gain = 1.0 + max(uWarpStrength - 1.0, 0.0);
+      vec2 disp = (r - s) * kBelow;
+      vec2 warped = s + disp * gain;
+      float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(i)) / 4.0);
+      float m = mix(m0, m1, kMix);
+      float w = 1.0 - exp(-uBandWidth / exp(uBandWidth * m));
+      sumCol += uColors[i] * w;
+      cover = max(cover, w);
     }
+    col = clamp(sumCol, 0.0, 1.0);
+    a = uTransparent > 0 ? cover : 1.0;
+  }
 
-    void main() {
-      vec2 uv = vUv;
-      float t = uTime * 0.22;
+  col *= uIntensity;
 
-      // Cursor magnetic interactive warping
-      vec2 toPointer = uv - uPointer;
-      float distP = length(toPointer);
-      float pull = smoothstep(0.65, 0.0, distP) * 0.22;
-      uv += toPointer * pull;
+  if (uNoise > 0.0001) {
+    float n = fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453123);
+    col += (n - 0.5) * uNoise;
+    col = clamp(col, 0.0, 1.0);
+  }
 
-      // 3-Layer Multi-Domain Warping for Framer Luxury Molten Gold Plasma
-      float q1 = snoise(uv * 2.1 + vec2(t * 0.35, t * 0.22));
-      float q2 = snoise(uv * 2.1 - vec2(t * 0.25, -t * 0.30));
-
-      vec2 warp1 = uv * 3.2 + vec2(q1 * 0.65, q2 * 0.65);
-      float r1 = snoise(warp1 + vec2(-t * 0.32, t * 0.18));
-      float r2 = snoise(warp1 + vec2(t * 0.28, -t * 0.24));
-
-      vec2 warp2 = uv * 2.4 + vec2(r1 * 0.75, r2 * 0.75);
-      float f = snoise(warp2 + vec2(t * 0.15, -t * 0.12));
-      float energy = 0.5 + 0.5 * f;
-
-      // Luxury IPTV Palette: Deep Obsidian Noir, Cosmic Violet, Crimson, Molten Amber, 24K Gold
-      vec3 noir = vec3(0.04, 0.04, 0.06);
-      vec3 cosmicViolet = vec3(0.48, 0.08, 0.72);
-      vec3 crimson = vec3(0.88, 0.09, 0.16);
-      vec3 moltenAmber = vec3(1.0, 0.48, 0.04);
-      vec3 radiantGold = vec3(1.0, 0.82, 0.0);
-      vec3 specularGlow = vec3(1.0, 0.97, 0.68);
-
-      vec3 col = noir;
-      col = mix(col, cosmicViolet, smoothstep(0.12, 0.42, energy));
-      col = mix(col, crimson, smoothstep(0.32, 0.62, energy));
-      col = mix(col, moltenAmber, smoothstep(0.52, 0.80, energy));
-      col = mix(col, radiantGold, smoothstep(0.70, 0.94, energy));
-      col += specularGlow * pow(smoothstep(0.78, 1.0, energy), 2.4) * 0.85;
-
-      // Soft vertical vignette so top & bottom melt smoothly into dark background
-      float vY = smoothstep(0.0, 0.14, vUv.y) * smoothstep(1.0, 0.86, vUv.y);
-      float vX = smoothstep(0.0, 0.06, vUv.x) * smoothstep(1.0, 0.94, vUv.x);
-      float vig = vY * vX;
-
-      gl_FragColor = vec4(col * vig, vig * 0.94);
-    }
-  `;
+  vec3 rgb = (uTransparent > 0) ? col * a : col;
+  gl_FragColor = vec4(rgb, a);
+}
+`;
 
   const vert = `
-    varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = vec4(position, 1.0);
-    }
-  `;
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = vec4(position, 1.0);
+}
+`;
 
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
   const geometry = new THREE.PlaneGeometry(2, 2);
 
+  // Luxury Ultra Stream IPTV Palette: 24K Gold, Molten Amber, Crimson Red, Golden Yellow
+  const colors = ['#FFC800', '#FF730D', '#E50914', '#FFAA00'];
+  const toVec3 = hex => {
+    const h = hex.replace('#','').trim();
+    const v = [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+    return new THREE.Vector3(v[0]/255, v[1]/255, v[2]/255);
+  };
+  const uColorsArray = Array.from({ length: MAX_COLORS }, () => new THREE.Vector3(0,0,0));
+  const colorVecs = colors.map(toVec3);
+  for (let i = 0; i < MAX_COLORS; i++) {
+    if (i < colorVecs.length) uColorsArray[i].copy(colorVecs[i]);
+  }
+
   const material = new THREE.ShaderMaterial({
     vertexShader: vert,
     fragmentShader: frag,
     uniforms: {
-      uResolution: { value: new THREE.Vector2(1, 1) },
+      uCanvas: { value: new THREE.Vector2(1, 1) },
       uTime: { value: 0 },
-      uPointer: { value: new THREE.Vector2(0.5, 0.5) }
+      uSpeed: { value: 0.2 },
+      uRot: { value: new THREE.Vector2(0, 1) },
+      uColorCount: { value: colorVecs.length },
+      uColors: { value: uColorsArray },
+      uTransparent: { value: 1 },
+      uScale: { value: 1.0 },
+      uFrequency: { value: 1.0 },
+      uWarpStrength: { value: 1.0 },
+      uPointer: { value: new THREE.Vector2(0, 0) },
+      uMouseInfluence: { value: 1.0 },
+      uParallax: { value: 0.5 },
+      uNoise: { value: 0.15 },
+      uIterations: { value: 1 },
+      uIntensity: { value: 1.6 },
+      uBandWidth: { value: 6.0 }
     },
-    transparent: true,
-    premultipliedAlpha: true
+    premultipliedAlpha: true,
+    transparent: true
   });
 
   const mesh = new THREE.Mesh(geometry, material);
@@ -1852,8 +1852,8 @@ function initPricingShader() {
   renderer.domElement.style.display = 'block';
   container.appendChild(renderer.domElement);
 
-  const pointerTarget = new THREE.Vector2(0.5, 0.5);
-  const pointerCurrent = new THREE.Vector2(0.5, 0.5);
+  const pointerTarget = new THREE.Vector2(0, 0);
+  const pointerCurrent = new THREE.Vector2(0, 0);
   const clock = new THREE.Clock();
   let rafId = null;
   let inView = false;
@@ -1862,7 +1862,7 @@ function initPricingShader() {
     const w = container.clientWidth || 1;
     const h = container.clientHeight || 1;
     renderer.setSize(w, h, false);
-    material.uniforms.uResolution.value.set(w, h);
+    material.uniforms.uCanvas.value.set(w, h);
   };
   handleResize();
   if ('ResizeObserver' in window) {
@@ -1874,8 +1874,8 @@ function initPricingShader() {
   const parentSec = container.closest('.pricing') || container;
   parentSec.addEventListener('pointermove', e => {
     const rect = container.getBoundingClientRect();
-    const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / (rect.width || 1)));
-    const y = Math.max(0, Math.min(1, 1.0 - (e.clientY - rect.top) / (rect.height || 1)));
+    const x = ((e.clientX - rect.left) / (rect.width || 1)) * 2 - 1;
+    const y = -(((e.clientY - rect.top) / (rect.height || 1)) * 2 - 1);
     pointerTarget.set(x, y);
   });
 
@@ -1885,7 +1885,11 @@ function initPricingShader() {
     const elapsed = clock.elapsedTime;
     material.uniforms.uTime.value = elapsed;
 
-    pointerCurrent.lerp(pointerTarget, Math.min(1, dt * 6.5));
+    const rad = (90 * Math.PI) / 180;
+    material.uniforms.uRot.value.set(Math.cos(rad), Math.sin(rad));
+
+    const amt = Math.min(1, dt * 8);
+    pointerCurrent.lerp(pointerTarget, amt);
     material.uniforms.uPointer.value.copy(pointerCurrent);
 
     renderer.render(scene, camera);
