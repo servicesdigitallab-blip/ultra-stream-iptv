@@ -695,6 +695,24 @@
       box-shadow: 0 16px 40px rgba(0,0,0,.6);
     }
 
+  
+    /* POLICY PREVIEW CARD & SUBTABS */
+    .pol-subtab-btn { font-size: 13px; padding: 8px 18px; border-radius: 10px; cursor: pointer; transition: all 0.2s; }
+    .pol-subtab-btn.active { background: var(--gold); color: #000; font-weight: 700; border-color: var(--gold); box-shadow: 0 0 14px var(--gold-glow); }
+    .policy-pane { display: none; }
+    .policy-pane.active { display: block; animation: fadeIn 0.25s ease; }
+
+    .policy-card-preview .policy-section { margin-bottom: 22px; }
+    .policy-card-preview .policy-section:last-child { margin-bottom: 0; }
+    .policy-card-preview .policy-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .policy-card-preview .policy-section h2 .sec-num { width: 22px; height: 22px; background: rgba(255,200,0,.15); color: #FFC800; border: 1px solid rgba(255,200,0,.35); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; }
+    .policy-card-preview .policy-section p { color: #b6b6c4; font-size: 13px; line-height: 1.7; margin-bottom: 10px; }
+    .policy-card-preview .policy-section ul { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+    .policy-card-preview .policy-section li { position: relative; padding-left: 20px; color: #c8c8d4; font-size: 12.5px; line-height: 1.55; }
+    .policy-card-preview .policy-section li::before { content: "✓"; position: absolute; left: 0; color: #22c55e; font-weight: 900; }
+    .policy-card-preview .highlight-box { background: rgba(255,200,0,0.06); border: 1px solid rgba(255,200,0,0.25); border-radius: 12px; padding: 14px 16px; margin: 16px 0; display: flex; gap: 12px; align-items: flex-start; color: #f1f5f9; font-size: 12.5px; line-height: 1.6; }
+    .policy-card-preview .highlight-box svg { width: 22px; height: 22px; fill: #FFC800; flex-shrink: 0; margin-top: 2px; }
+
   </style>
 </head>
 <body>
@@ -1240,52 +1258,108 @@
           <div class="card-head">
             <div>
               <h2>Legal Policies Content Editor</h2>
-              <p>Edit the official text for Privacy Policy, 7-Day Refund Policy, and Terms &amp; Conditions synced live to privacy.html, refund.html, and terms.html.</p>
+              <p>تمام لیگل پالیسیز بالکل ویسے ہی دیکھیں اور ایڈٹ کریں جیسے مین ویب سائٹ پر ہیں۔</p>
             </div>
-            <button class="btn btn-gold" onclick="savePolicies()">Save All Policies</button>
+            <button class="btn btn-gold" onclick="savePolicies()">💾 Save All Policies</button>
           </div>
 
-          <div class="policies-editor-grid">
-            <div class="policy-edit-box">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                <h3 style="font-size:16px;color:#fff;display:flex;align-items:center;gap:8px;">
-                  🛡️ Privacy Policy <span style="font-size:12px;color:var(--text-muted);font-weight:400;">(privacy.html)</span>
+          <!-- Policy Subtabs -->
+          <div style="display:flex;gap:10px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px;">
+            <button type="button" id="subtab_btn_privacy" class="btn btn-outline pol-subtab-btn active" onclick="switchPolicyTab('privacy', this)">🛡️ Privacy Policy</button>
+            <button type="button" id="subtab_btn_refund" class="btn btn-outline pol-subtab-btn" onclick="switchPolicyTab('refund', this)">💰 7-Day Refund Policy</button>
+            <button type="button" id="subtab_btn_terms" class="btn btn-outline pol-subtab-btn" onclick="switchPolicyTab('terms', this)">⚖️ Terms &amp; Conditions</button>
+          </div>
+
+          <!-- TAB 1: PRIVACY POLICY -->
+          <div id="pol_pane_privacy" class="policy-pane active">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+              <div>
+                <h3 style="font-size:17px;color:#fff;display:flex;align-items:center;gap:8px;">
+                  🛡️ Privacy Policy <span style="font-size:12px;color:var(--text-muted);">(privacy.html)</span>
                 </h3>
-                <div style="display:flex;gap:8px;">
-                  <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicy('privacy')" style="font-size:11px;">🔄 Reset to Website Default</button>
-                  <a href="privacy.html" target="_blank" class="badge badge-gold" style="text-decoration:none;font-size:11px;display:inline-flex;align-items:center;">👁️ View Live Page</a>
-                </div>
+                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">ویب سائٹ پر لائیو پیج کی تمام ہیڈنگز اور پوائنٹس یہاں موجود ہیں۔</p>
               </div>
-              <p class="form-hint" style="margin-bottom:10px;">The exact HTML and text shown on your live website's privacy.html page. Edit directly below.</p>
-              <textarea id="policy_privacy" class="form-textarea" style="min-height:320px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.6;"></textarea>
+              <div style="display:flex;gap:10px;">
+                <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicy('privacy')">🔄 Reset to Website Original</button>
+                <a href="privacy.html" target="_blank" class="btn btn-sm btn-gold" style="text-decoration:none;">👁️ View Live Page</a>
+              </div>
             </div>
 
-            <div class="policy-edit-box">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                <h3 style="font-size:16px;color:#fff;display:flex;align-items:center;gap:8px;">
-                  💰 7-Day Refund Policy <span style="font-size:12px;color:var(--text-muted);font-weight:400;">(refund.html)</span>
-                </h3>
-                <div style="display:flex;gap:8px;">
-                  <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicy('refund')" style="font-size:11px;">🔄 Reset to Website Default</button>
-                  <a href="refund.html" target="_blank" class="badge badge-gold" style="text-decoration:none;font-size:11px;display:inline-flex;align-items:center;">👁️ View Live Page</a>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+              <div>
+                <label style="font-size:12.5px;font-weight:700;color:var(--gold);margin-bottom:8px;display:block;">📝 Edit Policy Content (HTML / Text):</label>
+                <textarea id="policy_privacy" class="form-textarea" style="min-height:540px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.6;" oninput="updatePolicyPreview('privacy')"></textarea>
+                <button class="btn btn-gold" onclick="savePolicies()" style="margin-top:12px;width:100%;">💾 Save Privacy Policy Now</button>
+              </div>
+              <div>
+                <label style="font-size:12.5px;font-weight:700;color:#22c55e;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+                  <span class="live-dot"></span> 👁️ Live Web View (جیسے ویب سائٹ پر دکھے گا):
+                </label>
+                <div class="policy-card-preview" id="policy_preview_privacy" style="background:linear-gradient(180deg,rgba(16,16,22,0.95) 0%,rgba(10,10,14,0.98) 100%);border:1px solid rgba(255,200,0,0.3);border-radius:20px;padding:26px 22px;box-shadow:0 15px 45px rgba(0,0,0,0.8);max-height:540px;overflow-y:auto;">
                 </div>
               </div>
-              <p class="form-hint" style="margin-bottom:10px;">The exact HTML and text shown on your live website's refund.html page. Edit directly below.</p>
-              <textarea id="policy_refund" class="form-textarea" style="min-height:320px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.6;"></textarea>
+            </div>
+          </div>
+
+          <!-- TAB 2: REFUND POLICY -->
+          <div id="pol_pane_refund" class="policy-pane">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+              <div>
+                <h3 style="font-size:17px;color:#fff;display:flex;align-items:center;gap:8px;">
+                  💰 7-Day Refund Policy <span style="font-size:12px;color:var(--text-muted);">(refund.html)</span>
+                </h3>
+                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">منی بیک گارنٹی اور ریفنڈ پروسیس کے تمام رولز یہاں سے ایڈٹ کریں۔</p>
+              </div>
+              <div style="display:flex;gap:10px;">
+                <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicy('refund')">🔄 Reset to Website Original</button>
+                <a href="refund.html" target="_blank" class="btn btn-sm btn-gold" style="text-decoration:none;">👁️ View Live Page</a>
+              </div>
             </div>
 
-            <div class="policy-edit-box" style="grid-column: 1 / -1;">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                <h3 style="font-size:16px;color:#fff;display:flex;align-items:center;gap:8px;">
-                  ⚖️ Terms &amp; Conditions <span style="font-size:12px;color:var(--text-muted);font-weight:400;">(terms.html)</span>
-                </h3>
-                <div style="display:flex;gap:8px;">
-                  <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicy('terms')" style="font-size:11px;">🔄 Reset to Website Default</button>
-                  <a href="terms.html" target="_blank" class="badge badge-gold" style="text-decoration:none;font-size:11px;display:inline-flex;align-items:center;">👁️ View Live Page</a>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+              <div>
+                <label style="font-size:12.5px;font-weight:700;color:var(--gold);margin-bottom:8px;display:block;">📝 Edit Policy Content (HTML / Text):</label>
+                <textarea id="policy_refund" class="form-textarea" style="min-height:540px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.6;" oninput="updatePolicyPreview('refund')"></textarea>
+                <button class="btn btn-gold" onclick="savePolicies()" style="margin-top:12px;width:100%;">💾 Save Refund Policy Now</button>
+              </div>
+              <div>
+                <label style="font-size:12.5px;font-weight:700;color:#22c55e;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+                  <span class="live-dot"></span> 👁️ Live Web View (جیسے ویب سائٹ پر دکھے گا):
+                </label>
+                <div class="policy-card-preview" id="policy_preview_refund" style="background:linear-gradient(180deg,rgba(16,16,22,0.95) 0%,rgba(10,10,14,0.98) 100%);border:1px solid rgba(255,200,0,0.3);border-radius:20px;padding:26px 22px;box-shadow:0 15px 45px rgba(0,0,0,0.8);max-height:540px;overflow-y:auto;">
                 </div>
               </div>
-              <p class="form-hint" style="margin-bottom:10px;">The exact HTML and text shown on your live website's terms.html page. Edit directly below.</p>
-              <textarea id="policy_terms" class="form-textarea" style="min-height:320px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.6;"></textarea>
+            </div>
+          </div>
+
+          <!-- TAB 3: TERMS & CONDITIONS -->
+          <div id="pol_pane_terms" class="policy-pane">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+              <div>
+                <h3 style="font-size:17px;color:#fff;display:flex;align-items:center;gap:8px;">
+                  ⚖️ Terms &amp; Conditions <span style="font-size:12px;color:var(--text-muted);">(terms.html)</span>
+                </h3>
+                <p style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">کنکشن لمٹس، بینڈوتھ، اور سروس ایگریمنٹ کے رولز یہاں سے ایڈٹ کریں۔</p>
+              </div>
+              <div style="display:flex;gap:10px;">
+                <button type="button" class="btn btn-sm btn-outline" onclick="resetPolicy('terms')">🔄 Reset to Website Original</button>
+                <a href="terms.html" target="_blank" class="btn btn-sm btn-gold" style="text-decoration:none;">👁️ View Live Page</a>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+              <div>
+                <label style="font-size:12.5px;font-weight:700;color:var(--gold);margin-bottom:8px;display:block;">📝 Edit Policy Content (HTML / Text):</label>
+                <textarea id="policy_terms" class="form-textarea" style="min-height:540px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.6;" oninput="updatePolicyPreview('terms')"></textarea>
+                <button class="btn btn-gold" onclick="savePolicies()" style="margin-top:12px;width:100%;">💾 Save Terms &amp; Conditions Now</button>
+              </div>
+              <div>
+                <label style="font-size:12.5px;font-weight:700;color:#22c55e;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+                  <span class="live-dot"></span> 👁️ Live Web View (جیسے ویب سائٹ پر دکھے گا):
+                </label>
+                <div class="policy-card-preview" id="policy_preview_terms" style="background:linear-gradient(180deg,rgba(16,16,22,0.95) 0%,rgba(10,10,14,0.98) 100%);border:1px solid rgba(255,200,0,0.3);border-radius:20px;padding:26px 22px;box-shadow:0 15px 45px rgba(0,0,0,0.8);max-height:540px;overflow-y:auto;">
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1575,6 +1649,11 @@
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
 
       const targetPane = document.getElementById('pane-' + tabId);
+      if (tabId === 'policies') {
+        setTimeout(function() {
+          populatePolicies();
+        }, 60);
+      }
       if (targetPane) targetPane.classList.add('active');
 
       if (tabId === 'backgrounds') {
@@ -1787,49 +1866,79 @@
         const p = localStorage.getItem('ultra_legal_policies');
         if (p) {
           const parsed = JSON.parse(p);
-          // If stored policies are old generic dummy text (missing policy-section), upgrade to real site policies
-          if (parsed.privacy && !parsed.privacy.includes('policy-section')) {
-            parsed.privacy = defaultPolicies.privacy;
+          // Auto-heal: If empty string, null, or short dummy text, FORCE restore exact website official policies!
+          const result = {
+            privacy: (parsed.privacy && parsed.privacy.trim().length > 100 && parsed.privacy.includes('policy-section')) ? parsed.privacy : defaultPolicies.privacy,
+            refund: (parsed.refund && parsed.refund.trim().length > 100 && parsed.refund.includes('policy-section')) ? parsed.refund : defaultPolicies.refund,
+            terms: (parsed.terms && parsed.terms.trim().length > 100 && parsed.terms.includes('policy-section')) ? parsed.terms : defaultPolicies.terms
+          };
+          if (result.privacy !== parsed.privacy || result.refund !== parsed.refund || result.terms !== parsed.terms) {
+            localStorage.setItem('ultra_legal_policies', JSON.stringify(result));
           }
-          if (parsed.refund && !parsed.refund.includes('policy-section')) {
-            parsed.refund = defaultPolicies.refund;
-          }
-          if (parsed.terms && !parsed.terms.includes('policy-section')) {
-            parsed.terms = defaultPolicies.terms;
-          }
-          return { ...defaultPolicies, ...parsed };
+          return result;
         }
       } catch(_) {}
+      localStorage.setItem('ultra_legal_policies', JSON.stringify(defaultPolicies));
       return defaultPolicies;
     }
 
+    function switchPolicyTab(tabKey, el) {
+      document.querySelectorAll('.pol-subtab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.policy-pane').forEach(p => p.classList.remove('active'));
+      if (el) el.classList.add('active');
+      const pane = document.getElementById('pol_pane_' + tabKey);
+      if (pane) pane.classList.add('active');
+      updatePolicyPreview(tabKey);
+    }
+
+    function updatePolicyPreview(key) {
+      const textarea = document.getElementById('policy_' + key);
+      const preview = document.getElementById('policy_preview_' + key);
+      if (textarea && preview) {
+        preview.innerHTML = textarea.value;
+      }
+    }
+
     function resetPolicy(key) {
-      if (!confirm('Are you sure you want to reset this policy to the official website default text?')) return;
+      if (!confirm('Are you sure you want to restore ' + key + ' to the official website default text?')) return;
       const el = document.getElementById('policy_' + key);
       if (el && defaultPolicies[key]) {
         el.value = defaultPolicies[key];
-        showToast('Reset ' + key + ' policy to website default text!');
+        updatePolicyPreview(key);
+        showToast('Restored ' + key + ' policy to official website text!');
       }
     }
 
     function populatePolicies() {
       const p = getPolicies();
-      document.getElementById('policy_privacy').value = p.privacy || '';
-      document.getElementById('policy_refund').value = p.refund || '';
-      document.getElementById('policy_terms').value = p.terms || '';
+      const privEl = document.getElementById('policy_privacy');
+      const refEl = document.getElementById('policy_refund');
+      const termsEl = document.getElementById('policy_terms');
+
+      if (privEl) privEl.value = (p.privacy && p.privacy.trim().length > 100) ? p.privacy : defaultPolicies.privacy;
+      if (refEl) refEl.value = (p.refund && p.refund.trim().length > 100) ? p.refund : defaultPolicies.refund;
+      if (termsEl) termsEl.value = (p.terms && p.terms.trim().length > 100) ? p.terms : defaultPolicies.terms;
+
+      updatePolicyPreview('privacy');
+      updatePolicyPreview('refund');
+      updatePolicyPreview('terms');
     }
 
     function savePolicies() {
       const p = {
-        privacy: document.getElementById('policy_privacy').value.trim(),
-        refund: document.getElementById('policy_refund').value.trim(),
-        terms: document.getElementById('policy_terms').value.trim()
+        privacy: document.getElementById('policy_privacy').value.trim() || defaultPolicies.privacy,
+        refund: document.getElementById('policy_refund').value.trim() || defaultPolicies.refund,
+        terms: document.getElementById('policy_terms').value.trim() || defaultPolicies.terms
       };
       localStorage.setItem('ultra_legal_policies', JSON.stringify(p));
 
+      updatePolicyPreview('privacy');
+      updatePolicyPreview('refund');
+      updatePolicyPreview('terms');
+
       if (db) {
         db.collection('settings').doc('legal_policies').set(p, { merge: true })
-          .then(() => showToast('Legal policies saved & synced live!'))
+          .then(() => showToast('Legal policies saved & synced live to all pages!'))
           .catch(() => showToast('Saved policies locally!'));
       } else {
         showToast('Policies saved locally! Synced to policy pages.');
