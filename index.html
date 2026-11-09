@@ -86,12 +86,12 @@ footer{border-top:1px solid var(--line);padding:30px 4vw;color:var(--muted);disp
 [data-drag].is-dragging{cursor:grabbing !important;z-index:30 !important;box-shadow:0 30px 65px rgba(0,0,0,.88),0 0 35px rgba(255,200,0,.45) !important;transition:none !important;filter:brightness(1.14) !important}
 
 /* SECOND SECTION — CurveFlow carousel, TRUE warp (slats): har image 24 vertical slices, har slice ki apni stretch — side images ki top/bottom edges CURVED, centre images seedhi. Flat centre, flow 176px/s desktop, 88px/s mobile, gaps 18px, koi overlap nahi, mouse/hover par kuch nahi. */
-.platforms{padding:60px 0 52px;overflow:hidden;background:#050505;touch-action:pan-y;user-select:none;-webkit-user-select:none;pointer-events:auto;position:relative}
-.platform-track{display:flex;gap:22px;align-items:center;width:max-content;will-change:transform;transform:translate3d(0,0,0);-webkit-transform:translate3d(0,0,0);cursor:grab}
-.platforms.dragging .platform-track{cursor:grabbing}
-.pimg{flex:0 0 auto;position:relative;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.09);background:#121216;box-shadow:0 16px 36px rgba(0,0,0,.6);transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s ease,border-color .3s ease;user-select:none;-webkit-user-select:none;cursor:grab}
-.pimg:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 24px 48px rgba(0,0,0,.8),0 0 30px rgba(255,200,0,.15);border-color:rgba(255,200,0,.35)}
+.platforms{padding:56px 0 48px;overflow:hidden;background:#050505;touch-action:pan-y;user-select:none;-webkit-user-select:none;pointer-events:auto;position:relative}
+.platform-track{display:flex;gap:18px;align-items:center;width:max-content;will-change:transform;transform:translate3d(0,0,0);-webkit-transform:translate3d(0,0,0);opacity:1}
+.pimg{flex:0 0 auto;position:relative;overflow:visible;cursor:grab;opacity:1;will-change:transform;border:none;background:transparent;box-shadow:none;border-radius:0}
 .pimg img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;-webkit-user-drag:none;user-select:none}
+.pslice{position:absolute;top:50%;left:0;background-repeat:no-repeat;will-change:transform;transform-origin:center center;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.platforms.dragging .pimg{cursor:grabbing}
 /* SECTION 3 — About Ultra Stream (DARK background, paragraph as subheading, text animation on scroll) */
 .about{background:#050505;color:#e8e8ea;padding:48px 4vw;text-align:center;min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative}
 .about-inner{max-width:1400px;margin:0 auto;width:100%;position:relative;z-index:1}
@@ -200,9 +200,9 @@ footer{border-top:1px solid var(--line);padding:30px 4vw;color:var(--muted);disp
 @media(max-width:640px){.how{padding:72px 6vw 84px}.how-cards{grid-template-columns:1fr}.how-title{font-size:clamp(30px,8.5vw,40px)}.how-sub{font-size:15px;margin-bottom:40px}.how-card{padding:26px 20px 24px}}
 /* Mobile Performance Fix: Zero Lag, GPU Accelerated, Smooth Native Scrolling */
 @media(max-width:800px){
-  .platforms{padding:38px 0 32px}
-  .platform-track{gap:16px;will-change:transform;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}
-  .pimg{border-radius:15px;box-shadow:0 10px 24px rgba(0,0,0,.5)}
+  .platforms{padding:36px 0 28px}
+  .platform-track{gap:14px;will-change:transform;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}
+  .pimg{border:none;box-shadow:none;background:transparent}
   .how{padding:54px 5vw 64px}
   .how-cards{display:flex;flex-direction:column;gap:18px;perspective:none}
   .how-card{transform-style:flat;box-shadow:0 8px 24px rgba(0,0,0,.4)}
@@ -634,41 +634,86 @@ startHeroLoop();
 addEventListener('resize',()=>{rowState.forEach(st=>{st.pos=wrapPos(st,st.pos);renderRow(st)})});
 
 // Section 2 — CurveFlow carousel, TRUE warp (slats): side images ki top/bottom edges CURVED, centre images seedhi (Zero-Lag GPU Pipeline)
-// Section 2 - Streaming Platforms Infinite Marquee & Interactive Drag (60FPS Hardware Accelerated)
+// Section 2 - Streaming Platforms Curved Slices Wave Marquee (Left & Right 3D Slat Bending)
 const psec=document.querySelector('.platforms');
 const ptrack=document.querySelector('.platform-track');
 
 if(ptrack&&psec){
-  const PGAP=22;
+  const PGAP=18;
+  const SMAX=1.48;
   const isMobile=()=>window.innerWidth<=800;
-  let baseW=320,baseH=568;
 
-  // Clone platform cards twice for smooth infinite loop (15 cards total)
+  // Clone platform cards twice so there are 15 cards total (3 sets of 5)
   const orig=[...ptrack.children];
   for(let c=0;c<2;c++){
     orig.forEach(el=>ptrack.appendChild(el.cloneNode(true)));
   }
-  const allCards=ptrack.children;
+  const kids=ptrack.children;
 
-  const computeCardDimensions=()=>{
-    const m=isMobile();
-    baseW=m?Math.min(240,Math.round(window.innerWidth*0.62)):Math.min(340,Math.max(280,Math.round(window.innerWidth*0.22)));
+  let baseW=340,baseH=604,sliceW=0,nSlice=16;
+  const slices=[];
+
+  const computeBase=()=>{
+    const curM=isMobile();
+    nSlice=curM?10:18;
+    baseW=curM?Math.min(260,Math.round(window.innerWidth*0.65)):Math.round(window.innerWidth*0.20-8);
     baseH=Math.round(baseW*16/9);
-    for(let k=0;k<allCards.length;k++){
-      allCards[k].style.width=baseW+'px';
-      allCards[k].style.height=baseH+'px';
+    sliceW=baseW/nSlice;
+    ptrack.style.height=(baseH*SMAX).toFixed(1)+'px';
+  };
+
+  const curveS=d=>{
+    const ad=Math.abs(d);
+    if(ad<=0.48)return 1;
+    let s=1+2.2*Math.pow(ad-0.48,1.45);
+    return s>SMAX?SMAX:s;
+  };
+
+  const buildSlices=()=>{
+    computeBase();
+    for(let k=0;k<kids.length;k++){
+      const el=kids[k];
+      let imgSrc=el._imgSrc;
+      if(!imgSrc){
+        const img=el.querySelector('img');
+        if(img){
+          imgSrc=img.src||img.getAttribute('src');
+          el._imgSrc=imgSrc;
+          img.remove();
+        }
+      }
+      el.innerHTML='';
+      const arr=[];
+      for(let i=0;i<nSlice;i++){
+        const s=document.createElement('div');
+        s.className='pslice';
+        s.style.width=(sliceW+0.6)+'px';
+        s.style.height=baseH+'px';
+        s.style.left=(i*sliceW)+'px';
+        s.style.backgroundImage='url("'+(imgSrc||'')+'")';
+        s.style.backgroundSize=baseW+'px '+baseH+'px';
+        s.style.backgroundPosition=(-i*sliceW)+'px 0px';
+        s.style.transform='translateY(-50%) scaleY(1) translateZ(0)';
+        el.appendChild(s);
+        arr.push(s);
+      }
+      slices[k]=arr;
+      el.style.width=baseW+'px';
+      el.style.height=(baseH*SMAX)+'px';
     }
   };
-  computeCardDimensions();
+
+  buildSlices();
 
   const pitch=()=>baseW+PGAP;
   const setW=()=>orig.length*pitch();
   const wrap=o=>{const s=setW();return s>0?((o%s)+s)%s:0};
+  const Xk=k=>k*pitch();
 
   let pOffset=0,pVel=0,pPaused=false,pDragging=false;
   let pStartX=0,pStartY=0,pLastX=0,pLastT=performance.now(),pTouchDetermined=false;
-  let pInView=true,pRaf=null;
-  const PSPEED=75; // smooth constant speed in px/s
+  let pInView=true,pRaf=null,pCentered=false;
+  const PSPEED=isMobile()?75:120;
 
   psec.addEventListener('pointerdown',e=>{
     pStartX=e.clientX;pStartY=e.clientY;
@@ -697,7 +742,7 @@ if(ptrack&&psec){
     const stepDx=e.clientX-pLastX;
     pLastX=e.clientX;pLastT=now;
     pOffset-=stepDx;
-    pVel=pVel*0.6+(-stepDx/dt)*0.4;
+    pVel=pVel*0.65+(-stepDx/dt)*0.35;
   });
 
   const endPDrag=e=>{
@@ -707,24 +752,36 @@ if(ptrack&&psec){
     }
     pTouchDetermined=false;
   };
+
   psec.addEventListener('pointerup',endPDrag);
   psec.addEventListener('pointercancel',endPDrag);
   psec.addEventListener('mouseenter',()=>{pPaused=true});
   psec.addEventListener('mouseleave',()=>{if(!pDragging)pPaused=false});
 
-  addEventListener('resize',computeCardDimensions);
+  addEventListener('resize',()=>{buildSlices()});
 
-  let lastFrameTime=performance.now();
+  let lastP=performance.now();
   function pLoop(now){
     if(!pInView){pRaf=null;return}
     const t=now||performance.now();
-    const dt=Math.min(0.05,(t-lastFrameTime)/1000);
-    lastFrameTime=t;
+    const dt=Math.min(0.05,(t-lastP)/1000);
+    lastP=t;
+
+    if(!pCentered){
+      const cx0=psec.clientWidth/2;
+      let bk=5,bd=1e9;
+      for(let k=5;k<10;k++){
+        const c=Xk(k)+baseW/2-cx0;
+        if(Math.abs(c)<bd){bd=Math.abs(c);bk=k}
+      }
+      pOffset=wrap(Xk(bk)+baseW/2-cx0);
+      pCentered=true;
+    }
 
     if(!pDragging){
       if(Math.abs(pVel)>15){
         pOffset+=pVel*dt;
-        pVel*=Math.exp(-3.2*dt);
+        pVel*=Math.exp(-2.8*dt);
       }else{
         pVel=0;
         if(!pPaused)pOffset+=PSPEED*dt;
@@ -732,12 +789,29 @@ if(ptrack&&psec){
     }
     pOffset=wrap(pOffset);
     ptrack.style.transform='translate3d('+(-pOffset).toFixed(1)+'px,0,0)';
+
+    // TRUE CURVED SLATS WARP on left & right sides (Hardware-Accelerated)
+    const secW=psec.clientWidth,cx=secW/2,half=secW/2;
+    for(let k=0;k<kids.length;k++){
+      if(!slices[k])continue;
+      const cardLeft=Xk(k)-pOffset;
+      // Skip if off-screen to guarantee 60 FPS
+      if(cardLeft+baseW<-80||cardLeft>secW+80)continue;
+
+      for(let i=0;i<nSlice;i++){
+        const sliceCX=cardLeft+i*sliceW+sliceW/2;
+        const d=Math.max(-1.35,Math.min(1.35,(sliceCX-cx)/half));
+        const s=curveS(d);
+        slices[k][i].style.transform='translateY(-50%) scaleY('+s.toFixed(3)+') translateZ(0)';
+      }
+    }
+
     pRaf=requestAnimationFrame(pLoop);
   }
 
   function startPLoop(){
     if(!pRaf){
-      lastFrameTime=performance.now();
+      lastP=performance.now();
       pRaf=requestAnimationFrame(pLoop);
     }
   }
