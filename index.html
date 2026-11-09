@@ -394,7 +394,69 @@ footer{background:#040406;border-top:1px solid rgba(255,255,255,.08);padding:68p
 
 .pricing-sub{font-size:clamp(15px,1.8vw,17.5px);color:#a8a8b4;max-width:680px;margin:0 auto 60px;line-height:1.6}
 
-.pricing-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-items:stretch;perspective:1100px}
+.pricing-cards{display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:26px;align-items:stretch;perspective:1100px}
+
+/* DYNAMIC CARD THEMES (Configurable from Admin Panel) */
+.pricing-cards.theme-obsidian_glass .pricing-card {
+  border: 1px solid rgba(255, 200, 0, 0.28);
+  box-shadow: 0 24px 55px rgba(0,0,0,.7), 0 0 25px rgba(255,200,0,0.1);
+}
+.pricing-cards.theme-neon_cyber .pricing-card {
+  border: 1px solid rgba(0, 242, 254, 0.45);
+  background: linear-gradient(180deg, rgba(8, 20, 32, 0.94) 0%, rgba(4, 10, 18, 0.98) 100%);
+  box-shadow: 0 24px 55px rgba(0,0,0,.85), 0 0 35px rgba(0, 242, 254, 0.22);
+}
+.pricing-cards.theme-neon_cyber .pricing-card .plan-badge-top {
+  background: rgba(0, 242, 254, 0.15);
+  color: #00F2FE;
+  border-color: rgba(0, 242, 254, 0.4);
+}
+.pricing-cards.theme-neon_cyber .pricing-card .plan-badge-top.hot {
+  background: linear-gradient(135deg, #00f2fe, #4facfe);
+  color: #020c15;
+}
+.pricing-cards.theme-neon_cyber .pricing-card .chk {
+  color: #00F2FE;
+}
+.pricing-cards.theme-midnight_violet .pricing-card {
+  border: 1px solid rgba(168, 85, 247, 0.42);
+  background: linear-gradient(180deg, rgba(20, 10, 32, 0.94) 0%, rgba(10, 6, 18, 0.98) 100%);
+  box-shadow: 0 24px 55px rgba(0,0,0,.85), 0 0 35px rgba(168, 85, 247, 0.22);
+}
+.pricing-cards.theme-midnight_violet .pricing-card .plan-badge-top {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border-color: rgba(168, 85, 247, 0.4);
+}
+.pricing-cards.theme-midnight_violet .pricing-card .plan-badge-top.hot {
+  background: linear-gradient(135deg, #a855f7, #d946ef);
+  color: #ffffff;
+}
+.pricing-cards.theme-midnight_violet .pricing-card .chk {
+  color: #c084fc;
+}
+.pricing-cards.theme-emerald_tech .pricing-card {
+  border: 1px solid rgba(16, 185, 129, 0.42);
+  background: linear-gradient(180deg, rgba(6, 24, 16, 0.94) 0%, rgba(3, 14, 10, 0.98) 100%);
+  box-shadow: 0 24px 55px rgba(0,0,0,.85), 0 0 35px rgba(16, 185, 129, 0.22);
+}
+.pricing-cards.theme-emerald_tech .pricing-card .plan-badge-top {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+.pricing-cards.theme-emerald_tech .pricing-card .plan-badge-top.hot {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #021a0e;
+}
+.pricing-cards.theme-emerald_tech .pricing-card .chk {
+  color: #34d399;
+}
+.pricing-cards.theme-minimal_matte .pricing-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(18, 18, 22, 0.98);
+  box-shadow: 0 16px 40px rgba(0,0,0,.6);
+}
 
 /* STAGGERED SCROLL ANIMATION & 3D INTERACTIVE CARDS */
 .pricing-card{
@@ -1920,6 +1982,45 @@ void main() {
     inView = true;
     startLoop();
   }
+
+  // Live Pricing Shader Palette & Parameter Controller
+  window.ultraUpdatePricingShader = function(styleKey, speedVal, opacityVal) {
+    if (speedVal !== undefined && speedVal !== null && speedVal !== '') {
+      material.uniforms.uSpeed.value = parseFloat(speedVal) || 0.55;
+    }
+    if (opacityVal !== undefined && opacityVal !== null && opacityVal !== '') {
+      container.style.opacity = parseFloat(opacityVal) || 0.58;
+    }
+    const palettes = {
+      fluid_gold: ['#FFE885', '#FFC800', '#FFA726', '#FFD54F'],
+      amber_crimson: ['#FF4D4D', '#FF8C00', '#FFAA00', '#D32F2F'],
+      midnight_aurora: ['#00F2FE', '#4FACFE', '#7F00FF', '#E100FF'],
+      obsidian_glow: ['#FFC800', '#3A2E12', '#221805', '#0D0D12'],
+      cyber_grid: ['#00FFA3', '#00B8D9', '#053828', '#0F172A'],
+      pitch_black: ['#000000', '#030305', '#060608', '#000000']
+    };
+    if (styleKey === 'pitch_black') {
+      container.style.display = 'none';
+      return;
+    } else {
+      container.style.display = 'block';
+    }
+    const chosenPalette = palettes[styleKey] || palettes.fluid_gold;
+    const newVecs = chosenPalette.map(toVec3);
+    for (let i = 0; i < MAX_COLORS; i++) {
+      if (i < newVecs.length) uColorsArray[i].copy(newVecs[i]);
+      else uColorsArray[i].set(0, 0, 0);
+    }
+    material.uniforms.uColorCount.value = newVecs.length;
+  };
+
+  // Immediate check of stored backgrounds
+  try {
+    const storedBgs = JSON.parse(localStorage.getItem('ultra_backgrounds') || 'null');
+    if (storedBgs && window.ultraUpdatePricingShader) {
+      window.ultraUpdatePricingShader(storedBgs.pricing_bg, storedBgs.shader_speed, storedBgs.shader_opacity);
+    }
+  } catch(_) {}
 }
 
 function checkAndInitAllShaders() {
@@ -1945,7 +2046,17 @@ if (document.readyState === 'loading') {
 <!-- ================= ULTRA STREAM LIVE ADMIN CONNECTOR & ANALYTICS TRACKER ================= -->
 <script id="ultraSiteSync">
 (function() {
-  // 1. ANALYTICS & TRAFFIC TRACKER
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  // 1. ANALYTICS & TRAFFIC TRACKER (STRICT REAL ZERO INITIALIZATION)
   function recordTraffic() {
     try {
       const today = new Date().toISOString().slice(0, 10);
@@ -1984,7 +2095,7 @@ if (document.readyState === 'loading') {
       a.monthly[month] = (a.monthly[month] || 0) + 1;
       a.total_views = (a.total_views || 0) + 1;
 
-      // Unique visitor tracking via session
+      // Real unique visitor tracking via sessionStorage
       if (!sessionStorage.getItem('ultra_session_logged')) {
         sessionStorage.setItem('ultra_session_logged', '1');
         a.unique_visitors = (a.unique_visitors || 0) + 1;
@@ -1994,21 +2105,21 @@ if (document.readyState === 'loading') {
           device: window.innerWidth <= 800 ? 'Mobile' : 'Desktop',
           target: 'Home Page'
         });
-        if (a.recent_activity.length > 30) a.recent_activity.pop();
+        if (a.recent_activity.length > 40) a.recent_activity.pop();
       }
 
       localStorage.setItem('ultra_analytics', JSON.stringify(a));
-
-      // Sync to Firebase if configured
       syncAnalyticsToCloud(a);
-    } catch(e) { console.warn('Traffic track err:', e); }
+    } catch(e) { console.warn('Traffic record err:', e); }
   }
 
   function trackClick(btnKey, targetName) {
     try {
       let a = null;
       try { a = JSON.parse(localStorage.getItem('ultra_analytics')); } catch(_) {}
-      if (!a) return;
+      if (!a) {
+        a = { daily: {}, weekly: {}, monthly: {}, total_views: 0, unique_visitors: 0, clicks: {}, recent_activity: [] };
+      }
       if (!a.clicks) a.clicks = {};
       a.clicks[btnKey] = (a.clicks[btnKey] || 0) + 1;
 
@@ -2019,7 +2130,7 @@ if (document.readyState === 'loading') {
         device: window.innerWidth <= 800 ? 'Mobile' : 'Desktop',
         target: targetName
       });
-      if (a.recent_activity.length > 30) a.recent_activity.pop();
+      if (a.recent_activity.length > 40) a.recent_activity.pop();
 
       localStorage.setItem('ultra_analytics', JSON.stringify(a));
       syncAnalyticsToCloud(a);
@@ -2034,6 +2145,38 @@ if (document.readyState === 'loading') {
       } catch(_) {}
     }
   }
+
+  // Helper for 3D Card Tilt & Mouse Tracking Shine
+  window.ultraInitCardTilt = function() {
+    const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const cards = document.querySelectorAll('.pricing-card');
+    cards.forEach(function(card) {
+      if (!card.querySelector('.pricing-shine')) {
+        const shine = document.createElement('div');
+        shine.className = 'pricing-shine';
+        card.prepend(shine);
+      }
+      if (isFinePointer) {
+        card.onmousemove = function(e) {
+          const rect = card.getBoundingClientRect();
+          const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+          const ny = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+          card.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100).toFixed(1) + '%');
+          card.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100).toFixed(1) + '%');
+          
+          const isFeatured = card.classList.contains('featured');
+          const baseLift = isFeatured ? -14 : -10;
+          const baseScale = isFeatured ? 1.045 : 1.025;
+          card.style.transition = 'transform 0.10s ease-out, box-shadow 0.25s ease';
+          card.style.transform = 'perspective(900px) rotateX(' + (-ny * 5.5).toFixed(1) + 'deg) rotateY(' + (nx * 5.5).toFixed(1) + 'deg) translateY(' + baseLift + 'px) scale(' + baseScale + ')';
+        };
+        card.onmouseleave = function() {
+          card.style.transition = 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease';
+          card.style.transform = '';
+        };
+      }
+    });
+  };
 
   // 2. LIVE CONTENT & PLANS RENDERER
   function applyLiveAdminSettings() {
@@ -2052,6 +2195,20 @@ if (document.readyState === 'loading') {
       };
     }
 
+    // Hero buttons tracking
+    const heroWaBtn = document.querySelector('.hero-actions a.btn-primary');
+    if (heroWaBtn) {
+      heroWaBtn.onclick = function() {
+        trackClick('hero_cta_whatsapp', 'Hero WhatsApp CTA');
+      };
+    }
+    const heroPlansBtn = document.querySelector('.hero-actions a.btn-ghost');
+    if (heroPlansBtn) {
+      heroPlansBtn.onclick = function() {
+        trackClick('hero_cta_plans', 'Hero View Plans CTA');
+      };
+    }
+
     // B. Site Content & Headings
     let content = null;
     try { content = JSON.parse(localStorage.getItem('ultra_site_content')); } catch(_) {}
@@ -2059,7 +2216,6 @@ if (document.readyState === 'loading') {
       // Hero
       const heroH1 = document.querySelector('.hero-heading h1');
       if (heroH1 && content.hero_title) {
-        // preserve styling if needed
         heroH1.innerHTML = '<span>' + content.hero_title.replace('<br>', '</span><span>') + '</span>';
       }
       const heroSub = document.querySelector('.hero-sub');
@@ -2078,7 +2234,7 @@ if (document.readyState === 'loading') {
       // Pricing Section
       const pricingPill = document.querySelector('.pricing-pill');
       if (pricingPill && content.pricing_pill) {
-        pricingPill.innerHTML = '<span class="pill-dot"></span> ' + content.pricing_pill;
+        pricingPill.innerHTML = '<span class="pill-dot"></span> ' + escapeHtml(content.pricing_pill);
       }
       const pricingTitle = document.querySelector('.pricing-title');
       if (pricingTitle && content.pricing_title) {
@@ -2089,92 +2245,121 @@ if (document.readyState === 'loading') {
         pricingSub.innerHTML = content.pricing_sub;
       }
 
-      // Footer
+      // Footer Copyright
       const footerBottom = document.querySelector('.footer-bottom > div:first-child');
       if (footerBottom && content.footer_copy) footerBottom.textContent = content.footer_copy;
     }
 
-    // C. Pricing Plans & Interactive Bullet Points
+    // C. Footer, Trust Guarantees & Navigation
+    let fNav = null;
+    try { fNav = JSON.parse(localStorage.getItem('ultra_footer_nav')); } catch(_) {}
+    if (fNav) {
+      // Footer Brand Description
+      const footerDesc = document.querySelector('.footer-brand p');
+      if (footerDesc && fNav.f_desc) footerDesc.textContent = fNav.f_desc;
+
+      // Footer Badge
+      const footerBadge = document.querySelector('.footer-brand .f-badge');
+      if (footerBadge && fNav.f_badge) footerBadge.textContent = fNav.f_badge;
+
+      // 4 Trust Guarantees
+      const trustUl = document.querySelector('.footer-trust-list');
+      if (trustUl && (fNav.g_point1 || fNav.g_point2 || fNav.g_point3 || fNav.g_point4)) {
+        const pts = [fNav.g_point1, fNav.g_point2, fNav.g_point3, fNav.g_point4].filter(Boolean);
+        trustUl.innerHTML = pts.map(function(pt) {
+          return '<li>' + escapeHtml(pt) + '</li>';
+        }).join('');
+      }
+
+      // Navigation Menu Items
+      const navUl = document.querySelector('.footer-col:nth-child(2) ul');
+      if (navUl && (fNav.nav_item1 || fNav.nav_item2 || fNav.nav_item3 || fNav.nav_item4)) {
+        const items = [
+          { label: fNav.nav_item1 || 'Home', href: '#hero' },
+          { label: fNav.nav_item2 || 'Supported Platforms', href: '.platforms' },
+          { label: fNav.nav_item3 || 'How It Works', href: '#how' },
+          { label: fNav.nav_item4 || 'Pricing Plans', href: '#pricing' }
+        ];
+        navUl.innerHTML = items.map(function(item) {
+          return '<li><a href="' + item.href + '">' + escapeHtml(item.label) + '</a></li>';
+        }).join('');
+      }
+    }
+
+    // D. Section Backgrounds & Plan Card Theme
+    let bgs = null;
+    try { bgs = JSON.parse(localStorage.getItem('ultra_backgrounds')); } catch(_) {}
+    if (bgs) {
+      // Apply Plan Card Theme
+      const cardsContainer = document.querySelector('.pricing-cards');
+      if (cardsContainer) {
+        const themeKey = bgs.card_theme || 'obsidian_glass';
+        cardsContainer.className = 'pricing-cards theme-' + themeKey;
+      }
+
+      // Apply Shader Palette & Speed
+      if (window.ultraUpdatePricingShader) {
+        window.ultraUpdatePricingShader(bgs.pricing_bg, bgs.shader_speed, bgs.shader_opacity);
+      }
+    }
+
+    // E. Dynamic Pricing Plans & Points Manager (Allows Add New Plan / Delete / Edit Points)
     let plans = null;
     try { plans = JSON.parse(localStorage.getItem('ultra_pricing_plans')); } catch(_) {}
-    if (plans && Array.isArray(plans) && plans.length >= 3) {
-      const cards = document.querySelectorAll('.pricing-card');
-      cards.forEach(function(card, idx) {
-        const p = plans[idx];
-        if (!p) return;
-
-        // Badge
-        const badgeEl = card.querySelector('.plan-badge-top');
-        if (badgeEl && p.badge) badgeEl.textContent = p.badge;
-
-        // Name
-        const nameEl = card.querySelector('.plan-name');
-        if (nameEl && p.name) nameEl.textContent = p.name;
-
-        // Desc
-        const descEl = card.querySelector('.plan-desc');
-        if (descEl && p.desc) descEl.textContent = p.desc;
-
-        // Price
-        const priceEl = card.querySelector('.plan-price');
-        if (priceEl && p.price) priceEl.textContent = p.price;
-
-        // Cycle
-        const cycleEl = card.querySelector('.plan-cycle');
-        if (cycleEl && p.cycle) cycleEl.textContent = p.cycle;
-
-        // Savings
-        const saveEl = card.querySelector('.plan-saving');
-        if (saveEl && p.savings) saveEl.textContent = p.savings;
-
-        // Features Bullet Points (Dynamically updated from admin array!)
-        const ul = card.querySelector('.plan-features');
-        if (ul && Array.isArray(p.features)) {
-          ul.innerHTML = p.features.map(function(feat) {
-            return '<li><span class="chk">✓</span> ' + String(feat).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</li>';
-          }).join('');
-        }
-
-        // Button text & WhatsApp Direct Draft Link
-        const btn = card.querySelector('.plan-btn');
-        if (btn) {
-          if (p.btnText) btn.textContent = p.btnText;
+    if (plans && Array.isArray(plans) && plans.length > 0) {
+      const cardsContainer = document.querySelector('.pricing-cards');
+      if (cardsContainer) {
+        cardsContainer.innerHTML = plans.map(function(p, idx) {
+          const isFeatured = p.isFeatured || (idx === 1);
+          const isHot = p.badge && (p.badge.includes('🔥') || p.badge.includes('BEST') || isFeatured);
           const draft = p.draftMessage || ('Hello Ultra Stream! I want to order ' + p.name + ' (' + p.cycle + ').');
-          btn.href = 'https://wa.me/' + waPhone + '?text=' + encodeURIComponent(draft);
-          btn.target = '_blank';
-          btn.rel = 'noopener';
-          
+          const waUrl = 'https://wa.me/' + waPhone + '?text=' + encodeURIComponent(draft);
           const btnKey = 'plan' + (idx + 1) + '_get_started';
-          const planName = p.name;
-          btn.onclick = function() {
-            trackClick(btnKey, planName + ' ("Get Started")');
-          };
-        }
-      });
+
+          let featuresHtml = '';
+          if (Array.isArray(p.features)) {
+            featuresHtml = p.features.map(function(feat) {
+              return '<li><span class="chk">✓</span> ' + escapeHtml(feat) + '</li>';
+            }).join('');
+          }
+
+          return '<article class="pricing-card ' + (isFeatured ? 'featured' : '') + '" data-plan="' + (idx + 1) + '">' +
+            (isFeatured ? '<div class="border-beam-wrap" aria-hidden="true"></div>' : '') +
+            '<span class="plan-badge-top ' + (isHot ? 'hot' : '') + '">' + escapeHtml(p.badge || 'PLAN ' + (idx + 1)) + '</span>' +
+            '<div class="plan-head">' +
+              '<h3 class="plan-name">' + escapeHtml(p.name || '') + '</h3>' +
+              '<p class="plan-desc">' + escapeHtml(p.desc || '') + '</p>' +
+            '</div>' +
+            '<div class="plan-price-wrap">' +
+              '<span class="plan-curr">$</span>' +
+              '<span class="plan-price">' + escapeHtml(String(p.price || '0')) + '</span>' +
+              '<span class="plan-cycle">' + escapeHtml(String(p.cycle || '')) + '</span>' +
+            '</div>' +
+            (p.savings ? '<div class="plan-saving">' + escapeHtml(p.savings) + '</div>' : '') +
+            '<ul class="plan-features">' + featuresHtml + '</ul>' +
+            '<a href="' + waUrl + '" target="_blank" rel="noopener" class="plan-btn ' + (isFeatured ? 'solid pulse-subtle' : 'ghost') + '" data-btnkey="' + btnKey + '" data-planname="' + escapeHtml(p.name) + '">' +
+              escapeHtml(p.btnText || 'Get Started') +
+            '</a>' +
+          '</article>';
+        }).join('');
+
+        // Attach click tracking to all dynamically rendered plan buttons
+        cardsContainer.querySelectorAll('.plan-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            trackClick(btn.getAttribute('data-btnkey'), btn.getAttribute('data-planname') + ' ("Get Started")');
+          });
+        });
+
+        // Rebind 3D tilt & mouse spotlight shine
+        window.ultraInitCardTilt();
+      }
     } else {
-      // Default WhatsApp links binding for standard buttons
-      const cards = document.querySelectorAll('.pricing-card');
-      const defaultDrafts = [
-        'Hello Ultra Stream! 👋 I would like to order the 1 MONTH PASS ($14.99). Please provide me instant activation details and payment options via WhatsApp. Thank you!',
-        'Hello Ultra Stream! 🔥 I want to subscribe to the 12 MONTHS ULTRA VIP PASS ($49.99 - Best Value). Please send me priority login credentials (4K UHD + 5 Connections). Ready to order!',
-        'Hello Ultra Stream! ⚡ I want to get the 6 MONTHS PRO PASS ($29.99). Please provide setup guide and quick WhatsApp activation. Thanks!'
-      ];
-      cards.forEach(function(card, idx) {
-        const btn = card.querySelector('.plan-btn');
-        if (btn) {
-          btn.href = 'https://wa.me/' + waPhone + '?text=' + encodeURIComponent(defaultDrafts[idx]);
-          btn.target = '_blank';
-          btn.rel = 'noopener';
-          const btnKey = 'plan' + (idx + 1) + '_get_started';
-          btn.onclick = function() {
-            trackClick(btnKey, 'Plan ' + (idx + 1) + ' ("Get Started")');
-          };
-        }
-      });
+      // Default binding if no local plans stored yet
+      window.ultraInitCardTilt();
     }
   }
 
-  // 3. CLOUD FIREBASE LIVE LISTENER (If configured)
+  // 3. CLOUD FIREBASE LIVE LISTENER (Instant bidirectional updates across all devices)
   function initCloudSync() {
     let cfg = null;
     try { cfg = JSON.parse(localStorage.getItem('ultra_firebase_config')); } catch(_) {}
@@ -2185,7 +2370,7 @@ if (document.readyState === 'loading') {
         }
         cloudDb = firebase.firestore();
         
-        // Listen to live site content updates
+        // Site Content
         cloudDb.collection('settings').doc('site_content').onSnapshot(function(doc) {
           if (doc.exists) {
             localStorage.setItem('ultra_site_content', JSON.stringify(doc.data()));
@@ -2193,7 +2378,7 @@ if (document.readyState === 'loading') {
           }
         });
 
-        // Listen to live pricing plans updates
+        // Pricing Plans
         cloudDb.collection('settings').doc('pricing_plans').onSnapshot(function(doc) {
           if (doc.exists && doc.data().plans) {
             localStorage.setItem('ultra_pricing_plans', JSON.stringify(doc.data().plans));
@@ -2201,10 +2386,26 @@ if (document.readyState === 'loading') {
           }
         });
 
-        // Listen to live settings updates
+        // General / WhatsApp
         cloudDb.collection('settings').doc('general').onSnapshot(function(doc) {
           if (doc.exists) {
             localStorage.setItem('ultra_settings', JSON.stringify(doc.data()));
+            applyLiveAdminSettings();
+          }
+        });
+
+        // Backgrounds & Card Theme
+        cloudDb.collection('settings').doc('backgrounds').onSnapshot(function(doc) {
+          if (doc.exists) {
+            localStorage.setItem('ultra_backgrounds', JSON.stringify(doc.data()));
+            applyLiveAdminSettings();
+          }
+        });
+
+        // Footer & Guarantees
+        cloudDb.collection('settings').doc('footer_nav').onSnapshot(function(doc) {
+          if (doc.exists) {
+            localStorage.setItem('ultra_footer_nav', JSON.stringify(doc.data()));
             applyLiveAdminSettings();
           }
         });

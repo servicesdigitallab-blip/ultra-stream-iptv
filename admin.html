@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ultra Stream — Master Control Hub &amp; Live Administration</title>
+  <title>Ultra Stream — Master Control Hub</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -127,16 +127,6 @@
       height: 18px;
       fill: currentColor;
       flex-shrink: 0;
-    }
-    .nav-count {
-      margin-left: auto;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      background: rgba(255,59,48,0.2);
-      color: var(--red);
-      border: 1px solid rgba(255,59,48,0.4);
     }
     .sidebar-footer {
       padding: 18px 22px;
@@ -283,7 +273,6 @@
       align-items: center;
       gap: 4px;
     }
-    .stat-sub.warning { color: var(--amber); }
     /* CARD WRAP */
     .card-wrap {
       background: var(--panel);
@@ -344,12 +333,13 @@
       font-size: 12px;
       border-radius: 7px;
     }
-    .btn-whatsapp {
-      background: #25D366;
-      color: #fff;
+    .btn-danger {
+      background: rgba(255,59,48,0.15);
+      border: 1px solid rgba(255,59,48,0.3);
+      color: var(--red);
     }
-    .btn-whatsapp:hover {
-      background: #1eb956;
+    .btn-danger:hover {
+      background: rgba(255,59,48,0.3);
     }
     /* TABLE */
     .table-responsive {
@@ -384,16 +374,6 @@
       font-size: 11.5px;
       font-weight: 700;
     }
-    .badge-pending {
-      background: rgba(255,115,13,0.15);
-      color: var(--amber);
-      border: 1px solid rgba(255,115,13,0.3);
-    }
-    .badge-delivered {
-      background: rgba(37,211,102,0.15);
-      color: var(--green);
-      border: 1px solid rgba(37,211,102,0.3);
-    }
     .badge-plan {
       background: rgba(255,200,0,0.12);
       color: var(--gold);
@@ -421,7 +401,7 @@
       font-size: 13.5px;
       transition: all 0.2s ease;
     }
-    .form-input:focus, .form-textarea:focus {
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
       outline: none;
       border-color: var(--gold);
       box-shadow: 0 0 0 3px var(--gold-glow);
@@ -440,7 +420,7 @@
     /* GRIDS */
     .plans-editor-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 22px;
     }
     .plan-box {
@@ -455,28 +435,30 @@
       border-color: var(--border-gold);
       box-shadow: 0 0 25px rgba(255,200,0,0.08);
     }
+    .plan-box-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
     .plan-box h3 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 16px;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
-    .editor-sections-grid, .settings-grid, .policies-editor-grid {
+    .editor-sections-grid, .settings-grid, .policies-editor-grid, .bg-options-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 22px;
     }
-    .content-box, .settings-card, .policy-edit-box {
+    .content-box, .settings-card, .policy-edit-box, .bg-card {
       background: var(--panel-card);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 22px;
     }
-    .content-box h3, .settings-card h3, .policy-edit-box h3 {
+    .content-box h3, .settings-card h3, .policy-edit-box h3, .bg-card h3 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 15px;
       font-weight: 700;
@@ -509,6 +491,36 @@
     }
     .btn-del-pt:hover {
       background: rgba(255,59,48,0.3);
+    }
+    /* THEME PREVIEWS */
+    .theme-card-picker {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .theme-choice {
+      padding: 14px;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    .theme-choice.active {
+      border-color: var(--gold);
+      background: rgba(255,200,0,0.08);
+      box-shadow: 0 0 16px var(--gold-glow);
+    }
+    .theme-choice-name {
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .theme-choice-desc {
+      font-size: 11px;
+      color: var(--text-muted);
     }
     /* PIN LOCK MODAL */
     .pin-modal {
@@ -614,8 +626,7 @@
     }
     @media (max-width: 1100px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .plans-editor-grid { grid-template-columns: 1fr; }
-      .editor-sections-grid, .settings-grid, .policies-editor-grid { grid-template-columns: 1fr; }
+      .editor-sections-grid, .settings-grid, .policies-editor-grid, .bg-options-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 800px) {
       body { flex-direction: column; }
@@ -635,14 +646,14 @@
         <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
       </div>
       <h2>Ultra Stream Master Hub</h2>
-      <p>Enter your master security password to access live website controls, analytics &amp; dispatches.</p>
+      <p>Enter your master security password to access live website controls, analytics &amp; styling.</p>
       <input type="password" id="pinInput" class="pin-input" placeholder="••••••••" maxlength="24" autofocus>
       <button class="pin-btn" onclick="checkPin()">Unlock Dashboard</button>
       <p class="pin-hint">🔑 Master Access Password: <strong>admin123</strong> (Change anytime in Settings)</p>
     </div>
   </div>
 
-  <!-- SIDEBAR NAVIGATION -->
+  <!-- SIDEBAR NAVIGATION (Pure Website Structure) -->
   <aside class="sidebar">
     <div class="brand">
       <div class="brand-logo">U</div>
@@ -654,24 +665,27 @@
     <nav class="nav-links">
       <button class="nav-btn active" onclick="switchTab('dashboard', this)">
         <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
-        Dashboard &amp; Traffic
+        Traffic &amp; Clicks (Live)
       </button>
       <button class="nav-btn" onclick="switchTab('content', this)">
         <svg viewBox="0 0 24 24"><path d="M5 4v3h5.5v12h3V7H19V4z"/></svg>
-        Headings &amp; Content
+        Headings &amp; Sections
       </button>
       <button class="nav-btn" onclick="switchTab('plans', this)">
         <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        Plans &amp; Points
+        Plans, Points &amp; Styles
+      </button>
+      <button class="nav-btn" onclick="switchTab('backgrounds', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.23 19.59 10.57 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+        Section Backgrounds
+      </button>
+      <button class="nav-btn" onclick="switchTab('footer_nav', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+        Guarantees &amp; Footer
       </button>
       <button class="nav-btn" onclick="switchTab('policies', this)">
         <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
         Legal Policies
-      </button>
-      <button class="nav-btn" onclick="switchTab('orders', this)">
-        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
-        10-Min Orders
-        <span class="nav-count" id="pendingCountBadge">2</span>
       </button>
       <button class="nav-btn" onclick="switchTab('firebase', this)">
         <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
@@ -679,7 +693,7 @@
       </button>
       <button class="nav-btn" onclick="switchTab('settings', this)">
         <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-        Settings &amp; Password
+        WhatsApp &amp; Password
       </button>
     </nav>
     <div class="sidebar-footer">
@@ -693,8 +707,8 @@
     <!-- TOPBAR -->
     <header class="topbar">
       <div class="top-left">
-        <h1 id="pageTitle">Dashboard &amp; Traffic Overview</h1>
-        <p id="pageSub">Real-time visitor analytics, button clicks, and pending 10-minute orders</p>
+        <h1 id="pageTitle">Live Traffic &amp; Button Clicks</h1>
+        <p id="pageSub">Real-time visitor analytics starting from pure zero (0)</p>
       </div>
       <div class="top-right">
         <div class="cloud-pill" id="cloudStatusPill">
@@ -707,19 +721,19 @@
 
     <div class="content-area">
 
-      <!-- ================= TAB 1: DASHBOARD & TRAFFIC ================= -->
+      <!-- ================= TAB 1: TRAFFIC & CLICKS (STARTS AT ZERO) ================= -->
       <section id="pane-dashboard" class="tab-pane active">
-        <!-- Traffic Stats Grid -->
+        <!-- Pure Real Traffic Stats Grid -->
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-title">Today's Visitors (Daily)</div>
+            <div class="stat-title">Today's Visits (Daily)</div>
             <div class="stat-val" id="statDailyVisits">0</div>
-            <div class="stat-sub" style="color:var(--green)">⚡ Live Daily Visits</div>
+            <div class="stat-sub" style="color:var(--green)">⚡ Live Daily Traffic</div>
           </div>
           <div class="stat-card">
             <div class="stat-title">This Week (Weekly)</div>
             <div class="stat-val" id="statWeeklyVisits">0</div>
-            <div class="stat-sub" style="color:var(--gold)">📅 7-Day Rolling Traffic</div>
+            <div class="stat-sub" style="color:var(--gold)">📅 7-Day Total Traffic</div>
           </div>
           <div class="stat-card">
             <div class="stat-title">This Month (Monthly)</div>
@@ -729,7 +743,7 @@
           <div class="stat-card">
             <div class="stat-title">Total WhatsApp Clicks</div>
             <div class="stat-val" id="statWaClicks" style="color:var(--green)">0</div>
-            <div class="stat-sub">💬 Inquiries &amp; Orders</div>
+            <div class="stat-sub">💬 Hot Inquiries / Leads</div>
           </div>
         </div>
 
@@ -737,40 +751,38 @@
         <div class="card-wrap">
           <div class="card-head">
             <div>
-              <h2>Button Clicks &amp; Conversion Tracking</h2>
-              <p>Real-time click counts for all WhatsApp order buttons and "Get Started" CTAs.</p>
+              <h2>Button Clicks Tracking (All Plans &amp; WhatsApp)</h2>
+              <p>Every time a visitor clicks WhatsApp or "Get Started" on a plan, the counter updates here live.</p>
             </div>
             <div style="display:flex;gap:10px;">
-              <button class="btn btn-outline btn-sm" onclick="simulateTestClick()">🧪 Test / Simulate Click</button>
-              <button class="btn btn-outline btn-sm" style="border-color:rgba(255,59,48,0.4);color:var(--red);" onclick="resetAnalytics()">Reset Analytics</button>
+              <button class="btn btn-outline btn-sm" onclick="resetAnalytics()">Clear / Reset Counters</button>
             </div>
           </div>
           <div class="table-responsive">
             <table>
               <thead>
                 <tr>
-                  <th>Target CTA / Button</th>
-                  <th>Location</th>
+                  <th>Button / CTA Element</th>
+                  <th>Location on Site</th>
                   <th>Total Clicks</th>
-                  <th>Conversion Share</th>
-                  <th>Status</th>
+                  <th>Share of Clicks</th>
                 </tr>
               </thead>
               <tbody id="clicksTableBody">
-                <!-- Dynamically populated -->
+                <!-- Populated dynamically starting at 0 -->
               </tbody>
             </table>
           </div>
         </div>
 
-        <!-- Live Visitor Activity Stream -->
+        <!-- Live Visitor Activity Feed -->
         <div class="card-wrap">
           <div class="card-head">
             <div>
-              <h2>Live Visitor Activity Stream</h2>
-              <p>Real-time log of customer clicks and section interactions.</p>
+              <h2>Live Visitor Activity Log</h2>
+              <p>Real-time stream of incoming visitors and button clicks.</p>
             </div>
-            <span class="badge badge-delivered">🟢 Real-Time Tracking</span>
+            <span class="badge badge-plan">🟢 Live Stream Active</span>
           </div>
           <div class="table-responsive">
             <table>
@@ -778,62 +790,35 @@
                 <tr>
                   <th>Timestamp</th>
                   <th>Event Action</th>
-                  <th>Device / Browser</th>
-                  <th>Target / Section</th>
+                  <th>Device</th>
+                  <th>Target Plan / Section</th>
                 </tr>
               </thead>
               <tbody id="visitorActivityTbody">
-                <!-- Dynamically populated -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Recent 10-Minute SLA Orders -->
-        <div class="card-wrap">
-          <div class="card-head">
-            <div>
-              <h2>Recent Orders (10-Minute SLA Dispatch)</h2>
-              <p>Click "Deliver on WhatsApp" to generate instant M3U credentials &amp; send via WhatsApp</p>
-            </div>
-            <button class="btn btn-gold btn-sm" onclick="switchTab('orders')">View All Orders</button>
-          </div>
-          <div class="table-responsive">
-            <table>
-              <thead>
                 <tr>
-                  <th>Order ID</th>
-                  <th>Customer</th>
-                  <th>WhatsApp</th>
-                  <th>Plan Selected</th>
-                  <th>Time Elapsed</th>
-                  <th>Status</th>
-                  <th>Quick Action</th>
+                  <td colspan="4" style="text-align:center;color:var(--text-muted);padding:24px;">No visitors yet. Counters will increment as soon as visitors browse the site.</td>
                 </tr>
-              </thead>
-              <tbody id="recentOrdersTbody">
-                <!-- Rendered dynamically -->
               </tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- ================= TAB 2: HEADINGS & CONTENT ================= -->
+      <!-- ================= TAB 2: HEADINGS & SECTIONS ================= -->
       <section id="pane-content" class="tab-pane">
         <div class="card-wrap">
           <div class="card-head">
             <div>
-              <h2>Website Headings &amp; Content Editor</h2>
-              <p>Edit hero headings, about text, how it works steps, and pricing section titles synced live to the site.</p>
+              <h2>All Section Headings &amp; Subheadings Editor</h2>
+              <p>Directly control Hero, About Ultra Stream, How It Works, and Pricing Section headings.</p>
             </div>
-            <button class="btn btn-gold" onclick="saveSiteContent()">Save All Headings &amp; Content</button>
+            <button class="btn btn-gold" onclick="saveSiteContent()">Save All Headings</button>
           </div>
 
           <div class="editor-sections-grid">
             <!-- Hero Section -->
             <div class="content-box">
-              <h3>⚡ 1. Hero Section</h3>
+              <h3>⚡ Hero Section (Top)</h3>
               <div class="form-group">
                 <label>Hero Main Heading</label>
                 <input type="text" id="cnt_hero_title" class="form-input" value="Entertainment Without Boundaries">
@@ -843,34 +828,33 @@
                 <textarea id="cnt_hero_sub" class="form-textarea">Access 25,000+ live 4K channels, 120,000+ movies &amp; VOD, and all major sports PPV events with 99.9% anti-freeze server uptime.</textarea>
               </div>
               <div class="form-group">
-                <label>Trust Stat 1 (Channels)</label>
+                <label>Hero Trust Stat 1</label>
                 <input type="text" id="cnt_stat1" class="form-input" value="25,000+ Live Channels">
               </div>
               <div class="form-group">
-                <label>Trust Stat 2 (VOD)</label>
+                <label>Hero Trust Stat 2</label>
                 <input type="text" id="cnt_stat2" class="form-input" value="120,000+ VOD Movies">
               </div>
               <div class="form-group">
-                <label>Trust Stat 3 (Uptime)</label>
+                <label>Hero Trust Stat 3</label>
                 <input type="text" id="cnt_stat3" class="form-input" value="99.9% Anti-Freeze Uptime">
               </div>
             </div>
 
             <!-- About Section -->
             <div class="content-box">
-              <h3>🎬 2. Section 3 — About Ultra Stream</h3>
+              <h3>🎬 Section 3 — About Ultra Stream</h3>
               <div class="form-group">
-                <label>About Paragraph Description</label>
+                <label>About Paragraph Text</label>
                 <textarea id="cnt_about_text" class="form-textarea" style="min-height:140px;">Ultra Stream brings you the IPTV service of the world's biggest platforms — Netflix, Apple TV, Amazon Prime Video, Disney+, and HBO Max — all in one place. Live TV, movies, sports, and series in crystal-clear quality, anytime, anywhere. Everything you love, simply and reliably — that is why Ultra Stream is the best.</textarea>
               </div>
-              <span class="form-hint">Displayed in the large animated typography section on the homepage.</span>
             </div>
 
             <!-- How It Works Section -->
             <div class="content-box">
-              <h3>⚙️ 3. Section 4 — How It Works</h3>
+              <h3>⚙️ Section 4 — How It Works</h3>
               <div class="form-group">
-                <label>Section Heading</label>
+                <label>Section Title</label>
                 <input type="text" id="cnt_how_title" class="form-input" value="HOW IT WORKS">
               </div>
               <div class="form-group">
@@ -878,22 +862,22 @@
                 <input type="text" id="cnt_how_sub" class="form-input" value="Start streaming your favorite channels in 3 simple steps">
               </div>
               <div class="form-group">
-                <label>Step 1 Text</label>
+                <label>Step 1 Description</label>
                 <input type="text" id="cnt_how_step1" class="form-input" value="1. Select your streaming pass (1, 6, or 12 Months).">
               </div>
               <div class="form-group">
-                <label>Step 2 Text</label>
+                <label>Step 2 Description</label>
                 <input type="text" id="cnt_how_step2" class="form-input" value="2. Receive instant login credentials via WhatsApp within 10 minutes.">
               </div>
               <div class="form-group">
-                <label>Step 3 Text</label>
+                <label>Step 3 Description</label>
                 <input type="text" id="cnt_how_step3" class="form-input" value="3. Enjoy buffer-free 4K sports, movies, and TV shows on any device.">
               </div>
             </div>
 
             <!-- Pricing Section -->
             <div class="content-box">
-              <h3>💎 4. Section 5 — Pricing Plans Section</h3>
+              <h3>💎 Section 5 — Pricing Plans Section</h3>
               <div class="form-group">
                 <label>Section Pill Badge</label>
                 <input type="text" id="cnt_pricing_pill" class="form-input" value="Flexible Subscriptions">
@@ -907,41 +891,215 @@
                 <textarea id="cnt_pricing_sub" class="form-textarea">Get instant access to 22,000+ live HD/4K channels and 85,000+ movies &amp; series. ⚡ Guaranteed 10-minute delivery via WhatsApp &amp; Email with 7-day money-back guarantee.</textarea>
               </div>
             </div>
-
-            <!-- Footer Section -->
-            <div class="content-box" style="grid-column: 1 / -1;">
-              <h3>🌐 5. Footer &amp; Copyright</h3>
-              <div class="form-group">
-                <label>Footer Description Text</label>
-                <input type="text" id="cnt_footer_desc" class="form-input" value="Worldwide Premium IPTV Entertainment. 25,000+ Live Channels in 4K &amp; Ultra HD.">
-              </div>
-              <div class="form-group">
-                <label>Footer Copyright Line</label>
-                <input type="text" id="cnt_footer_copy" class="form-input" value="© 2026 Ultra Stream. All rights reserved. Worldwide Premium IPTV Entertainment.">
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      <!-- ================= TAB 3: PLANS & POINTS ================= -->
+      <!-- ================= TAB 3: PLANS, POINTS & STYLES ================= -->
       <section id="pane-plans" class="tab-pane">
+        <!-- Plan Cards Design Theme Picker -->
         <div class="card-wrap">
           <div class="card-head">
             <div>
-              <h2>IPTV Plans, Bullet Points &amp; Custom WhatsApp Messages</h2>
-              <p>Add new points, edit existing points, delete points, adjust prices, and customize the exact WhatsApp draft message for each plan.</p>
+              <h2>Plan Card Visual Theme / Design</h2>
+              <p>Change the visual look, glass intensity, and border glow of all pricing cards on the website.</p>
             </div>
-            <button class="btn btn-gold" onclick="savePlansToStorage()">Save &amp; Update Live Website</button>
+          </div>
+          <div class="theme-card-picker" id="planThemePicker">
+            <div class="theme-choice active" onclick="selectCardTheme('obsidian_glass', this)">
+              <div class="theme-choice-name" style="color:var(--gold);">🌟 Obsidian Gold Glass</div>
+              <div class="theme-choice-desc">Dark 92% glass with 24px blur &amp; luxury gold border</div>
+            </div>
+            <div class="theme-choice" onclick="selectCardTheme('neon_cyber', this)">
+              <div class="theme-choice-name" style="color:#00E5FF;">⚡ Neon Cyber Laser</div>
+              <div class="theme-choice-desc">Glowing neon borders with active laser beam perimeter</div>
+            </div>
+            <div class="theme-choice" onclick="selectCardTheme('midnight_violet', this)">
+              <div class="theme-choice-name" style="color:#D500F9;">🔮 Midnight Royal Violet</div>
+              <div class="theme-choice-desc">Deep purple &amp; indigo gradient with ambient violet glow</div>
+            </div>
+            <div class="theme-choice" onclick="selectCardTheme('emerald_tech', this)">
+              <div class="theme-choice-name" style="color:var(--green);">🌿 Emerald Anti-Freeze</div>
+              <div class="theme-choice-desc">Sleek tech green borders with graphite glass</div>
+            </div>
+            <div class="theme-choice" onclick="selectCardTheme('minimal_matte', this)">
+              <div class="theme-choice-name" style="color:#F2F2F7;">🖤 Minimal Stealth Dark</div>
+              <div class="theme-choice-desc">Pure matte dark black with thin crisp outline</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plans Manager (Add New Plan + Add/Edit/Delete Points) -->
+        <div class="card-wrap">
+          <div class="card-head">
+            <div>
+              <h2>IPTV Plans &amp; Feature Points Manager</h2>
+              <p>Add new plans, delete plans, add/edit/delete bullet points, and set custom WhatsApp draft messages.</p>
+            </div>
+            <div style="display:flex;gap:10px;">
+              <button class="btn btn-outline" onclick="addNewPlanModal()">➕ Add New Plan</button>
+              <button class="btn btn-gold" onclick="savePlansToStorage()">Save &amp; Update Live Website</button>
+            </div>
           </div>
 
           <div class="plans-editor-grid" id="plansDynamicContainer">
-            <!-- Rendered dynamically by renderPlans() -->
+            <!-- Rendered dynamically -->
           </div>
         </div>
       </section>
 
-      <!-- ================= TAB 4: LEGAL POLICIES ================= -->
+      <!-- ================= TAB 4: SECTION BACKGROUNDS ================= -->
+      <section id="pane-backgrounds" class="tab-pane">
+        <div class="card-wrap">
+          <div class="card-head">
+            <div>
+              <h2>Section Background Themes &amp; Shaders</h2>
+              <p>Choose from curated luxury backgrounds, animated shaders, or clean minimal styles for each section.</p>
+            </div>
+            <button class="btn btn-gold" onclick="saveBackgrounds()">Apply &amp; Save Backgrounds</button>
+          </div>
+
+          <div class="bg-options-grid">
+            <!-- Pricing Section Background -->
+            <div class="bg-card">
+              <h3>💎 Section 5 (Pricing Plans) Background</h3>
+              <div class="form-group">
+                <label>Choose Background Style:</label>
+                <select id="bg_pricing_select" class="form-select" onchange="previewBgSelection()">
+                  <option value="fluid_gold" selected>Option 1: 🌟 Fluid Silk Gold Shader (Fast Liquid Gold Ribbons)</option>
+                  <option value="molten_amber">Option 2: 🔥 Molten Amber &amp; Crimson Fluid Shader</option>
+                  <option value="midnight_aurora">Option 3: 🔮 Deep Midnight Aurora (Neon Purple &amp; Cyan Waves)</option>
+                  <option value="obsidian_mesh">Option 4: 🌌 Dark Obsidian Radial Glow (Non-Shader Glass)</option>
+                  <option value="cyber_grid">Option 5: ⚡ Cyber Laser Grid &amp; Starlight</option>
+                  <option value="pitch_black">Option 6: 🖤 Pitch Black Luxury (#050505 Clean Minimal)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Shader Wave Speed (Fast to Calm):</label>
+                <select id="bg_shader_speed" class="form-select">
+                  <option value="0.55" selected>⚡ Fast &amp; Lively (Speed: 0.55)</option>
+                  <option value="0.35">🌊 Medium Flow (Speed: 0.35)</option>
+                  <option value="0.18">🕊️ Gentle &amp; Calm (Speed: 0.18)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Shader Background Opacity:</label>
+                <select id="bg_shader_opacity" class="form-select">
+                  <option value="0.58" selected>Halky / Soft (58% — Recommended for text readability)</option>
+                  <option value="0.40">Very Subtle (40%)</option>
+                  <option value="0.80">Luminous Vivid (80%)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Hero Section Background -->
+            <div class="bg-card">
+              <h3>⚡ Hero Section Background</h3>
+              <div class="form-group">
+                <label>Choose Hero Background Style:</label>
+                <select id="bg_hero_select" class="form-select">
+                  <option value="poster_wall" selected>Option 1: 🎬 3D Movie Posters Wall with Glow (Default)</option>
+                  <option value="midnight_glow">Option 2: 🌌 Deep Midnight Radial Dark Glow</option>
+                  <option value="cyber_gold">Option 3: 🌟 Cyber Gold Luminous Ambient Aura</option>
+                  <option value="pitch_black">Option 4: 🖤 Pitch Black Minimal</option>
+                </select>
+              </div>
+              <span class="form-hint">Controls the background effect behind the hero heading.</span>
+            </div>
+
+            <!-- About Section Background -->
+            <div class="bg-card" style="grid-column: 1 / -1;">
+              <h3>🎬 Section 3 (About Ultra Stream) Background</h3>
+              <div class="form-group">
+                <label>Choose About Section Background:</label>
+                <select id="bg_about_select" class="form-select">
+                  <option value="dot_matrix" selected>Option 1: ✨ Interactive Star Dot Matrix (Default)</option>
+                  <option value="radial_gold">Option 2: 🌟 Radial Gold Ambient Glow</option>
+                  <option value="clean_dark">Option 3: 🖤 Clean Obsidian Dark</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 5: GUARANTEES & FOOTER ================= -->
+      <section id="pane-footer_nav" class="tab-pane">
+        <div class="card-wrap">
+          <div class="card-head">
+            <div>
+              <h2>Footer, Guarantees &amp; Navigation Menu Editor</h2>
+              <p>Edit the 4 trust guarantees, the "Premium 4K Ultra" description, badge text, and navigation menu labels.</p>
+            </div>
+            <button class="btn btn-gold" onclick="saveFooterNav()">Save Footer &amp; Navigation</button>
+          </div>
+
+          <div class="editor-sections-grid">
+            <!-- Guarantees (The 4 Trust Points) -->
+            <div class="content-box">
+              <h3>🛡️ The 4 Trust Guarantees</h3>
+              <div class="form-group">
+                <label>Guarantee Point 1</label>
+                <input type="text" id="g_point1" class="form-input" value="⚡ Guaranteed Delivery in 10 Mins">
+              </div>
+              <div class="form-group">
+                <label>Guarantee Point 2</label>
+                <input type="text" id="g_point2" class="form-input" value="🛡️ 7-Day 100% Money-Back Guarantee">
+              </div>
+              <div class="form-group">
+                <label>Guarantee Point 3</label>
+                <input type="text" id="g_point3" class="form-input" value="🔒 256-Bit SSL Encrypted Checkout">
+              </div>
+              <div class="form-group">
+                <label>Guarantee Point 4</label>
+                <input type="text" id="g_point4" class="form-input" value="💬 24/7 Priority VIP Support">
+              </div>
+            </div>
+
+            <!-- Footer Description & Badge -->
+            <div class="content-box">
+              <h3>📜 Footer "Premium 4K Ultra" Description &amp; Badge</h3>
+              <div class="form-group">
+                <label>Footer Description Paragraph ("Premium 4K &amp; Ultra HD...")</label>
+                <textarea id="f_desc_text" class="form-textarea" style="min-height:110px;">Premium 4K &amp; Ultra HD IPTV service with 22,000+ live channels, 85,000+ movies &amp; VOD series worldwide. Anti-Freeze™ 9.0 technology.</textarea>
+              </div>
+              <div class="form-group">
+                <label>Footer Instant Delivery Badge</label>
+                <input type="text" id="f_badge_text" class="form-input" value="⚡ Instant 10-Minute Delivery via WhatsApp">
+              </div>
+              <div class="form-group">
+                <label>Bottom Copyright Text</label>
+                <input type="text" id="f_copyright_text" class="form-input" value="© 2026 Ultra Stream. All rights reserved. Worldwide Premium IPTV Entertainment.">
+              </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="content-box" style="grid-column: 1 / -1;">
+              <h3>🧭 Navigation Menu Links</h3>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+                <div class="form-group">
+                  <label>Menu Item 1</label>
+                  <input type="text" id="nav_item1" class="form-input" value="Home">
+                </div>
+                <div class="form-group">
+                  <label>Menu Item 2</label>
+                  <input type="text" id="nav_item2" class="form-input" value="Supported Platforms">
+                </div>
+                <div class="form-group">
+                  <label>Menu Item 3</label>
+                  <input type="text" id="nav_item3" class="form-input" value="How It Works">
+                </div>
+                <div class="form-group">
+                  <label>Menu Item 4</label>
+                  <input type="text" id="nav_item4" class="form-input" value="Pricing Plans">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 6: LEGAL POLICIES ================= -->
       <section id="pane-policies" class="tab-pane">
         <div class="card-wrap">
           <div class="card-head">
@@ -956,59 +1114,25 @@
             <div class="policy-edit-box">
               <h3>🛡️ Privacy Policy</h3>
               <p class="form-hint">Controls the full text on privacy.html</p>
-              <textarea id="policy_privacy" class="form-textarea" style="min-height:220px;"></textarea>
+              <textarea id="policy_privacy" class="form-textarea" style="min-height:240px;"></textarea>
             </div>
 
             <div class="policy-edit-box">
               <h3>💰 7-Day Refund Policy</h3>
               <p class="form-hint">Controls the full text on refund.html</p>
-              <textarea id="policy_refund" class="form-textarea" style="min-height:220px;"></textarea>
+              <textarea id="policy_refund" class="form-textarea" style="min-height:240px;"></textarea>
             </div>
 
             <div class="policy-edit-box" style="grid-column: 1 / -1;">
               <h3>⚖️ Terms &amp; Conditions</h3>
               <p class="form-hint">Controls the full text on terms.html</p>
-              <textarea id="policy_terms" class="form-textarea" style="min-height:220px;"></textarea>
+              <textarea id="policy_terms" class="form-textarea" style="min-height:240px;"></textarea>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ================= TAB 5: 10-MIN ORDERS ================= -->
-      <section id="pane-orders" class="tab-pane">
-        <div class="card-wrap">
-          <div class="card-head">
-            <div>
-              <h2>10-Minute SLA Order Dispatcher</h2>
-              <p>Orders needing instant dispatch. Click "Deliver on WhatsApp" to generate customer M3U / EPG credentials.</p>
-            </div>
-            <button class="btn btn-gold" onclick="simulateNewOrder()">+ Simulate Test Order</button>
-          </div>
-
-          <div class="table-responsive">
-            <table>
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Customer Name</th>
-                  <th>WhatsApp / Phone</th>
-                  <th>Email</th>
-                  <th>Plan</th>
-                  <th>Price</th>
-                  <th>Time Elapsed</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="allOrdersTbody">
-                <!-- Rendered dynamically -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= TAB 6: FIREBASE CLOUD ================= -->
+      <!-- ================= TAB 7: FIREBASE CLOUD ================= -->
       <section id="pane-firebase" class="tab-pane">
         <div class="card-wrap">
           <div class="card-head">
@@ -1049,13 +1173,13 @@
         </div>
       </section>
 
-      <!-- ================= TAB 7: SETTINGS & PASSWORD ================= -->
+      <!-- ================= TAB 8: WHATSAPP & PASSWORD ================= -->
       <section id="pane-settings" class="tab-pane">
         <div class="card-wrap">
           <div class="card-head">
             <div>
-              <h2>Settings &amp; Security Configuration</h2>
-              <p>Manage WhatsApp contact numbers, change master security password, and set site defaults.</p>
+              <h2>WhatsApp Number &amp; Password Security</h2>
+              <p>Set your WhatsApp order contact number and update your master security password.</p>
             </div>
             <button class="btn btn-gold" onclick="saveSettings()">Save Settings</button>
           </div>
@@ -1065,9 +1189,9 @@
             <div class="settings-card">
               <h3>📱 WhatsApp Integration Settings</h3>
               <div class="form-group">
-                <label>WhatsApp Number (International without +)</label>
+                <label>WhatsApp Number (without +)</label>
                 <input type="text" id="set_wa_phone" class="form-input" value="447458196522" placeholder="e.g. 447458196522">
-                <span class="form-hint">All WhatsApp "Order" &amp; "Get Started" buttons link to this number.</span>
+                <span class="form-hint">All customer orders and inquiries redirect to this WhatsApp number.</span>
               </div>
               <div class="form-group">
                 <label>Floating WhatsApp Button Draft Message</label>
@@ -1077,7 +1201,7 @@
 
             <!-- Master Security Password -->
             <div class="settings-card">
-              <h3>🔒 Security &amp; Master Password</h3>
+              <h3>🔒 Master Security Password</h3>
               <div class="form-group">
                 <label>Current Master Password</label>
                 <input type="text" id="set_current_pin" class="form-input" value="admin123" readonly style="opacity:0.8;">
@@ -1088,19 +1212,6 @@
                 <input type="text" id="set_new_pin" class="form-input" placeholder="Enter new password (e.g. ultra2026)">
               </div>
               <button class="btn btn-gold" onclick="updateAdminPin()" style="width:100%;margin-top:10px;">Update Master Password</button>
-            </div>
-
-            <!-- Regional & Currency Settings -->
-            <div class="settings-card" style="grid-column: 1 / -1;">
-              <h3>🌐 Regional &amp; Contact Info</h3>
-              <div class="form-group">
-                <label>Currency Symbol</label>
-                <input type="text" id="set_currency" class="form-input" value="$" style="max-width:120px;">
-              </div>
-              <div class="form-group">
-                <label>Support Contact Email</label>
-                <input type="email" id="set_support_email" class="form-input" value="support@ultrastream.com">
-              </div>
             </div>
           </div>
         </div>
@@ -1136,14 +1247,38 @@
       how_step3: '3. Enjoy buffer-free 4K sports, movies, and TV shows on any device.',
       pricing_pill: 'Flexible Subscriptions',
       pricing_title: 'Simple Pricing, Unlimited Entertainment',
-      pricing_sub: 'Get instant access to 22,000+ live HD/4K channels and 85,000+ movies & series. ⚡ Guaranteed 10-minute delivery via WhatsApp & Email with 7-day money-back guarantee.',
-      footer_desc: 'Worldwide Premium IPTV Entertainment. 25,000+ Live Channels in 4K & Ultra HD.',
-      footer_copy: '© 2026 Ultra Stream. All rights reserved. Worldwide Premium IPTV Entertainment.'
+      pricing_sub: 'Get instant access to 22,000+ live HD/4K channels and 85,000+ movies & series. ⚡ Guaranteed 10-minute delivery via WhatsApp & Email with 7-day money-back guarantee.'
+    };
+
+    // Default Footer & Guarantees
+    const defaultFooterNav = {
+      g_point1: '⚡ Guaranteed Delivery in 10 Mins',
+      g_point2: '🛡️ 7-Day 100% Money-Back Guarantee',
+      g_point3: '🔒 256-Bit SSL Encrypted Checkout',
+      g_point4: '💬 24/7 Priority VIP Support',
+      f_desc: 'Premium 4K & Ultra HD IPTV service with 22,000+ live channels, 85,000+ movies & VOD series worldwide. Anti-Freeze™ 9.0 technology.',
+      f_badge: '⚡ Instant 10-Minute Delivery via WhatsApp',
+      f_copy: '© 2026 Ultra Stream. All rights reserved. Worldwide Premium IPTV Entertainment.',
+      nav_item1: 'Home',
+      nav_item2: 'Supported Platforms',
+      nav_item3: 'How It Works',
+      nav_item4: 'Pricing Plans'
+    };
+
+    // Default Section Backgrounds
+    const defaultBackgrounds = {
+      pricing_bg: 'fluid_gold',
+      shader_speed: '0.55',
+      shader_opacity: '0.58',
+      hero_bg: 'poster_wall',
+      about_bg: 'dot_matrix',
+      card_theme: 'obsidian_glass'
     };
 
     // Default Pricing Plans (with interactive bullet points array & custom WhatsApp draft message)
     let plansData = [
       {
+        id: 'plan_1',
         name: 'Starter Pass',
         badge: '1 MONTH PASS',
         price: '14',
@@ -1165,6 +1300,7 @@
         ]
       },
       {
+        id: 'plan_2',
         name: 'Ultra VIP Pass',
         badge: '🔥 BEST VALUE — SAVE 65%',
         price: '49',
@@ -1173,6 +1309,7 @@
         savings: 'SAVE 65%',
         desc: 'Our flagship VIP pass. Massive savings with maximum 4K channels and multi-room connections.',
         btnText: 'Claim Ultra VIP Pass',
+        isFeatured: true,
         draftMessage: 'Hello Ultra Stream! 🔥 I want to subscribe to the 12 MONTHS ULTRA VIP PASS ($49.99 - Best Value). Please send me priority login credentials (4K UHD + 5 Connections). Ready to order!',
         features: [
           '25,000+ Premium Live Channels (US, UK, CA, Arab, Europe & World)',
@@ -1188,6 +1325,7 @@
         ]
       },
       {
+        id: 'plan_3',
         name: 'Pro Pass',
         badge: '6 MONTHS PRO',
         price: '29',
@@ -1239,41 +1377,6 @@
 <p>Ultra Stream is compatible with Smart TVs (Samsung, LG, Sony), Firestick, Android TV, Apple TV, iOS, Windows, Mac, MAG boxes, and all major IPTV apps (IPTV Smarters Pro, TiviMate, XCIPTV).</p>`
     };
 
-    // Default Orders
-    const defaultOrders = [
-      {
-        id: 'ORD-8941',
-        customer: 'Tariq Mehmood',
-        phone: '+923001234567',
-        email: 'tariq.stream@gmail.com',
-        plan: 'Ultra VIP Pass (12 Mo)',
-        price: '$49.99',
-        createdAt: Date.now() - 4 * 60 * 1000,
-        status: 'pending'
-      },
-      {
-        id: 'ORD-8940',
-        customer: 'Alex Johnson',
-        phone: '+14158923412',
-        email: 'alex.j@outlook.com',
-        plan: 'Pro Pass (6 Mo)',
-        price: '$29.99',
-        createdAt: Date.now() - 8 * 60 * 1000,
-        status: 'pending'
-      },
-      {
-        id: 'ORD-8939',
-        customer: 'David Smith',
-        phone: '+447911123456',
-        email: 'd.smith@yahoo.co.uk',
-        plan: 'Starter Pass (1 Mo)',
-        price: '$14.99',
-        createdAt: Date.now() - 45 * 60 * 1000,
-        status: 'delivered',
-        deliveredAt: Date.now() - 38 * 60 * 1000
-      }
-    ];
-
     // ================= AUTH & SECURITY PIN =================
     function checkPin() {
       const pin = document.getElementById('pinInput').value.trim();
@@ -1318,13 +1421,14 @@
 
     // ================= TABS NAVIGATION =================
     const tabTitles = {
-      dashboard: { title: 'Dashboard & Traffic Overview', sub: 'Real-time visitor analytics, button clicks, and pending 10-minute orders' },
-      content: { title: 'Headings & Content Editor', sub: 'Edit hero titles, about text, how it works, and section headings' },
-      plans: { title: 'Plans, Points & WhatsApp Messages', sub: 'Add/edit/delete bullet points, adjust prices, and set custom WhatsApp messages' },
+      dashboard: { title: 'Live Traffic & Button Clicks', sub: 'Real-time visitor analytics starting from pure zero (0)' },
+      content: { title: 'Headings & Sections Editor', sub: 'Edit hero titles, about text, how it works, and section headings' },
+      plans: { title: 'Plans, Points & Card Design', sub: 'Add/delete plans, add/edit/delete bullet points, and select visual card themes' },
+      backgrounds: { title: 'Section Backgrounds & Shaders', sub: 'Choose luxury fluid shaders, molten waves, or clean obsidian backgrounds' },
+      footer_nav: { title: 'Guarantees & Footer Navigation', sub: 'Edit the 4 trust guarantees, footer description, badge, and menu labels' },
       policies: { title: 'Legal Policies Editor', sub: 'Update Privacy Policy, Refund Policy, and Terms & Conditions' },
-      orders: { title: '10-Minute Order Dispatcher', sub: 'Instant credentials dispatch via WhatsApp & Email' },
       firebase: { title: 'Firebase Cloud Database', sub: 'Connect Google Firestore for cloud backup & multi-admin sync' },
-      settings: { title: 'Settings & Security', sub: 'WhatsApp phone number, master password, and preferences' }
+      settings: { title: 'WhatsApp & Master Password', sub: 'WhatsApp order phone number and security credentials' }
     };
 
     function switchTab(tabId, el) {
@@ -1346,40 +1450,21 @@
       document.getElementById('pageSub').textContent = meta.sub;
     }
 
-    // ================= ANALYTICS & TRAFFIC =================
+    // ================= ANALYTICS & REAL TRAFFIC (STARTS AT ZERO) =================
     function getAnalytics() {
       try {
         const a = localStorage.getItem('ultra_analytics');
         if (a) return JSON.parse(a);
       } catch(_) {}
       
-      const today = new Date().toISOString().slice(0, 10);
-      const now = new Date();
-      const week = now.getFullYear() + '-W' + Math.ceil(now.getDate() / 7);
-      const month = now.toISOString().slice(0, 7);
-
       return {
-        daily: { [today]: 148 },
-        weekly: { [week]: 892 },
-        monthly: { [month]: 3420 },
-        total_views: 3420,
-        unique_visitors: 1845,
-        clicks: {
-          whatsapp_floating: 64,
-          plan1_get_started: 38,
-          plan2_vip_get_started: 112,
-          plan3_pro_get_started: 56,
-          hero_cta_whatsapp: 79,
-          hero_cta_plans: 94
-        },
-        recent_activity: [
-          { event: 'Clicked 12 Months VIP WhatsApp', time: Date.now() - 3 * 60 * 1000, device: 'Mobile', target: '12 Months VIP Pass' },
-          { event: 'Clicked Floating WhatsApp', time: Date.now() - 7 * 60 * 1000, device: 'Desktop', target: 'Support Inquiry' },
-          { event: 'Clicked 6 Months Pro WhatsApp', time: Date.now() - 14 * 60 * 1000, device: 'Mobile', target: '6 Months Pro Pass' },
-          { event: 'Visited Pricing Section', time: Date.now() - 19 * 60 * 1000, device: 'Desktop', target: 'Section 5 Plans' },
-          { event: 'Clicked 1 Month Starter WhatsApp', time: Date.now() - 28 * 60 * 1000, device: 'Mobile', target: '1 Month Starter Pass' },
-          { event: 'Visited Home Page', time: Date.now() - 34 * 60 * 1000, device: 'Mobile', target: 'Hero Header' }
-        ]
+        daily: {},
+        weekly: {},
+        monthly: {},
+        total_views: 0,
+        unique_visitors: 0,
+        clicks: {},
+        recent_activity: []
       };
     }
 
@@ -1390,15 +1475,16 @@
       const week = now.getFullYear() + '-W' + Math.ceil(now.getDate() / 7);
       const month = now.toISOString().slice(0, 7);
 
-      const daily = a.daily?.[today] || (a.daily ? Object.values(a.daily).pop() : 148) || 0;
-      const weekly = a.weekly?.[week] || (a.weekly ? Object.values(a.weekly).pop() : 892) || 0;
-      const monthly = a.monthly?.[month] || (a.monthly ? Object.values(a.monthly).pop() : 3420) || 0;
+      const daily = a.daily?.[today] || 0;
+      const weekly = a.weekly?.[week] || 0;
+      const monthly = a.monthly?.[month] || 0;
 
-      const totalWaClicks = (a.clicks?.whatsapp_floating || 0) + 
-                            (a.clicks?.plan1_get_started || 0) + 
-                            (a.clicks?.plan2_vip_get_started || 0) + 
-                            (a.clicks?.plan3_pro_get_started || 0) +
-                            (a.clicks?.hero_cta_whatsapp || 0);
+      let totalWaClicks = 0;
+      if (a.clicks) {
+        for (let k in a.clicks) {
+          totalWaClicks += (a.clicks[k] || 0);
+        }
+      }
 
       document.getElementById('statDailyVisits').textContent = Number(daily).toLocaleString();
       document.getElementById('statWeeklyVisits').textContent = Number(weekly).toLocaleString();
@@ -1406,25 +1492,35 @@
       document.getElementById('statWaClicks').textContent = Number(totalWaClicks).toLocaleString();
 
       // Render Clicks Table
+      const plans = getPlans();
       const clicksList = [
-        { name: 'Floating WhatsApp Quick Button', loc: 'Bottom Right (Site-wide)', count: a.clicks?.whatsapp_floating || 0, badge: 'High Engagement' },
-        { name: 'Plan 2: 12-Month Ultra VIP Pass (Featured)', loc: 'Section 5 (Center Card)', count: a.clicks?.plan2_vip_get_started || 0, badge: '🔥 Top Seller' },
-        { name: 'Plan 3: 6-Month Pro Pass', loc: 'Section 5 (Right Card)', count: a.clicks?.plan3_pro_get_started || 0, badge: 'Steady' },
-        { name: 'Plan 1: 1-Month Starter Pass', loc: 'Section 5 (Left Card)', count: a.clicks?.plan1_get_started || 0, badge: 'Trial Buyers' },
-        { name: 'Hero CTA: Instant WhatsApp Access', loc: 'Hero Section (Top)', count: a.clicks?.hero_cta_whatsapp || 0, badge: 'Hero CTA' },
-        { name: 'Hero CTA: Explore Plans', loc: 'Hero Section (Top)', count: a.clicks?.hero_cta_plans || 0, badge: 'Navigation' }
+        { key: 'whatsapp_floating', name: 'Floating WhatsApp Quick Button', loc: 'Bottom Right (Site-wide)' }
       ];
 
+      plans.forEach((p, idx) => {
+        clicksList.push({
+          key: 'plan' + (idx + 1) + '_get_started',
+          name: p.name + ' ("Get Started")',
+          loc: 'Section 5 (Card ' + (idx + 1) + ')'
+        });
+      });
+
+      clicksList.push(
+        { key: 'hero_cta_whatsapp', name: 'Hero Instant WhatsApp Access', loc: 'Hero Section (Top)' },
+        { key: 'hero_cta_plans', name: 'Hero Explore Plans Button', loc: 'Hero Section (Top)' }
+      );
+
       const clicksTbody = document.getElementById('clicksTableBody');
-      const totalClicks = clicksList.reduce((sum, item) => sum + item.count, 0) || 1;
+      const totalClicks = totalWaClicks || 1;
 
       clicksTbody.innerHTML = clicksList.map(item => {
-        const pct = Math.round((item.count / totalClicks) * 100);
+        const count = a.clicks?.[item.key] || 0;
+        const pct = totalWaClicks > 0 ? Math.round((count / totalClicks) * 100) : 0;
         return `
           <tr>
             <td><strong>${item.name}</strong></td>
             <td><span style="color:var(--text-muted);font-size:12.5px;">${item.loc}</span></td>
-            <td><span style="font-family:'Space Grotesk';font-weight:700;font-size:16px;color:var(--gold);">${item.count}</span> clicks</td>
+            <td><span style="font-family:'Space Grotesk';font-weight:700;font-size:16px;color:var(--gold);">${count}</span> clicks</td>
             <td>
               <div style="display:flex;align-items:center;gap:8px;">
                 <div style="flex:1;height:6px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;max-width:90px;">
@@ -1433,7 +1529,6 @@
                 <span style="font-size:12px;color:var(--text-muted);">${pct}%</span>
               </div>
             </td>
-            <td><span class="badge badge-plan">${item.badge}</span></td>
           </tr>
         `;
       }).join('');
@@ -1441,17 +1536,21 @@
       // Render Recent Activity Stream
       const actTbody = document.getElementById('visitorActivityTbody');
       const acts = a.recent_activity || [];
-      actTbody.innerHTML = acts.slice(0, 15).map(act => {
-        const timeAgo = formatTimeAgo(act.time);
-        return `
-          <tr>
-            <td style="color:var(--text-muted);font-size:12px;">${timeAgo}</td>
-            <td><strong>${escapeHtml(act.event)}</strong></td>
-            <td><span class="badge" style="background:rgba(255,255,255,0.06);color:#fff;">${act.device || 'Mobile'}</span></td>
-            <td><span style="color:var(--gold);font-size:13px;">${escapeHtml(act.target || 'Website')}</span></td>
-          </tr>
-        `;
-      }).join('');
+      if (acts.length === 0) {
+        actTbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:24px;">No visitors yet. Counters will increment as soon as visitors browse the site.</td></tr>`;
+      } else {
+        actTbody.innerHTML = acts.slice(0, 15).map(act => {
+          const timeAgo = formatTimeAgo(act.time);
+          return `
+            <tr>
+              <td style="color:var(--text-muted);font-size:12px;">${timeAgo}</td>
+              <td><strong>${escapeHtml(act.event)}</strong></td>
+              <td><span class="badge" style="background:rgba(255,255,255,0.06);color:#fff;">${act.device || 'Mobile'}</span></td>
+              <td><span style="color:var(--gold);font-size:13px;">${escapeHtml(act.target || 'Website')}</span></td>
+            </tr>
+          `;
+        }).join('');
+      }
     }
 
     function formatTimeAgo(timestamp) {
@@ -1465,38 +1564,11 @@
       return `${Math.floor(hrs / 24)}d ago`;
     }
 
-    function simulateTestClick() {
-      const a = getAnalytics();
-      const targets = [
-        { key: 'plan2_vip_get_started', name: '12 Months VIP Pass WhatsApp' },
-        { key: 'whatsapp_floating', name: 'Floating WhatsApp Button' },
-        { key: 'plan3_pro_get_started', name: '6 Months Pro Pass WhatsApp' },
-        { key: 'plan1_get_started', name: '1 Month Starter Pass WhatsApp' }
-      ];
-      const pick = targets[Math.floor(Math.random() * targets.length)];
-      a.clicks[pick.key] = (a.clicks[pick.key] || 0) + 1;
-      
-      const today = new Date().toISOString().slice(0, 10);
-      a.daily[today] = (a.daily[today] || 0) + 1;
-      a.total_views = (a.total_views || 0) + 1;
-
-      if (!a.recent_activity) a.recent_activity = [];
-      a.recent_activity.unshift({
-        event: 'Clicked ' + pick.name,
-        time: Date.now(),
-        device: Math.random() > 0.4 ? 'Mobile' : 'Desktop',
-        target: pick.name
-      });
-      localStorage.setItem('ultra_analytics', JSON.stringify(a));
-      renderAnalytics();
-      showToast('Test click simulated on ' + pick.name + '!');
-    }
-
     function resetAnalytics() {
-      if (!confirm('Are you sure you want to reset all traffic and click analytics counters?')) return;
+      if (!confirm('Are you sure you want to reset all traffic and click analytics counters to 0?')) return;
       localStorage.removeItem('ultra_analytics');
       renderAnalytics();
-      showToast('Analytics counters reset.');
+      showToast('Analytics counters reset to 0.');
     }
 
     // ================= HEADINGS & CONTENT =================
@@ -1525,8 +1597,6 @@
       document.getElementById('cnt_pricing_pill').value = c.pricing_pill || '';
       document.getElementById('cnt_pricing_title').value = c.pricing_title || '';
       document.getElementById('cnt_pricing_sub').value = c.pricing_sub || '';
-      document.getElementById('cnt_footer_desc').value = c.footer_desc || '';
-      document.getElementById('cnt_footer_copy').value = c.footer_copy || '';
     }
 
     function saveSiteContent() {
@@ -1544,26 +1614,21 @@
         how_step3: document.getElementById('cnt_how_step3').value.trim(),
         pricing_pill: document.getElementById('cnt_pricing_pill').value.trim(),
         pricing_title: document.getElementById('cnt_pricing_title').value.trim(),
-        pricing_sub: document.getElementById('cnt_pricing_sub').value.trim(),
-        footer_desc: document.getElementById('cnt_footer_desc').value.trim(),
-        footer_copy: document.getElementById('cnt_footer_copy').value.trim()
+        pricing_sub: document.getElementById('cnt_pricing_sub').value.trim()
       };
 
       localStorage.setItem('ultra_site_content', JSON.stringify(c));
 
       if (db) {
         db.collection('settings').doc('site_content').set(c, { merge: true })
-          .then(() => showToast('Saved & Synced live to Cloud Firestore!'))
-          .catch(e => {
-            console.error('Firestore save error:', e);
-            showToast('Saved locally (Firestore sync error)');
-          });
+          .then(() => showToast('Headings saved & synced live!'))
+          .catch(() => showToast('Saved locally!'));
       } else {
         showToast('Saved locally! Synced to live website.');
       }
     }
 
-    // ================= PLANS, POINTS & WHATSAPP DRAFT MESSAGES =================
+    // ================= PLANS, POINTS & CARD DESIGN =================
     function getPlans() {
       try {
         const p = localStorage.getItem('ultra_pricing_plans');
@@ -1578,7 +1643,7 @@
       const plans = getPlans();
 
       container.innerHTML = plans.map((p, pIdx) => {
-        const isFeatured = pIdx === 1;
+        const isFeatured = p.isFeatured || pIdx === 1;
         const featuresHtml = (p.features || []).map((feat, fIdx) => `
           <div class="point-item">
             <span style="color:var(--green);font-weight:900;">✓</span>
@@ -1589,10 +1654,13 @@
 
         return `
           <div class="plan-box ${isFeatured ? 'featured-box' : ''}">
-            <h3>
-              <span>Plan ${pIdx + 1}: ${escapeHtml(p.name)}</span>
-              ${isFeatured ? '<span class="badge badge-plan">🔥 VIP Recommended</span>' : ''}
-            </h3>
+            <div class="plan-box-head">
+              <h3>Plan ${pIdx + 1}: ${escapeHtml(p.name)}</h3>
+              <div style="display:flex;gap:6px;align-items:center;">
+                ${isFeatured ? '<span class="badge badge-plan">⭐ Featured</span>' : ''}
+                <button class="btn btn-sm btn-danger" onclick="deletePlan(${pIdx})" title="Delete this plan">🗑️ Delete</button>
+              </div>
+            </div>
 
             <div class="form-group">
               <label>Plan Name</label>
@@ -1617,7 +1685,7 @@
 
             <div style="display:flex;gap:12px;">
               <div class="form-group" style="flex:1;">
-                <label>Original Price</label>
+                <label>Original Strike Price</label>
                 <input type="text" class="form-input" id="plan_${pIdx}_orig" value="${escapeHtml(p.origPrice || '$24.99')}">
               </div>
               <div class="form-group" style="flex:1;">
@@ -1695,6 +1763,65 @@
       }
     }
 
+    function addNewPlanModal() {
+      const pName = prompt('Enter New Plan Name (e.g. 3 Months Pass or Lifetime VIP):', '3 Months Pass');
+      if (!pName) return;
+      const pPrice = prompt('Enter Plan Price (e.g. 24):', '24');
+      if (!pPrice) return;
+
+      const plans = getPlans();
+      plans.push({
+        id: 'plan_' + (plans.length + 1),
+        name: pName,
+        badge: pName.toUpperCase(),
+        price: pPrice,
+        cycle: '.99 / 3 Months',
+        origPrice: '$45.00',
+        savings: 'SAVE 45%',
+        desc: 'New customized streaming pass added from Admin Panel.',
+        btnText: 'Get ' + pName,
+        draftMessage: 'Hello Ultra Stream! 👋 I would like to order the ' + pName + ' ($' + pPrice + '.99). Please provide me instant activation details via WhatsApp. Thank you!',
+        features: [
+          '15,000+ Live Worldwide Channels',
+          '50,000+ VOD Movies & Series',
+          'Full HD & 4K Streaming Quality',
+          'Anti-Freeze™ 9.0 Technology',
+          '2 Device Connections',
+          '⚡ 10-Minute Delivery via WhatsApp'
+        ]
+      });
+
+      localStorage.setItem('ultra_pricing_plans', JSON.stringify(plans));
+      renderPlans();
+      showToast('New plan "' + pName + '" added successfully!');
+    }
+
+    function deletePlan(planIdx) {
+      const plans = getPlans();
+      if (plans.length <= 1) {
+        alert('You must have at least one active plan.');
+        return;
+      }
+      if (!confirm('Are you sure you want to delete this plan?')) return;
+      plans.splice(planIdx, 1);
+      localStorage.setItem('ultra_pricing_plans', JSON.stringify(plans));
+      renderPlans();
+      showToast('Plan deleted.');
+    }
+
+    function selectCardTheme(themeKey, el) {
+      document.querySelectorAll('.theme-choice').forEach(tc => tc.classList.remove('active'));
+      if (el) el.classList.add('active');
+      const bgs = getBackgrounds();
+      bgs.card_theme = themeKey;
+      localStorage.setItem('ultra_backgrounds', JSON.stringify(bgs));
+
+      if (db) {
+        db.collection('settings').doc('backgrounds').set(bgs, { merge: true }).catch(() => {});
+      }
+      showToast('Plan Card Theme updated to: ' + themeKey);
+    }
+
     function savePlansToStorage() {
       const plans = getPlans();
       for (let i = 0; i < plans.length; i++) {
@@ -1724,12 +1851,114 @@
       if (db) {
         db.collection('settings').doc('pricing_plans').set({ plans: plans }, { merge: true })
           .then(() => showToast('Plans, Points & WhatsApp Messages updated live in Cloud!'))
-          .catch(e => {
-            console.error('Firestore error:', e);
-            showToast('Plans saved locally!');
-          });
+          .catch(() => showToast('Plans saved locally!'));
       } else {
         showToast('Plans saved! Synced to live website.');
+      }
+    }
+
+    // ================= SECTION BACKGROUNDS =================
+    function getBackgrounds() {
+      try {
+        const b = localStorage.getItem('ultra_backgrounds');
+        return b ? { ...defaultBackgrounds, ...JSON.parse(b) } : defaultBackgrounds;
+      } catch(_) {
+        return defaultBackgrounds;
+      }
+    }
+
+    function populateBackgrounds() {
+      const b = getBackgrounds();
+      document.getElementById('bg_pricing_select').value = b.pricing_bg || 'fluid_gold';
+      document.getElementById('bg_shader_speed').value = b.shader_speed || '0.55';
+      document.getElementById('bg_shader_opacity').value = b.shader_opacity || '0.58';
+      document.getElementById('bg_hero_select').value = b.hero_bg || 'poster_wall';
+      document.getElementById('bg_about_select').value = b.about_bg || 'dot_matrix';
+
+      // Set active theme choice
+      const activeTheme = b.card_theme || 'obsidian_glass';
+      document.querySelectorAll('.theme-choice').forEach(tc => {
+        if (tc.getAttribute('onclick')?.includes(activeTheme)) {
+          tc.classList.add('active');
+        } else {
+          tc.classList.remove('active');
+        }
+      });
+    }
+
+    function saveBackgrounds() {
+      const b = {
+        pricing_bg: document.getElementById('bg_pricing_select').value,
+        shader_speed: document.getElementById('bg_shader_speed').value,
+        shader_opacity: document.getElementById('bg_shader_opacity').value,
+        hero_bg: document.getElementById('bg_hero_select').value,
+        about_bg: document.getElementById('bg_about_select').value,
+        card_theme: getBackgrounds().card_theme || 'obsidian_glass'
+      };
+
+      localStorage.setItem('ultra_backgrounds', JSON.stringify(b));
+
+      if (db) {
+        db.collection('settings').doc('backgrounds').set(b, { merge: true })
+          .then(() => showToast('Background themes saved & synced live!'))
+          .catch(() => showToast('Backgrounds saved locally!'));
+      } else {
+        showToast('Background themes saved! Synced to website.');
+      }
+    }
+
+    function previewBgSelection() {
+      showToast('Selected style: ' + document.getElementById('bg_pricing_select').value);
+    }
+
+    // ================= GUARANTEES & FOOTER NAVIGATION =================
+    function getFooterNav() {
+      try {
+        const f = localStorage.getItem('ultra_footer_nav');
+        return f ? { ...defaultFooterNav, ...JSON.parse(f) } : defaultFooterNav;
+      } catch(_) {
+        return defaultFooterNav;
+      }
+    }
+
+    function populateFooterNav() {
+      const f = getFooterNav();
+      document.getElementById('g_point1').value = f.g_point1 || '';
+      document.getElementById('g_point2').value = f.g_point2 || '';
+      document.getElementById('g_point3').value = f.g_point3 || '';
+      document.getElementById('g_point4').value = f.g_point4 || '';
+      document.getElementById('f_desc_text').value = f.f_desc || '';
+      document.getElementById('f_badge_text').value = f.f_badge || '';
+      document.getElementById('f_copyright_text').value = f.f_copy || '';
+      document.getElementById('nav_item1').value = f.nav_item1 || '';
+      document.getElementById('nav_item2').value = f.nav_item2 || '';
+      document.getElementById('nav_item3').value = f.nav_item3 || '';
+      document.getElementById('nav_item4').value = f.nav_item4 || '';
+    }
+
+    function saveFooterNav() {
+      const f = {
+        g_point1: document.getElementById('g_point1').value.trim(),
+        g_point2: document.getElementById('g_point2').value.trim(),
+        g_point3: document.getElementById('g_point3').value.trim(),
+        g_point4: document.getElementById('g_point4').value.trim(),
+        f_desc: document.getElementById('f_desc_text').value.trim(),
+        f_badge: document.getElementById('f_badge_text').value.trim(),
+        f_copy: document.getElementById('f_copyright_text').value.trim(),
+        nav_item1: document.getElementById('nav_item1').value.trim(),
+        nav_item2: document.getElementById('nav_item2').value.trim(),
+        nav_item3: document.getElementById('nav_item3').value.trim(),
+        nav_item4: document.getElementById('nav_item4').value.trim()
+      };
+
+      localStorage.setItem('ultra_footer_nav', JSON.stringify(f));
+
+      if (db) {
+        db.collection('settings').doc('footer_nav').set(f, { merge: true })
+          .then(() => showToast('Guarantees & Footer saved & synced live!'))
+          .catch(() => showToast('Saved locally!'));
+      } else {
+        showToast('Saved locally! Synced to live website.');
       }
     }
 
@@ -1773,12 +2002,10 @@
         const s = localStorage.getItem('ultra_settings');
         return s ? JSON.parse(s) : {
           wa_phone: '447458196522',
-          wa_float_msg: 'Hello Ultra Stream Support! 👋 I have a question about your IPTV subscription and channels list. Please assist me.',
-          currency: '$',
-          support_email: 'support@ultrastream.com'
+          wa_float_msg: 'Hello Ultra Stream Support! 👋 I have a question about your IPTV subscription and channels list. Please assist me.'
         };
       } catch(_) {
-        return { wa_phone: '447458196522', wa_float_msg: 'Hello Ultra Stream Support! 👋 I have a question...', currency: '$', support_email: 'support@ultrastream.com' };
+        return { wa_phone: '447458196522', wa_float_msg: 'Hello Ultra Stream Support! 👋 I have a question...' };
       }
     }
 
@@ -1786,8 +2013,6 @@
       const s = getSettings();
       document.getElementById('set_wa_phone').value = s.wa_phone || '447458196522';
       document.getElementById('set_wa_float_msg').value = s.wa_float_msg || '';
-      document.getElementById('set_currency').value = s.currency || '$';
-      document.getElementById('set_support_email').value = s.support_email || 'support@ultrastream.com';
 
       const currentPin = localStorage.getItem('ultra_admin_pin') || DEFAULT_PIN;
       document.getElementById('set_current_pin').value = currentPin;
@@ -1796,9 +2021,7 @@
     function saveSettings() {
       const s = {
         wa_phone: document.getElementById('set_wa_phone').value.trim().replace(/[^0-9]/g, ''),
-        wa_float_msg: document.getElementById('set_wa_float_msg').value.trim(),
-        currency: document.getElementById('set_currency').value.trim(),
-        support_email: document.getElementById('set_support_email').value.trim()
+        wa_float_msg: document.getElementById('set_wa_float_msg').value.trim()
       };
 
       localStorage.setItem('ultra_settings', JSON.stringify(s));
@@ -1810,142 +2033,6 @@
       } else {
         showToast('Settings saved! WhatsApp links updated live.');
       }
-    }
-
-    // ================= ORDERS DISPATCHER =================
-    function getOrders() {
-      try {
-        const o = localStorage.getItem('ultra_orders');
-        return o ? JSON.parse(o) : defaultOrders;
-      } catch(_) {
-        return defaultOrders;
-      }
-    }
-
-    function saveOrders(orders) {
-      localStorage.setItem('ultra_orders', JSON.stringify(orders));
-      renderOrders();
-    }
-
-    function renderOrders() {
-      const orders = getOrders();
-      const recentTbody = document.getElementById('recentOrdersTbody');
-      const allTbody = document.getElementById('allOrdersTbody');
-
-      let pendingCount = 0;
-
-      const rowsHtml = orders.map(ord => {
-        const isPending = ord.status === 'pending';
-        if (isPending) pendingCount++;
-
-        const elapsedMins = Math.floor((Date.now() - ord.createdAt) / 60000);
-        const timerText = isPending ? `${elapsedMins}m / 10m SLA` : 'Delivered';
-        const timerColor = (isPending && elapsedMins >= 8) ? 'var(--red)' : (isPending ? 'var(--amber)' : 'var(--green)');
-
-        return `
-          <tr>
-            <td><strong>#${ord.id}</strong></td>
-            <td>${escapeHtml(ord.customer)}</td>
-            <td><a href="https://wa.me/${ord.phone.replace(/[^0-9]/g, '')}" target="_blank" style="color:var(--green);text-decoration:none;font-weight:600;">${ord.phone}</a></td>
-            <td><span class="badge badge-plan">${escapeHtml(ord.plan)}</span></td>
-            <td><span style="color:${timerColor};font-weight:700;">${timerText}</span></td>
-            <td><span class="badge ${isPending ? 'badge-pending' : 'badge-delivered'}">${ord.status.toUpperCase()}</span></td>
-            <td>
-              ${isPending ? `<button class="btn btn-whatsapp btn-sm" onclick="dispatchOrderWhatsApp('${ord.id}')">💬 Deliver on WhatsApp</button>` : `<span style="color:var(--text-muted);font-size:12px;">✓ Completed</span>`}
-            </td>
-          </tr>
-        `;
-      }).join('');
-
-      recentTbody.innerHTML = rowsHtml;
-      
-      const allRowsHtml = orders.map(ord => {
-        const isPending = ord.status === 'pending';
-        const elapsedMins = Math.floor((Date.now() - ord.createdAt) / 60000);
-        const timerText = isPending ? `${elapsedMins}m / 10m SLA` : 'Delivered';
-        const timerColor = (isPending && elapsedMins >= 8) ? 'var(--red)' : (isPending ? 'var(--amber)' : 'var(--green)');
-
-        return `
-          <tr>
-            <td><strong>#${ord.id}</strong></td>
-            <td>${escapeHtml(ord.customer)}</td>
-            <td><a href="https://wa.me/${ord.phone.replace(/[^0-9]/g, '')}" target="_blank" style="color:var(--green);text-decoration:none;font-weight:600;">${ord.phone}</a></td>
-            <td style="color:var(--text-muted);">${escapeHtml(ord.email || '')}</td>
-            <td><span class="badge badge-plan">${escapeHtml(ord.plan)}</span></td>
-            <td><strong>${ord.price}</strong></td>
-            <td><span style="color:${timerColor};font-weight:700;">${timerText}</span></td>
-            <td><span class="badge ${isPending ? 'badge-pending' : 'badge-delivered'}">${ord.status.toUpperCase()}</span></td>
-            <td>
-              ${isPending ? `<button class="btn btn-whatsapp btn-sm" onclick="dispatchOrderWhatsApp('${ord.id}')">💬 Deliver on WhatsApp</button>` : `<button class="btn btn-outline btn-sm" onclick="dispatchOrderWhatsApp('${ord.id}')">Resend</button>`}
-            </td>
-          </tr>
-        `;
-      }).join('');
-
-      allTbody.innerHTML = allRowsHtml;
-      document.getElementById('pendingCountBadge').textContent = pendingCount;
-    }
-
-    function dispatchOrderWhatsApp(orderId) {
-      const orders = getOrders();
-      const ord = orders.find(o => o.id === orderId);
-      if (!ord) return;
-
-      const userClean = ord.customer.toLowerCase().replace(/[^a-z0-9]/g, '') + Math.floor(1000 + Math.random()*9000);
-      const passClean = 'Ultra' + Math.floor(10000 + Math.random()*90000);
-      const serverUrl = 'http://ultra-line.net:8080';
-
-      const msg = `👑 *ULTRA STREAM — 10-MINUTE INSTANT DISPATCH* 👑
-
-Hello *${ord.customer}*, your IPTV subscription is *Active (Ultra HD & 4K)*
-
-🔑 *Your IPTV Login Credentials:*
-• Server Portal: \`${serverUrl}\`
-• Username: \`${userClean}\`
-• Password: \`${passClean}\`
-
-📡 *M3U Playlist URL:*
-\`${serverUrl}/get.php?username=${userClean}&password=${passClean}&type=m3u_plus&output=ts\`
-
-📅 *EPG TV Guide:*
-\`${serverUrl}/xmltv.php?username=${userClean}&password=${passClean}\`
-
-━━━━━━━━━━━━━━━━━━━━
-✨ Compatible with IPTV Smarters Pro, TiviMate, Smart TV & Firestick.
-💬 24/7 VIP Priority Support: +44 7458 196522
-⚡ Thank you for choosing Ultra Stream!`;
-
-      ord.status = 'delivered';
-      ord.deliveredAt = Date.now();
-      saveOrders(orders);
-
-      const cleanPhone = ord.phone.replace(/[^0-9]/g, '');
-      const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
-      window.open(waUrl, '_blank');
-      showToast('Order #' + orderId + ' dispatched on WhatsApp!');
-    }
-
-    function simulateNewOrder() {
-      const custName = prompt('Enter Customer Full Name:', 'Bilal Khan');
-      if (!custName) return;
-      const phone = prompt('Enter Customer WhatsApp Number (e.g. +923001234567):', '+923009876543');
-      if (!phone) return;
-
-      const orders = getOrders();
-      const newOrd = {
-        id: 'ORD-' + Math.floor(1000 + Math.random() * 9000),
-        customer: custName,
-        phone: phone,
-        email: custName.toLowerCase().replace(/[^a-z0-9]/g, '') + '@gmail.com',
-        plan: 'Ultra VIP Pass (12 Mo)',
-        price: '$49.99',
-        createdAt: Date.now(),
-        status: 'pending'
-      };
-
-      orders.unshift(newOrd);
-      saveOrders(orders);
-      showToast('New test order created: #' + newOrd.id);
     }
 
     // ================= FIREBASE CLOUD SYNC =================
@@ -2051,9 +2138,10 @@ Hello *${ord.customer}*, your IPTV subscription is *Active (Ultra HD & 4K)*
       renderAnalytics();
       populateSiteContent();
       renderPlans();
+      populateBackgrounds();
+      populateFooterNav();
       populatePolicies();
       populateSettings();
-      renderOrders();
 
       const fb = getFirebaseConfig();
       if (fb) {
