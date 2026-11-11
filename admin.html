@@ -10,7 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   
   <!-- Firebase SDKs for Live Firestore Cloud Sync -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="firebase-config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <!-- Three.js Library for Live Visual Background Shader Preview -->
@@ -1926,42 +1927,73 @@
       </section>
 
       <!-- ================= TAB 7: FIREBASE CLOUD ================= -->
-      <section id="pane-firebase" class="tab-pane">
+            <section id="pane-firebase" class="tab-pane">
         <div class="card-wrap">
           <div class="card-head">
             <div>
-              <h2>Google Firebase Firestore Cloud Database</h2>
-              <p>Connect your free Firebase Firestore database so changes update live across all devices worldwide.</p>
+              <h2>Google Firebase Firestore Cloud Database (لائیو کنکشن)</h2>
+              <p>فائر بیس کلاؤڈ ڈیٹا بیس کنیکٹ کریں تاکہ ایڈمن پینل کی تمام تبدیلیاں دنیا بھر کے تمام وزٹرز کو لائیو نظر آئیں۔</p>
             </div>
-            <div style="display:flex;gap:10px;">
-              <button class="btn btn-outline" onclick="testFirebaseConnection()">Test Cloud Connection</button>
-              <button class="btn btn-gold" onclick="saveFirebaseConfig()">Save Firebase Config</button>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn btn-outline" onclick="testFirebaseConnection()">⚡ Test Cloud Connection</button>
+              <button class="btn btn-gold" onclick="saveFirebaseConfig()">💾 Save Firebase Config</button>
             </div>
           </div>
 
-          <div class="form-group">
-            <label>API Key (apiKey)</label>
-            <input type="text" id="fb_apiKey" class="form-input" placeholder="AIzaSy...">
+          <!-- Quick Paste Box (Auto-Detect) -->
+          <div class="content-box" style="margin-bottom:20px;background:rgba(255,200,0,0.03);border-color:rgba(255,200,0,0.3);">
+            <h3 style="color:var(--gold);font-size:15px;margin-bottom:8px;">📋 Option 1: Quick Paste Firebase SDK Code / JSON</h3>
+            <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:10px;">
+              فائر بیس کنسول سے پورا کوڈ (<code>const firebaseConfig = { ... };</code>) یا JSON یہاں پیسٹ کریں — یہ خود بخود تمام خانے بھر دے گا:
+            </p>
+            <textarea id="fb_config_paste" class="form-textarea" placeholder="Paste const firebaseConfig = { apiKey: &quot;...&quot;, ... } or JSON here..." style="min-height:90px;font-family:monospace;font-size:12px;" oninput="autoParseFirebaseConfig()"></textarea>
           </div>
-          <div class="form-group">
-            <label>Auth Domain (authDomain)</label>
-            <input type="text" id="fb_authDomain" class="form-input" placeholder="ultra-stream.firebaseapp.com">
+
+          <!-- Individual Field Inputs -->
+          <div class="content-box">
+            <h3 style="color:#fff;font-size:15px;margin-bottom:12px;">🔑 Option 2: Individual Config Keys</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="form-group">
+                <label>API Key (apiKey) <span style="color:#ff5f57;">*</span></label>
+                <input type="text" id="fb_apiKey" class="form-input" placeholder="AIzaSy...">
+              </div>
+              <div class="form-group">
+                <label>Auth Domain (authDomain)</label>
+                <input type="text" id="fb_authDomain" class="form-input" placeholder="your-project.firebaseapp.com">
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="form-group">
+                <label>Project ID (projectId) <span style="color:#ff5f57;">*</span></label>
+                <input type="text" id="fb_projectId" class="form-input" placeholder="ultra-stream-iptv">
+              </div>
+              <div class="form-group">
+                <label>Storage Bucket (storageBucket)</label>
+                <input type="text" id="fb_storageBucket" class="form-input" placeholder="your-project.appspot.com">
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Messaging Sender ID (messagingSenderId)</label>
+                <input type="text" id="fb_messagingSenderId" class="form-input" placeholder="123456789012">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label>App ID (appId)</label>
+                <input type="text" id="fb_appId" class="form-input" placeholder="1:123456789012:web:abcdef...">
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Project ID (projectId)</label>
-            <input type="text" id="fb_projectId" class="form-input" placeholder="ultra-stream-iptv">
-          </div>
-          <div class="form-group">
-            <label>Storage Bucket (storageBucket)</label>
-            <input type="text" id="fb_storageBucket" class="form-input" placeholder="ultra-stream.appspot.com">
-          </div>
-          <div class="form-group">
-            <label>Messaging Sender ID (messagingSenderId)</label>
-            <input type="text" id="fb_messagingSenderId" class="form-input" placeholder="1234567890">
-          </div>
-          <div class="form-group">
-            <label>App ID (appId)</label>
-            <input type="text" id="fb_appId" class="form-input" placeholder="1:1234567890:web:abcdef">
+
+          <!-- Instructions Card -->
+          <div class="content-box" style="margin-top:20px;background:rgba(255,255,255,0.02);">
+            <h4 style="color:var(--gold);font-size:14px;margin-bottom:8px;">📖 فائر بیس اکاؤنٹ اور کیز حاصل کرنے کا آسان طریقہ:</h4>
+            <ol style="margin-left:20px;font-size:13px;color:#d1d5db;line-height:1.9;">
+              <li><strong>console.firebase.google.com</strong> پر جا کر <strong>"Create a project"</strong> پر کلک کریں۔</li>
+              <li>پروجیکٹ بننے کے بعد ویب آئیکون <strong>&lt;/&gt;</strong> پر کلک کر کے ایپ رجسٹر کریں۔</li>
+              <li>سامنے آنے والا <strong>firebaseConfig</strong> کا کوڈ کاپی کر کے اوپر والے خانے میں پیسٹ کریں۔</li>
+              <li>بائیں مینو میں <strong>Build &rarr; Firestore Database</strong> پر کلک کر کے ڈیٹا بیس <strong>"Test mode"</strong> میں بنائیں۔</li>
+              <li>اوپر دیا گیا <strong>"Save Firebase Config"</strong> بٹن دبائیں اور <strong>"Test Cloud Connection"</strong> سے ٹیسٹ کریں۔</li>
+            </ol>
           </div>
         </div>
       </section>
@@ -3053,7 +3085,50 @@
     // -------------------------------------------------------------------------
     window.cloudDb = null;
     function getFirebaseConfig() {
-      return JSON.parse(localStorage.getItem('ultra_firebase_config') || 'null');
+      return (window.ULTRA_FIREBASE_CONFIG && window.ULTRA_FIREBASE_CONFIG.apiKey) 
+        ? window.ULTRA_FIREBASE_CONFIG 
+        : JSON.parse(localStorage.getItem('ultra_firebase_config') || 'null');
+    }
+
+    window.autoParseFirebaseConfig = function() {
+      const text = document.getElementById('fb_config_paste').value;
+      if (!text) return;
+      
+      const extract = key => {
+        const regex = new RegExp(`['"]?${key}['"]?\s*:\s*['"]([^'"]+)['"]`, 'i');
+        const match = text.match(regex);
+        return match ? match[1] : '';
+      };
+
+      const apiKey = extract('apiKey');
+      const authDomain = extract('authDomain');
+      const projectId = extract('projectId');
+      const storageBucket = extract('storageBucket');
+      const messagingSenderId = extract('messagingSenderId');
+      const appId = extract('appId');
+
+      if (apiKey) document.getElementById('fb_apiKey').value = apiKey;
+      if (authDomain) document.getElementById('fb_authDomain').value = authDomain;
+      if (projectId) document.getElementById('fb_projectId').value = projectId;
+      if (storageBucket) document.getElementById('fb_storageBucket').value = storageBucket;
+      if (messagingSenderId) document.getElementById('fb_messagingSenderId').value = messagingSenderId;
+      if (appId) document.getElementById('fb_appId').value = appId;
+    };
+
+    function populateFirebaseInputs() {
+      const cfg = getFirebaseConfig();
+      if (!cfg) return;
+      const setVal = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+      setVal('fb_apiKey', cfg.apiKey);
+      setVal('fb_authDomain', cfg.authDomain);
+      setVal('fb_projectId', cfg.projectId);
+      setVal('fb_storageBucket', cfg.storageBucket);
+      setVal('fb_messagingSenderId', cfg.messagingSenderId);
+      setVal('fb_appId', cfg.appId);
+      const pasteBox = document.getElementById('fb_config_paste');
+      if (pasteBox && !pasteBox.value) {
+        pasteBox.value = JSON.stringify(cfg, null, 2);
+      }
     }
 
     function initFirebase() {
@@ -3082,25 +3157,50 @@
     }
 
     window.saveFirebaseConfig = function() {
-      const val = document.getElementById('fb_config_json').value.trim();
-      try {
-        const parsed = JSON.parse(val);
-        localStorage.setItem('ultra_firebase_config', JSON.stringify(parsed));
-        initFirebase();
-        showToast('🔥 Firebase Connected Successfully!');
-      } catch (err) {
-        alert('Invalid Firebase Config JSON! Please check format.');
+      const getVal = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+      let apiKey = getVal('fb_apiKey');
+      let projectId = getVal('fb_projectId');
+      let authDomain = getVal('fb_authDomain');
+      let storageBucket = getVal('fb_storageBucket');
+      let messagingSenderId = getVal('fb_messagingSenderId');
+      let appId = getVal('fb_appId');
+
+      // If empty, check paste box
+      if (!apiKey || !projectId) {
+        autoParseFirebaseConfig();
+        apiKey = getVal('fb_apiKey');
+        projectId = getVal('fb_projectId');
       }
+
+      if (!apiKey || !projectId) {
+        alert('Please enter at least apiKey and projectId!');
+        return;
+      }
+
+      const cfg = {
+        apiKey,
+        authDomain: authDomain || (projectId + '.firebaseapp.com'),
+        projectId,
+        storageBucket: storageBucket || (projectId + '.appspot.com'),
+        messagingSenderId,
+        appId
+      };
+
+      localStorage.setItem('ultra_firebase_config', JSON.stringify(cfg));
+      initFirebase();
+      showToast('🔥 Firebase Connected Successfully! Cloud Sync Active.');
     };
 
     window.testFirebaseConnection = function() {
-      if (!window.cloudDb) return alert('Firebase is not initialized yet.');
+      if (!window.cloudDb) {
+        initFirebase();
+      }
+      if (!window.cloudDb) return alert('Firebase is not initialized yet. Please check your apiKey & projectId.');
       window.cloudDb.collection('_test').doc('ping').set({ timestamp: Date.now() })
-        .then(() => alert('✅ Firebase Connection Working Perfectly!'))
-        .catch(err => alert('❌ Firebase error: ' + err.message));
+        .then(() => alert('✅ Firebase Firestore Connection is 100% Working! Changes will sync live.'))
+        .catch(err => alert('❌ Firebase error: ' + err.message + '\n\nPlease make sure Cloud Firestore is enabled in Test Mode in Firebase Console.'));
     };
 
-    // -------------------------------------------------------------------------
     // HELPERS
     // -------------------------------------------------------------------------
     function escapeHtml(str) {
@@ -3303,6 +3403,7 @@ void main() {
       populateFooterNav();
       populatePolicyForms();
       populateSettings();
+      populateFirebaseInputs();
       initFirebase();
 
       // Read stored backgrounds

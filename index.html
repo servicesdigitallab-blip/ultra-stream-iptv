@@ -2382,7 +2382,7 @@ if (document.readyState === 'loading') {
   // 3. CLOUD FIREBASE LIVE LISTENER (Instant bidirectional updates across all devices)
   function initCloudSync() {
     let cfg = null;
-    try { cfg = JSON.parse(localStorage.getItem('ultra_firebase_config')); } catch(_) {}
+    try { cfg = (window.ULTRA_FIREBASE_CONFIG && window.ULTRA_FIREBASE_CONFIG.apiKey) ? window.ULTRA_FIREBASE_CONFIG : JSON.parse(localStorage.getItem('ultra_firebase_config')); } catch(_) {}
     if (cfg && cfg.apiKey && cfg.projectId && typeof firebase !== 'undefined') {
       try {
         if (!firebase.apps.length) {
